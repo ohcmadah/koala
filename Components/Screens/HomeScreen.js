@@ -17,12 +17,12 @@ class HomeScreen extends React.Component {
       <SafeAreaView style={styles.container}>
         <ImageBackground
           style={styles.topBar}
-          source={require(`../../home/assets/top_circle.svg`)}
+          source={require(`../../assets/home/top_circle.svg`)}
           resizeMode={"contain"}
         >
           <Image
             style={{ width: "3%" }}
-            source={require(`../../home/assets/location_icon.svg`)}
+            source={require(`../../assets/home/location_icon.svg`)}
           />
           <Text>서울특별시 관악구</Text>
           <TouchableOpacity></TouchableOpacity>
