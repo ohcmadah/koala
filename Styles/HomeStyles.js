@@ -1,15 +1,34 @@
 import { StyleSheet } from "react-native";
 
+const mainColor = "#9DB4CE";
+const basicFontSize = 17;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#9DB4CE",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: mainColor,
   },
   topBar: {
-    height: "13%",
-    width: "auto",
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  content: {
+    flex: 1,
+    padding: 36,
+  },
+  textLocation: {
+    color: "white",
+    fontSize: basicFontSize,
+    fontWeight: "600",
+    marginRight: 12,
+    marginLeft: 16,
+  },
+  title: {
+    color: "white",
+    fontSize: basicFontSize + 5,
+    fontWeight: "600",
   },
 });
 
