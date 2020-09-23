@@ -22,48 +22,57 @@ class HomeScreen extends React.Component {
   };
   render() {
     const { location } = this.state;
-    let fontWidth;
+
     return (
       <SafeAreaView style={styles.container}>
-        <ImageBackground
-          style={styles.topBar}
-          resizeMode={"contain"}
-          source={require(`${IMAGE_URL}/top_bar.png`)}
-        >
-          <Image
-            style={{ height: 20, width: 16 }}
-            source={require(`${IMAGE_URL}/location_icon.png`)}
-          />
-          <Text style={styles.textLocation}>{location}</Text>
-          <TouchableOpacity>
+        <View style={styles.topBar}>
+          <ImageBackground
+            style={styles.topBar}
+            resizeMode={"contain"}
+            source={require(`${IMAGE_URL}/top_bar.png`)}
+          >
             <Image
-              style={{ height: 6, width: 11 }}
-              source={require(`${IMAGE_URL}/white_tri.png`)}
+              style={{ height: 20, width: 16 }}
+              source={require(`${IMAGE_URL}/location_icon.png`)}
             />
-          </TouchableOpacity>
-        </ImageBackground>
+            <Text style={styles.textLocation}>{location}</Text>
+            <TouchableOpacity>
+              <Image
+                style={{ height: 6, width: 11 }}
+                source={require(`${IMAGE_URL}/white_tri.png`)}
+              />
+            </TouchableOpacity>
+          </ImageBackground>
+        </View>
         <View style={styles.content}>
           <Text style={styles.title}>국내현황</Text>
-          <Tab.Navigator
-            tabBarOptions={{
-              style: styles.locationNav,
-              tabStyle: {
-                width: 119,
-              },
-              labelStyle: {
-                color: "white",
-                fontSize: 17,
-                fontWeight: "bold",
-              },
-              indicatorStyle: {
-                height: 2,
-                backgroundColor: "white",
-              },
-            }}
-          >
-            <Tab.Screen name="전국" component={Korea} />
-            <Tab.Screen name="우리 지역" component={Region} />
-          </Tab.Navigator>
+          <View>
+            <Tab.Navigator
+              initialRouteName="전국"
+              tabBarOptions={{
+                style: {
+                  backgroundColor: "transparent",
+                  height: "8%",
+                  width: 200,
+                },
+                activeTintColor: "white",
+                inactiveTintColor: "rgba(255, 255, 255, 0.5)",
+                labelStyle: {
+                  fontSize: 17,
+                  fontWeight: "bold",
+                },
+                indicatorStyle: {
+                  height: 2,
+                  backgroundColor: "white",
+                  width: 55,
+                  left: 22.5,
+                },
+              }}
+            >
+              <Tab.Screen name="전국" component={Korea} />
+              <Tab.Screen name="우리 지역" component={Region} />
+            </Tab.Navigator>
+          </View>
         </View>
       </SafeAreaView>
     );

@@ -9,13 +9,14 @@ const styles = StyleSheet.create({
     backgroundColor: mainColor,
   },
   topBar: {
-    flex: 1,
+    flex: 1.3,
+    height: 110,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
   },
   content: {
-    flex: 1,
+    flex: 8.7,
     padding: 36,
   },
   textLocation: {
@@ -29,9 +30,6 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: basicFontSize + 5,
     fontWeight: "bold",
-  },
-  locationNav: {
-    backgroundColor: "transparent",
   },
 });
 
