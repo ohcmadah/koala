@@ -22,6 +22,7 @@ class HomeScreen extends React.Component {
   };
   render() {
     const { location } = this.state;
+    let fontWidth;
     return (
       <SafeAreaView style={styles.container}>
         <ImageBackground
@@ -43,9 +44,25 @@ class HomeScreen extends React.Component {
         </ImageBackground>
         <View style={styles.content}>
           <Text style={styles.title}>국내현황</Text>
-          <Tab.Navigator style={styles.locationNav}>
-            <Tab.Screen name="Korea" component={Korea} />
-            <Tab.Screen name="Region" component={Region} />
+          <Tab.Navigator
+            tabBarOptions={{
+              style: styles.locationNav,
+              tabStyle: {
+                width: 119,
+              },
+              labelStyle: {
+                color: "white",
+                fontSize: 17,
+                fontWeight: "bold",
+              },
+              indicatorStyle: {
+                height: 2,
+                backgroundColor: "white",
+              },
+            }}
+          >
+            <Tab.Screen name="전국" component={Korea} />
+            <Tab.Screen name="우리 지역" component={Region} />
           </Tab.Navigator>
         </View>
       </SafeAreaView>

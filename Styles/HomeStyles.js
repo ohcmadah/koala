@@ -21,14 +21,17 @@ const styles = StyleSheet.create({
   textLocation: {
     color: "white",
     fontSize: basicFontSize,
-    fontWeight: "600",
+    fontWeight: "bold",
     marginRight: 12,
     marginLeft: 16,
   },
   title: {
     color: "white",
     fontSize: basicFontSize + 5,
-    fontWeight: "600",
+    fontWeight: "bold",
+  },
+  locationNav: {
+    backgroundColor: "transparent",
   },
 });
 
