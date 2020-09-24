@@ -19,6 +19,7 @@ class Korea extends React.Component {
             title={data.title}
             number={data.number}
             diff={data.diff}
+            isRegion={false}
           />
         ))}
       </SafeAreaView>
