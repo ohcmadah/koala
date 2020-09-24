@@ -15,6 +15,25 @@ import Region from "../Region";
 const IMAGE_URL = "../../assets/home";
 
 const Tab = createMaterialTopTabNavigator();
+const tabStyle = {
+  style: {
+    backgroundColor: "transparent",
+    height: "8%",
+    width: 200,
+  },
+  activeTintColor: "white",
+  inactiveTintColor: "rgba(255, 255, 255, 0.5)",
+  labelStyle: {
+    fontSize: 17,
+    fontWeight: "bold",
+  },
+  indicatorStyle: {
+    height: 2,
+    backgroundColor: "white",
+    width: 55,
+    left: 22.5,
+  },
+};
 
 class HomeScreen extends React.Component {
   state = {
@@ -49,25 +68,7 @@ class HomeScreen extends React.Component {
           <View>
             <Tab.Navigator
               initialRouteName="전국"
-              tabBarOptions={{
-                style: {
-                  backgroundColor: "transparent",
-                  height: "8%",
-                  width: 200,
-                },
-                activeTintColor: "white",
-                inactiveTintColor: "rgba(255, 255, 255, 0.5)",
-                labelStyle: {
-                  fontSize: 17,
-                  fontWeight: "bold",
-                },
-                indicatorStyle: {
-                  height: 2,
-                  backgroundColor: "white",
-                  width: 55,
-                  left: 22.5,
-                },
-              }}
+              tabBarOptions={...tabStyle}
             >
               <Tab.Screen name="전국" component={Korea} />
               <Tab.Screen name="우리 지역" component={Region} />
