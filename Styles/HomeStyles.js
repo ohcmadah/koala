@@ -31,6 +31,9 @@ const styles = StyleSheet.create({
     fontSize: basicFontSize + 5,
     fontWeight: "bold",
   },
+  locationNav: {
+    flex: 1,
+  },
 });
 
 export default styles;

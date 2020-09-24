@@ -65,11 +65,8 @@ class HomeScreen extends React.Component {
         </View>
         <View style={styles.content}>
           <Text style={styles.title}>국내현황</Text>
-          <View>
-            <Tab.Navigator
-              initialRouteName="전국"
-              tabBarOptions={...tabStyle}
-            >
+          <View style={styles.locationNav}>
+            <Tab.Navigator initialRouteName="전국" tabBarOptions={tabStyle}>
               <Tab.Screen name="전국" component={Korea} />
               <Tab.Screen name="우리 지역" component={Region} />
             </Tab.Navigator>
