@@ -19,8 +19,10 @@ const tabStyle = {
   style: {
     backgroundColor: "transparent",
     height: "22%",
-    width: 180,
     alignSelf: "flex-end",
+  },
+  tabStyle: {
+    width: "auto",
   },
   activeTintColor: "white",
   inactiveTintColor: "rgba(255, 255, 255, 0.5)",
@@ -30,11 +32,9 @@ const tabStyle = {
     margin: 0,
   },
   indicatorStyle: {
-    height: 2,
-    backgroundColor: "white",
-    width: 50,
-    left: 20,
+    height: 0,
   },
+  scrollEnabled: true,
 };
 
 class HomeScreen extends React.Component {
