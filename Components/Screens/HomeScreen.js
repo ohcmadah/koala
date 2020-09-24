@@ -18,7 +18,7 @@ const Tab = createMaterialTopTabNavigator();
 const tabStyle = {
   style: {
     backgroundColor: "transparent",
-    height: "8%",
+    height: "22%",
     width: 180,
     alignSelf: "flex-end",
   },
@@ -65,12 +65,29 @@ class HomeScreen extends React.Component {
             </TouchableOpacity>
           </ImageBackground>
         </View>
-        <View style={styles.content}>
+        <View style={styles.locationNav}>
           <Text style={styles.title}>국내현황</Text>
           <Tab.Navigator initialRouteName="전국" tabBarOptions={tabStyle}>
             <Tab.Screen name="전국" component={Korea} />
             <Tab.Screen name="우리 지역" component={Region} />
           </Tab.Navigator>
+        </View>
+        <View style={styles.siteBox}>
+          <Text style={styles.site}>중앙재난안전대책본부 사이트 바로가기</Text>
+        </View>
+        <View style={styles.bottomNav}>
+          <Image
+            style={[styles.circle, { top: 42 }]}
+            source={require(`${IMAGE_URL}/first_circle.png`)}
+          />
+          <Image
+            style={[styles.circle, { top: 136, left: 10 }]}
+            source={require(`${IMAGE_URL}/second_circle.png`)}
+          />
+          <Image
+            style={[styles.circle, { top: 230, left: 100 }]}
+            source={require(`${IMAGE_URL}/third_circle.png`)}
+          />
         </View>
       </SafeAreaView>
     );

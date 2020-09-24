@@ -2,6 +2,7 @@ import { StyleSheet } from "react-native";
 
 const mainColor = "#9DB4CE";
 const basicFontSize = 17;
+const basicPadding = 36;
 
 const styles = StyleSheet.create({
   container: {
@@ -10,14 +11,16 @@ const styles = StyleSheet.create({
   },
   topBar: {
     flex: 1.3,
+    width: "100%",
     height: 110,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
   },
-  content: {
-    flex: 8.7,
-    padding: 36,
+  locationNav: {
+    flex: 2.7,
+    marginHorizontal: basicPadding,
+    marginTop: 30,
   },
   textLocation: {
     color: "white",
@@ -30,6 +33,45 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: basicFontSize + 5,
     fontWeight: "bold",
+    margin: 4,
+  },
+  siteBox: {
+    flex: 0.6,
+    marginHorizontal: basicPadding,
+    justifyContent: "center",
+    alignItems: "center",
+    borderColor: "white",
+    borderRadius: 10,
+    borderWidth: 2,
+
+    // elevation
+    ...Platform.select({
+      ios: {
+        shadowColor: "rgb(0, 0, 0)",
+        shadowOpacity: 0.15,
+        shadowRadius: 4,
+        shadowOffset: {
+          height: 2,
+          width: 0,
+        },
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
+  },
+  site: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: basicFontSize - 2,
+  },
+  bottomNav: {
+    flex: 4,
+    justifyContent: "flex-end",
+  },
+  circle: {
+    flex: 1,
+    position: "absolute",
   },
 });
 
