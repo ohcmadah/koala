@@ -19,19 +19,21 @@ const tabStyle = {
   style: {
     backgroundColor: "transparent",
     height: "8%",
-    width: 200,
+    width: 180,
+    alignSelf: "flex-end",
   },
   activeTintColor: "white",
   inactiveTintColor: "rgba(255, 255, 255, 0.5)",
   labelStyle: {
     fontSize: 17,
     fontWeight: "bold",
+    margin: 0,
   },
   indicatorStyle: {
     height: 2,
     backgroundColor: "white",
-    width: 55,
-    left: 22.5,
+    width: 50,
+    left: 20,
   },
 };
 
@@ -65,12 +67,10 @@ class HomeScreen extends React.Component {
         </View>
         <View style={styles.content}>
           <Text style={styles.title}>국내현황</Text>
-          <View style={styles.locationNav}>
-            <Tab.Navigator initialRouteName="전국" tabBarOptions={tabStyle}>
-              <Tab.Screen name="전국" component={Korea} />
-              <Tab.Screen name="우리 지역" component={Region} />
-            </Tab.Navigator>
-          </View>
+          <Tab.Navigator initialRouteName="전국" tabBarOptions={tabStyle}>
+            <Tab.Screen name="전국" component={Korea} />
+            <Tab.Screen name="우리 지역" component={Region} />
+          </Tab.Navigator>
         </View>
       </SafeAreaView>
     );
