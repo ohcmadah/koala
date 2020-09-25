@@ -13,6 +13,11 @@ import styles from "../../Styles/HomeStyles";
 import Korea from "../Korea";
 import Region from "../Region";
 
+import firstCircle from "../../assets/home/first_circle.png";
+import secondCircle from "../../assets/home/second_circle.png";
+import thirdCircle from "../../assets/home/third_circle.png";
+
+const menus = [firstCircle, secondCircle, thirdCircle];
 const IMAGE_URL = "../../assets/home";
 
 const Tab = createMaterialTopTabNavigator();
@@ -89,18 +94,19 @@ class HomeScreen extends React.Component {
         </SafeAreaView>
 
         <View style={styles.bottomNav}>
-          <Image
-            style={[styles.circle]}
-            source={require(`${IMAGE_URL}/first_circle.png`)}
-          />
-          <Image
-            style={[styles.circle]}
-            source={require(`${IMAGE_URL}/second_circle.png`)}
-          />
-          <Image
-            style={[styles.circle]}
-            source={require(`${IMAGE_URL}/third_circle.png`)}
-          />
+          {menus.map((menu, index) => {
+            return (
+              <TouchableOpacity
+                key={index}
+                style={styles.circle}
+                onPress={() => {
+                  console.log(`${menu}`);
+                }}
+              >
+                <Image source={menu} />
+              </TouchableOpacity>
+            );
+          })}
         </View>
       </View>
     );
