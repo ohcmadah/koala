@@ -1,5 +1,5 @@
 import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { View } from "react-native";
 import styles from "../Styles/AreaStyles";
 import Card from "./Card";
 
@@ -12,7 +12,7 @@ const datas = {
 class Korea extends React.Component {
   render() {
     return (
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         {Object.values(datas).map((data, index) => (
           <Card
             key={index}
@@ -22,7 +22,7 @@ class Korea extends React.Component {
             isRegion={false}
           />
         ))}
-      </SafeAreaView>
+      </View>
     );
   }
 }
