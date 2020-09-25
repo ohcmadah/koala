@@ -5,6 +5,7 @@ import {
   ImageBackground,
   Image,
   TouchableOpacity,
+  Linking,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
@@ -56,8 +57,11 @@ class HomeScreen extends React.Component {
               style={{ height: 20, width: 16 }}
               source={require(`${IMAGE_URL}/location_icon.png`)}
             />
-            <Text style={styles.textLocation}>{location}</Text>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={this._locationHandle}
+              style={{ flexDirection: "row", alignItems: "center" }}
+            >
+              <Text style={styles.textLocation}>{location}</Text>
               <Image
                 style={{ height: 6, width: 11 }}
                 source={require(`${IMAGE_URL}/white_tri.png`)}
@@ -72,9 +76,9 @@ class HomeScreen extends React.Component {
             <Tab.Screen name="우리 지역" component={Region} />
           </Tab.Navigator>
         </View>
-        <View style={styles.siteBox}>
+        <TouchableOpacity style={styles.siteBox} onPress={this._goToCoronaSite}>
           <Text style={styles.site}>중앙재난안전대책본부 사이트 바로가기</Text>
-        </View>
+        </TouchableOpacity>
         <View style={styles.bottomNav}>
           <Image
             style={[styles.circle, { top: 42 }]}
@@ -92,6 +96,15 @@ class HomeScreen extends React.Component {
       </SafeAreaView>
     );
   }
+
+  _locationHandle = () => {
+    console.log("click!");
+  };
+
+  _goToCoronaSite = () => {
+    const URL = "http://ncov.mohw.go.kr/";
+    Linking.openURL(URL).catch((err) => console.log(err));
+  };
 }
 
 export default HomeScreen;
