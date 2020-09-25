@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: mainColor,
     flexDirection: "row",
-    justifyContent: "space-evenly",
+    justifyContent: "space-between",
     paddingVertical: 20,
   },
 });
