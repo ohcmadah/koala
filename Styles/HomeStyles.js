@@ -18,9 +18,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   locationNav: {
-    flex: 2.7,
+    flex: 2,
+    minHeight: 150,
     marginHorizontal: basicPadding,
-    marginTop: 30,
   },
   textLocation: {
     color: "white",
@@ -33,10 +33,10 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: basicFontSize + 5,
     fontWeight: "bold",
-    margin: 4,
+    marginTop: 40,
   },
   siteBox: {
-    flex: 0.6,
+    height: 50,
     marginHorizontal: basicPadding,
     justifyContent: "center",
     alignItems: "center",
@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
   bottomNav: {
     flex: 4,
     justifyContent: "flex-end",
+    alignItems: "center",
   },
   circle: {
     flex: 1,

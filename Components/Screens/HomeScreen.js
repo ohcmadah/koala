@@ -46,54 +46,63 @@ class HomeScreen extends React.Component {
     const { location } = this.state;
 
     return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.topBar}>
-          <ImageBackground
-            style={styles.topBar}
-            resizeMode={"contain"}
-            source={require(`${IMAGE_URL}/top_bar.png`)}
-          >
-            <Image
-              style={{ height: 20, width: 16 }}
-              source={require(`${IMAGE_URL}/location_icon.png`)}
-            />
-            <TouchableOpacity
-              onPress={this._locationHandle}
-              style={{ flexDirection: "row", alignItems: "center" }}
+      <View style={styles.container}>
+        <SafeAreaView style={{ flex: 4 }}>
+          <View style={styles.topBar}>
+            <ImageBackground
+              style={styles.topBar}
+              resizeMode={"contain"}
+              source={require(`${IMAGE_URL}/top_bar.png`)}
             >
-              <Text style={styles.textLocation}>{location}</Text>
               <Image
-                style={{ height: 6, width: 11 }}
-                source={require(`${IMAGE_URL}/white_tri.png`)}
+                style={{ height: 20, width: 16 }}
+                source={require(`${IMAGE_URL}/location_icon.png`)}
               />
-            </TouchableOpacity>
-          </ImageBackground>
-        </View>
-        <View style={styles.locationNav}>
-          <Text style={styles.title}>국내현황</Text>
-          <Tab.Navigator initialRouteName="전국" tabBarOptions={tabStyle}>
-            <Tab.Screen name="전국" component={Korea} />
-            <Tab.Screen name="우리 지역" component={Region} />
-          </Tab.Navigator>
-        </View>
-        <TouchableOpacity style={styles.siteBox} onPress={this._goToCoronaSite}>
-          <Text style={styles.site}>중앙재난안전대책본부 사이트 바로가기</Text>
-        </TouchableOpacity>
+              <TouchableOpacity
+                onPress={this._locationHandle}
+                style={{ flexDirection: "row", alignItems: "center" }}
+              >
+                <Text style={styles.textLocation}>{location}</Text>
+                <Image
+                  style={{ height: 6, width: 11 }}
+                  source={require(`${IMAGE_URL}/white_tri.png`)}
+                />
+              </TouchableOpacity>
+            </ImageBackground>
+          </View>
+
+          <View style={styles.locationNav}>
+            <Text style={styles.title}>국내현황</Text>
+            <Tab.Navigator initialRouteName="전국" tabBarOptions={tabStyle}>
+              <Tab.Screen name="전국" component={Korea} />
+              <Tab.Screen name="우리 지역" component={Region} />
+            </Tab.Navigator>
+          </View>
+          <TouchableOpacity
+            style={styles.siteBox}
+            onPress={this._goToCoronaSite}
+          >
+            <Text style={styles.site}>
+              중앙재난안전대책본부 사이트 바로가기
+            </Text>
+          </TouchableOpacity>
+        </SafeAreaView>
+
         <View style={styles.bottomNav}>
           <Image
-            style={[styles.circle, { top: 42 }]}
+            style={[styles.circle]}
             source={require(`${IMAGE_URL}/first_circle.png`)}
           />
           <Image
-            style={[styles.circle, { top: 136, left: 10 }]}
+            style={[styles.circle]}
             source={require(`${IMAGE_URL}/second_circle.png`)}
           />
           <Image
-            style={[styles.circle, { top: 230, left: 100 }]}
+            style={[styles.circle]}
             source={require(`${IMAGE_URL}/third_circle.png`)}
           />
         </View>
-      </SafeAreaView>
+      </View>
     );
   }
 
