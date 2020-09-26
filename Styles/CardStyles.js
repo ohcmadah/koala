@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
     padding: 10,
     justifyContent: "space-between",
     alignItems: "center",
+    marginHorizontal: 4,
 
     // elevation
     ...Platform.select({
