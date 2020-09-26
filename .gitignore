@@ -13,4 +13,4 @@ web-build/
 .DS_Store
 
 # api keys
-.env
+config.js

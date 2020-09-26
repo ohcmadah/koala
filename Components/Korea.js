@@ -3,14 +3,64 @@ import { View } from "react-native";
 import styles from "../Styles/AreaStyles";
 import Card from "./Card";
 
-const datas = {
-  확진자: { title: "확진자", number: "22,893", diff: 110 },
-  격리중: { title: "격리중", number: "24,750", diff: -698 },
-  격리해제: { title: "격리해제", number: "19,970", diff: 199 },
-};
+import * as config from "../config";
+import XMLParser from "react-native-xml2js";
+
+const CORONA_API_KEY = config.CORONA_API_KEY;
+const startDate = "20200925";
+const endDate = "20200926";
 
 class Korea extends React.Component {
+  state = {
+    isLoaded: false,
+    datas: {},
+  };
+
+  _getData = async (startDate, endDate) => {
+    const API_URL = `http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19InfStateJson?serviceKey=${CORONA_API_KEY}&pageNo=1&numOfRows=10&startCreateDt=${startDate}&endCreateDt=${endDate}&`;
+
+    await fetch(API_URL)
+      .then((response) => response.text())
+      .then((data) => {
+        console.log(data);
+        XMLParser.parseString(data, (err, result) => {
+          const datas = JSON.stringify(result);
+          const parsedDatas = JSON.parse(datas);
+          const items = parsedDatas.response.body[0].items[0];
+
+          const { decideCnt, careCnt, clearCnt } = items.item[0];
+
+          const decideDiff = decideCnt - items.item[1].decideCnt;
+          const careDiff = careCnt - items.item[1].careCnt;
+          const clearDiff = clearCnt - items.item[1].clearCnt;
+
+          this.setState({
+            datas: {
+              확진자: { title: "확진자", number: decideCnt, diff: decideDiff },
+              격리중: { title: "격리중", number: careCnt, diff: careDiff },
+              격리해제: {
+                title: "격리해제",
+                number: clearCnt,
+                diff: clearDiff,
+              },
+            },
+          });
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  componentDidMount() {
+    this._getData(startDate, endDate);
+    this.setState({
+      isLoaded: true,
+    });
+  }
+
   render() {
+    const { datas } = this.state;
     return (
       <View style={styles.container}>
         {Object.values(datas).map((data, index) => (
