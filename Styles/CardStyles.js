@@ -1,9 +1,12 @@
-import { StyleSheet, Platform } from "react-native";
+import { StyleSheet, Platform, Dimensions } from "react-native";
+
+const { width, height } = Dimensions.get("window");
+const cardWidth = (width - 36 * 2 - 30) / 3;
 
 const styles = StyleSheet.create({
   cardStyle: {
-    width: 100,
-    height: 100,
+    width: cardWidth,
+    height: cardWidth,
     backgroundColor: "white",
     borderRadius: 10,
     padding: 10,
