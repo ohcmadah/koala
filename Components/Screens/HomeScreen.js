@@ -17,7 +17,11 @@ import firstCircle from "../../assets/home/first_circle.png";
 import secondCircle from "../../assets/home/second_circle.png";
 import thirdCircle from "../../assets/home/third_circle.png";
 
-const menus = [firstCircle, secondCircle, thirdCircle];
+const menus = {
+  first: [firstCircle, "나의 안전지수"],
+  second: [secondCircle, "TODAY 이동경로"],
+  third: [thirdCircle, "나의\n이동기록"],
+};
 const IMAGE_URL = "../../assets/home";
 
 const Tab = createMaterialTopTabNavigator();
@@ -94,7 +98,7 @@ class HomeScreen extends React.Component {
         </SafeAreaView>
 
         <View style={styles.bottomNav}>
-          {menus.map((menu, index) => {
+          {Object.values(menus).map((menu, index) => {
             return (
               <TouchableOpacity
                 key={index}
@@ -103,7 +107,14 @@ class HomeScreen extends React.Component {
                   console.log(`${menu}`);
                 }}
               >
-                <Image source={menu} />
+                <Image source={menu[0]} />
+                <View style={styles.menuTitle}>
+                  <Image
+                    style={{ height: 7, width: 13.5, alignSelf: "center" }}
+                    source={require(`${IMAGE_URL}/grey_tri.png`)}
+                  />
+                  <Text style={styles.textMenu}>{menu[1]}</Text>
+                </View>
               </TouchableOpacity>
             );
           })}

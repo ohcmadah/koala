@@ -29,6 +29,16 @@ const styles = StyleSheet.create({
     marginRight: 12,
     marginLeft: 16,
   },
+  textMenu: {
+    color: "#707070",
+    fontSize: basicFontSize,
+    fontWeight: "bold",
+    marginTop: 11,
+    alignSelf: "center",
+    alignItems: "center",
+    textAlign: "center",
+    lineHeight: 24,
+  },
   title: {
     color: "white",
     fontSize: basicFontSize + 5,
@@ -73,6 +83,11 @@ const styles = StyleSheet.create({
   circle: {
     flex: 1,
     position: "absolute",
+  },
+  menuTitle: {
+    width: "100%",
+    position: "absolute",
+    marginTop: 43,
   },
 });
 
