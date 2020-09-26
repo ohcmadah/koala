@@ -76,7 +76,6 @@ class HomeScreen extends React.Component {
     await fetch(GEOLOCATION_API_URL)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         const { long_name } = data.results[0].address_components[3];
         this.setState({
           location: long_name,
@@ -124,7 +123,10 @@ class HomeScreen extends React.Component {
             <Text style={styles.title}>국내현황</Text>
             <Tab.Navigator initialRouteName="전국" tabBarOptions={tabStyle}>
               <Tab.Screen name="전국" component={Korea} />
-              <Tab.Screen name="우리 지역" component={Region} />
+              <Tab.Screen
+                name="우리 지역"
+                children={() => <Region location={location} />}
+              />
             </Tab.Navigator>
           </View>
           <TouchableOpacity

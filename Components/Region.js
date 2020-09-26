@@ -28,24 +28,31 @@ class Region extends React.Component {
         XMLParser.parseString(data, (err, result) => {
           const datas = JSON.stringify(result);
           const parsedDatas = JSON.parse(datas);
-          const items = parsedDatas.response.body[0].items[0];
+          const items = parsedDatas.response.body[0].items[0].item;
 
-          console.log(parsedDatas);
+          let { location } = this.props;
+          if (location.length == 5 || location.length == 3) {
+            location = location.substring(0, 2);
+          }
 
-          const { defCnt, isolIngCnt, isolClearCnt } = items.item[0];
+          let index;
+          Object.values(items).some((item, i) => {
+            const { gubun } = item;
+            console.log(gubun[0], location);
+            if (location == gubun) index = i;
+            return location == gubun;
+          });
 
-          const decideDiff = defCnt - items.item[1].defCnt;
-          const careDiff = isolIngCnt - items.item[1].isolIngCnt;
-          const clearDiff = isolClearCnt - items.item[1].isolClearCnt;
+          const { defCnt, isolIngCnt, isolClearCnt } = items[index];
 
           this.setState({
             datas: {
-              확진자: { title: "확진자", number: defCnt, diff: decideDiff },
-              격리중: { title: "격리중", number: isolIngCnt, diff: careDiff },
+              확진자: { title: "확진자", number: defCnt, diff: 0 },
+              격리중: { title: "격리중", number: isolIngCnt, diff: 0 },
               격리해제: {
                 title: "격리해제",
                 number: isolClearCnt,
-                diff: clearDiff,
+                diff: 0,
               },
             },
           });
