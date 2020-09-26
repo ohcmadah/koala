@@ -6,16 +6,22 @@ import {
   Image,
   TouchableOpacity,
   Linking,
+  Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import styles from "../../Styles/HomeStyles";
 import Korea from "../Korea";
 import Region from "../Region";
+import * as Location from "expo-location";
+import { AppLoading } from "expo";
+import * as config from "../../config";
 
 import firstCircle from "../../assets/home/first_circle.png";
 import secondCircle from "../../assets/home/second_circle.png";
 import thirdCircle from "../../assets/home/third_circle.png";
+
+const GOOGLE_API_KEY = config.GOOGLE_API_KEY;
 
 const menus = {
   first: [firstCircle, "나의 안전지수"],
@@ -49,12 +55,46 @@ const tabStyle = {
 
 class HomeScreen extends React.Component {
   state = {
-    location: "서울특별시 관악구",
+    location: "",
+    isLoaded: false,
   };
-  render() {
-    const { location } = this.state;
 
-    return (
+  _getLocation = async () => {
+    try {
+      await Location.requestPermissionsAsync();
+      const {
+        coords: { latitude, longitude },
+      } = await Location.getCurrentPositionAsync();
+      this._getReverseGeo(latitude, longitude);
+    } catch (error) {
+      Alert.alert("Can't find you.", "So sad");
+    }
+  };
+
+  _getReverseGeo = async (latitude, longitude) => {
+    const GEOLOCATION_API_URL = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GOOGLE_API_KEY}`;
+    await fetch(GEOLOCATION_API_URL)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        const { long_name } = data.results[0].address_components[3];
+        this.setState({
+          location: long_name,
+        });
+      });
+  };
+
+  componentDidMount() {
+    this._getLocation();
+    this.setState({
+      isLoaded: true,
+    });
+  }
+
+  render() {
+    const { location, isLoaded } = this.state;
+
+    return isLoaded ? (
       <View style={styles.container}>
         <SafeAreaView style={{ flex: 4 }}>
           <View style={styles.topBar}>
@@ -120,6 +160,8 @@ class HomeScreen extends React.Component {
           })}
         </View>
       </View>
+    ) : (
+      <AppLoading />
     );
   }
 
