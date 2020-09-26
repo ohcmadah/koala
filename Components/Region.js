@@ -3,13 +3,11 @@ import { View } from "react-native";
 import styles from "../Styles/AreaStyles";
 import Card from "./Card";
 import Loading from "./Loading";
-import * as Location from "expo-location";
 
 import * as config from "../config";
 import XMLParser from "react-native-xml2js";
 
 const CORONA_API_KEY = config.CORONA_API_KEY;
-const GOOGLE_API_KEY = config.GOOGLE_API_KEY;
 
 class Region extends React.Component {
   state = {
@@ -58,22 +56,6 @@ class Region extends React.Component {
       });
   };
 
-  _getLocation = async () => {
-    try {
-      await Location.requestPermissionsAsync();
-      const {
-        coords: { latitude, longitude },
-      } = await Location.getCurrentPositionAsync();
-      this._getReverseGeo(latitude, longitude);
-    } catch (error) {
-      this.getLocation();
-    }
-  };
-
-  _getReverseGeo = async (latitude, longitude) => {
-    const GEOLOCATION_API_URL = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GOOGLE_API_KEY}`;
-  };
-
   componentDidMount() {
     const date = new Date();
     const year = date.getFullYear();
@@ -81,8 +63,8 @@ class Region extends React.Component {
       date.getMonth() + 1 > 9
         ? date.getMonth() + 1
         : "0" + (date.getMonth() + 1);
-    const startDate = year + month + (date.getDate() - 1);
-    const endDate = year + month + date.getDate();
+    const startDate = year + month + (date.getDate() - 2);
+    const endDate = year + month + (date.getDate() - 1);
     this._getData(startDate, endDate);
     this.setState({
       isLoaded: true,
