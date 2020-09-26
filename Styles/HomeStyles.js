@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 
 const mainColor = "#9DB4CE";
 const basicFontSize = 17;
-const basicPadding = 36;
+const basicMargin = 36;
 
 const styles = StyleSheet.create({
   container: {
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   locationNav: {
     flex: 2,
     minHeight: 150,
-    marginHorizontal: basicPadding,
+    marginHorizontal: basicMargin,
   },
   textLocation: {
     color: "white",
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   },
   siteBox: {
     height: 50,
-    marginHorizontal: basicPadding,
+    marginHorizontal: basicMargin,
     justifyContent: "center",
     alignItems: "center",
     borderColor: "white",
