@@ -8,13 +8,13 @@ import * as config from "../config";
 import XMLParser from "react-native-xml2js";
 
 const CORONA_API_KEY = config.CORONA_API_KEY;
-const startDate = "20200925";
-const endDate = "20200926";
 
 class Korea extends React.Component {
   state = {
     isLoaded: false,
     datas: {},
+    startDate: 0,
+    endDate: 0,
   };
 
   _getData = async (startDate, endDate) => {
@@ -23,7 +23,6 @@ class Korea extends React.Component {
     await fetch(API_URL)
       .then((response) => response.text())
       .then((data) => {
-        console.log(data);
         XMLParser.parseString(data, (err, result) => {
           const datas = JSON.stringify(result);
           const parsedDatas = JSON.parse(datas);
@@ -54,9 +53,19 @@ class Korea extends React.Component {
   };
 
   componentDidMount() {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month =
+      date.getMonth() + 1 > 9
+        ? date.getMonth() + 1
+        : "0" + (date.getMonth() + 1);
+    const startDate = year + month + (date.getDate() - 1);
+    const endDate = year + month + date.getDate();
     this._getData(startDate, endDate);
     this.setState({
       isLoaded: true,
+      startDate: startDate,
+      endDate: endDate,
     });
   }
 
