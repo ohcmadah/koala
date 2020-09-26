@@ -2,6 +2,7 @@ import React from "react";
 import { View } from "react-native";
 import styles from "../Styles/AreaStyles";
 import Card from "./Card";
+import Loading from "./Loading";
 
 import * as config from "../config";
 import XMLParser from "react-native-xml2js";
@@ -60,18 +61,22 @@ class Korea extends React.Component {
   }
 
   render() {
-    const { datas } = this.state;
+    const { datas, isLoaded } = this.state;
     return (
       <View style={styles.container}>
-        {Object.values(datas).map((data, index) => (
-          <Card
-            key={index}
-            title={data.title}
-            number={data.number}
-            diff={data.diff}
-            isRegion={false}
-          />
-        ))}
+        {isLoaded ? (
+          Object.values(datas).map((data, index) => (
+            <Card
+              key={index}
+              title={data.title}
+              number={data.number}
+              diff={data.diff}
+              isRegion={false}
+            />
+          ))
+        ) : (
+          <Loading />
+        )}
       </View>
     );
   }
