@@ -60,15 +60,16 @@ class Card extends React.Component {
   render() {
     const { title, number, isRegion } = this.props;
     const { triUrl, diff, numberStyle } = this.state;
+
     return (
       <View style={styles.cardStyle}>
         <Text style={[styles.font, titleStyle]}>{title}</Text>
-        <Text style={[styles.font, numberStyle]}>{number}</Text>
+        <Text style={[styles.font, numberStyle]}>{this._comma(number)}</Text>
         {isRegion ? (
           <></>
         ) : (
           <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Text style={[styles.font, diffStyle]}>{diff}</Text>
+            <Text style={[styles.font, diffStyle]}>{this._comma(diff)}</Text>
             <Image
               style={{ width: 9, height: 5, marginLeft: 5 }}
               source={triUrl}
@@ -78,6 +79,23 @@ class Card extends React.Component {
       </View>
     );
   }
+
+  _comma = (num) => {
+    var len, point, str;
+
+    num = num + "";
+    point = num.length % 3;
+    len = num.length;
+
+    str = num.substring(0, point);
+    while (point < len) {
+      if (str != "") str += ",";
+      str += num.substring(point, point + 3);
+      point += 3;
+    }
+
+    return str;
+  };
 }
 
 export default Card;
