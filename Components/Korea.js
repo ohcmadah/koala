@@ -59,8 +59,14 @@ class Korea extends React.Component {
       date.getMonth() + 1 > 9
         ? date.getMonth() + 1
         : "0" + (date.getMonth() + 1);
-    const startDate = year + month + (date.getDate() - 1);
-    const endDate = year + month + date.getDate();
+    let startDate = year + month + (date.getDate() - 1);
+    let endDate = year + month + date.getDate();
+
+    if (date.getHours() < 4) {
+      startDate = year + month + (date.getDate() - 2);
+      endDate = year + month + (date.getDate() - 1);
+    }
+
     this._getData(startDate, endDate);
     this.setState({
       isLoaded: true,

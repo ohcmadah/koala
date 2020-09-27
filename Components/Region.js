@@ -18,9 +18,7 @@ class Region extends React.Component {
   };
 
   _getData = async (startDate, endDate) => {
-    const CORONA_API_URL = `http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19SidoInfStateJson?serviceKey=${CORONA_API_KEY}&pageNo=1&numOfRows=10&startCreateDt=${
-      startDate + 1
-    }&endCreateDt=${endDate}&`;
+    const CORONA_API_URL = `http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19SidoInfStateJson?serviceKey=${CORONA_API_KEY}&pageNo=1&numOfRows=10&startCreateDt=${startDate}&endCreateDt=${endDate}&`;
 
     await fetch(CORONA_API_URL)
       .then((response) => response.text())
@@ -70,8 +68,15 @@ class Region extends React.Component {
       date.getMonth() + 1 > 9
         ? date.getMonth() + 1
         : "0" + (date.getMonth() + 1);
-    const startDate = year + month + date.getDate() - 1;
-    const endDate = year + month + date.getDate();
+
+    let startDate = year + month + date.getDate();
+    let endDate = year + month + date.getDate();
+
+    if (date.getHours() < 4) {
+      startDate = year + month + (date.getDate() - 1);
+      endDate = year + month + (date.getDate() - 1);
+    }
+
     this._getData(startDate, endDate);
     this.setState({
       isLoaded: true,
