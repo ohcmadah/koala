@@ -70,8 +70,8 @@ class Region extends React.Component {
       date.getMonth() + 1 > 9
         ? date.getMonth() + 1
         : "0" + (date.getMonth() + 1);
-    const startDate = year + month + (date.getDate() - 2);
-    const endDate = year + month + (date.getDate() - 1);
+    const startDate = year + month + date.getDate() - 1;
+    const endDate = year + month + date.getDate();
     this._getData(startDate, endDate);
     this.setState({
       isLoaded: true,

@@ -79,15 +79,13 @@ class HomeScreen extends React.Component {
         const { long_name } = data.results[0].address_components[3];
         this.setState({
           location: long_name,
+          isLoaded: true,
         });
       });
   };
 
   componentDidMount() {
     this._getLocation();
-    this.setState({
-      isLoaded: true,
-    });
   }
 
   render() {
