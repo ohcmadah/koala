@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
     borderColor: "white",
     borderRadius: 10,
     borderWidth: 2,
+    backgroundColor: mainColor,
 
     // elevation
     ...Platform.select({
