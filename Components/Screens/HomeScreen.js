@@ -11,8 +11,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import styles from "../../Styles/HomeStyles";
-import Korea from "../Korea";
-import Region from "../Region";
+import Area from "../Area";
 import * as Location from "expo-location";
 import { AppLoading } from "expo";
 import * as config from "../../config";
@@ -20,7 +19,6 @@ import * as config from "../../config";
 import firstCircle from "../../assets/home/first_circle.png";
 import secondCircle from "../../assets/home/second_circle.png";
 import thirdCircle from "../../assets/home/third_circle.png";
-import { add } from "react-native-reanimated";
 
 const GOOGLE_API_KEY = config.GOOGLE_API_KEY;
 
@@ -173,10 +171,13 @@ class HomeScreen extends React.Component {
           <View style={styles.contentContainer}>
             <Text style={styles.textContentTitle}>국내현황</Text>
             <Tab.Navigator initialRouteName="전국" tabBarOptions={tabStyle}>
-              <Tab.Screen name="전국" component={Korea} />
+              <Tab.Screen
+                name="전국"
+                children={() => <Area isRegion={false} />}
+              />
               <Tab.Screen
                 name="우리 지역"
-                children={() => <Region location={location} />}
+                children={() => <Area location={location} isRegion={true} />}
               />
             </Tab.Navigator>
           </View>

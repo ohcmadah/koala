@@ -9,30 +9,65 @@ import XMLParser from "react-native-xml2js";
 
 const CORONA_API_KEY = config.CORONA_API_KEY;
 
-class Korea extends React.Component {
+class Area extends React.Component {
   state = {
     isLoaded: false,
+    isRegion: this.props.isRegion,
     datas: {},
     startDate: 0,
     endDate: 0,
   };
 
   _getData = async (startDate, endDate) => {
-    const API_URL = `http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19InfStateJson?serviceKey=${CORONA_API_KEY}&pageNo=1&numOfRows=10&startCreateDt=${startDate}&endCreateDt=${endDate}&`;
+    const { isRegion } = this.state;
+    const CORONA_API_URL = `http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19SidoInfStateJson?serviceKey=${CORONA_API_KEY}&pageNo=1&numOfRows=10&startCreateDt=${
+      startDate + 1
+    }&endCreateDt=${endDate}&`;
+    const KOREA_API_URL = `http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19InfStateJson?serviceKey=${CORONA_API_KEY}&pageNo=1&numOfRows=10&startCreateDt=${startDate}&endCreateDt=${endDate}&`;
 
-    await fetch(API_URL)
+    await fetch(isRegion ? CORONA_API_URL : KOREA_API_URL)
       .then((response) => response.text())
       .then((data) => {
         XMLParser.parseString(data, (err, result) => {
           const datas = JSON.stringify(result);
           const parsedDatas = JSON.parse(datas);
-          const items = parsedDatas.response.body[0].items[0];
 
-          const { decideCnt, careCnt, clearCnt } = items.item[0];
+          let decideCnt,
+            careCnt,
+            clearCnt,
+            decideDiff = 0,
+            careDiff = 0,
+            clearDiff = 0;
 
-          const decideDiff = decideCnt - items.item[1].decideCnt;
-          const careDiff = careCnt - items.item[1].careCnt;
-          const clearDiff = clearCnt - items.item[1].clearCnt;
+          if (isRegion) {
+            const items = parsedDatas.response.body[0].items[0].item;
+            let { location } = this.props;
+            if (location.length == 5 || location.length == 3) {
+              location = location.substring(0, 2);
+            }
+
+            let index;
+            Object.values(items).some((item, i) => {
+              const { gubun } = item;
+              console.log(gubun[0], location);
+              if (location == gubun) index = i;
+              return location == gubun;
+            });
+
+            decideCnt = items[index].defCnt;
+            careCnt = items[index].isolIngCnt;
+            clearCnt = items[index].isolClearCnt;
+          } else {
+            const items = parsedDatas.response.body[0].items[0];
+
+            decideCnt = items.item[0].decideCnt;
+            careCnt = items.item[0].careCnt;
+            clearCnt = items.item[0].clearCnt;
+
+            decideDiff = decideCnt - items.item[1].decideCnt;
+            careDiff = careCnt - items.item[1].careCnt;
+            clearDiff = clearCnt - items.item[1].clearCnt;
+          }
 
           this.setState({
             datas: {
@@ -59,6 +94,7 @@ class Korea extends React.Component {
       date.getMonth() + 1 > 9
         ? date.getMonth() + 1
         : "0" + (date.getMonth() + 1);
+
     let startDate = year + month + (date.getDate() - 1);
     let endDate = year + month + date.getDate();
 
@@ -76,7 +112,7 @@ class Korea extends React.Component {
   }
 
   render() {
-    const { datas, isLoaded } = this.state;
+    const { datas, isLoaded, isRegion } = this.state;
     return (
       <View style={styles.container}>
         {isLoaded ? (
@@ -86,7 +122,7 @@ class Korea extends React.Component {
               title={data.title}
               number={data.number}
               diff={data.diff}
-              isRegion={false}
+              isRegion={isRegion}
             />
           ))
         ) : (
@@ -97,4 +133,4 @@ class Korea extends React.Component {
   }
 }
 
-export default Korea;
+export default Area;
