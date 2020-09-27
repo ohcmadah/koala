@@ -94,9 +94,9 @@ class HomeScreen extends React.Component {
     return isLoaded ? (
       <View style={styles.container}>
         <SafeAreaView style={{ flex: 4 }}>
-          <View style={styles.topBar}>
+          <View style={styles.topNavContainer}>
             <ImageBackground
-              style={styles.topBar}
+              style={styles.topNavContainer}
               resizeMode={"contain"}
               source={require(`${IMAGE_URL}/top_bar.png`)}
             >
@@ -117,8 +117,8 @@ class HomeScreen extends React.Component {
             </ImageBackground>
           </View>
 
-          <View style={styles.locationNav}>
-            <Text style={styles.title}>국내현황</Text>
+          <View style={styles.contentContainer}>
+            <Text style={styles.textContentTitle}>국내현황</Text>
             <Tab.Navigator initialRouteName="전국" tabBarOptions={tabStyle}>
               <Tab.Screen name="전국" component={Korea} />
               <Tab.Screen
@@ -127,28 +127,29 @@ class HomeScreen extends React.Component {
               />
             </Tab.Navigator>
           </View>
+
           <TouchableOpacity
-            style={styles.siteBox}
+            style={styles.btnSite}
             onPress={this._goToCoronaSite}
           >
-            <Text style={styles.site}>
+            <Text style={styles.textSite}>
               중앙재난안전대책본부 사이트 바로가기
             </Text>
           </TouchableOpacity>
         </SafeAreaView>
 
-        <View style={styles.bottomNav}>
+        <View style={styles.bottomNavContainer}>
           {Object.values(menus).map((menu, index) => {
             return (
               <TouchableOpacity
                 key={index}
-                style={styles.circle}
+                style={styles.btnCircle}
                 onPress={() => {
                   console.log(`${menu}`);
                 }}
               >
                 <Image source={menu[0]} />
-                <View style={styles.menuTitle}>
+                <View style={styles.textMenuContainer}>
                   <Image
                     style={{ height: 7, width: 13.5, alignSelf: "center" }}
                     source={require(`${IMAGE_URL}/grey_tri.png`)}

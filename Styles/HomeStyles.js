@@ -9,18 +9,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: mainColor,
   },
-  topBar: {
+  topNavContainer: {
     flex: 1.3,
     width: "100%",
     height: 110,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-  },
-  locationNav: {
-    flex: 2,
-    minHeight: 150,
-    marginHorizontal: basicMargin,
   },
   textLocation: {
     color: "white",
@@ -29,23 +24,20 @@ const styles = StyleSheet.create({
     marginRight: 12,
     marginLeft: 16,
   },
-  textMenu: {
-    color: "#707070",
-    fontSize: basicFontSize,
-    fontWeight: "bold",
-    marginTop: 11,
-    alignSelf: "center",
-    alignItems: "center",
-    textAlign: "center",
-    lineHeight: 24,
+
+  contentContainer: {
+    flex: 2,
+    minHeight: 150,
+    marginHorizontal: basicMargin,
   },
-  title: {
+  textContentTitle: {
     color: "white",
     fontSize: basicFontSize + 5,
     fontWeight: "bold",
-    marginTop: 40,
+    marginTop: "10%",
   },
-  siteBox: {
+
+  btnSite: {
     height: 50,
     marginHorizontal: basicMargin,
     justifyContent: "center",
@@ -70,24 +62,35 @@ const styles = StyleSheet.create({
       },
     }),
   },
-  site: {
+  textSite: {
     color: "white",
     fontWeight: "bold",
     fontSize: basicFontSize - 2,
   },
-  bottomNav: {
+
+  bottomNavContainer: {
     flex: 4,
     justifyContent: "flex-end",
     alignItems: "center",
   },
-  circle: {
+  btnCircle: {
     flex: 1,
     position: "absolute",
   },
-  menuTitle: {
+  textMenuContainer: {
     width: "100%",
     position: "absolute",
     marginTop: 43,
+  },
+  textMenu: {
+    color: "#707070",
+    fontSize: basicFontSize,
+    fontWeight: "bold",
+    marginTop: 11,
+    alignSelf: "center",
+    alignItems: "center",
+    textAlign: "center",
+    lineHeight: 24,
   },
 });
 
