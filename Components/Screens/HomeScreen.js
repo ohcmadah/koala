@@ -193,6 +193,9 @@ class HomeScreen extends React.Component {
         </SafeAreaView>
 
         <View style={styles.bottomNavContainer}>
+          <View style={styles.btnCircle}>
+            <Image source={firstCircle} />
+          </View>
           {Object.values(menus).map((menu, index) => {
             return (
               <TouchableOpacity
