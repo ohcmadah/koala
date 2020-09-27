@@ -4,6 +4,7 @@ import {
   View,
   ImageBackground,
   Image,
+  TextInput,
   TouchableOpacity,
   Alert,
 } from "react-native";
@@ -16,14 +17,14 @@ const GOOGLE_API_KEY = config.GOOGLE_API_KEY;
 
 const IMAGE_URL = "../../assets/location";
 
-class HomeScreen extends React.Component {
+class LocationScreen extends React.Component {
   state = {
     location: "",
-    isLoaded: false,
+    isLoaded: true,
   };
 
-  _getReverseGeo = async (latitude, longitude) => {
-    const GEOLOCATION_API_URL = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GOOGLE_API_KEY}`;
+  _setLocation = async (address) => {
+    const GEOLOCATION_API_URL = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${GOOGLE_API_KEY}`;
     const koreanRegion = [
       "제주특별자치도",
       "경상남도",
@@ -66,19 +67,6 @@ class HomeScreen extends React.Component {
     await fetch(GEOLOCATION_API_URL)
       .then((response) => response.json())
       .then((data) => {
-        const address = data.results[0].address_components;
-        for (let i = 0; i < address.length; i++) {
-          const addr = address[i].long_name;
-          for (let j = 0; j < koreanRegion.length; j++) {
-            const kRegion = koreanRegion[j];
-            const eRegion = englishRegion[j];
-            if (addr == kRegion || addr == eRegion) {
-              resultLocation = kRegion;
-              break;
-            }
-          }
-        }
-
         this.setState({
           location: resultLocation,
           isLoaded: true,
@@ -87,14 +75,61 @@ class HomeScreen extends React.Component {
   };
 
   componentDidMount() {
-    this._setLocation();
+    // this._setLocation();
   }
 
   render() {
     const { location, isLoaded } = this.state;
 
-    return isLoaded ? <View style={styles.container}></View> : <AppLoading />;
+    return isLoaded ? (
+      <SafeAreaView style={styles.container}>
+        <ImageBackground
+          source={require(`${IMAGE_URL}/background.png`)}
+          style={styles.contentContainer}
+        >
+          <View style={styles.topContainer}>
+            <Text style={styles.textContentTitle}>{"우리 지역 수정"}</Text>
+            <View style={styles.searchContainer}>
+              <Image
+                source={require(`${IMAGE_URL}/search_icon.png`)}
+                style={styles.searchIcon}
+              />
+              <TextInput
+                style={styles.input}
+                value={location}
+                onChangeText={this._controlInputLocation}
+                returnKeyType={"done"}
+              />
+            </View>
+          </View>
+
+          <View style={styles.descContainer}>
+            <Text style={styles.description}>
+              {"현황을 알고 싶은\n장소를 검색해주세요!\nex. 서울특별시"}
+            </Text>
+            <Image
+              source={require(`${IMAGE_URL}/koala.png`)}
+              style={styles.koala}
+            />
+          </View>
+
+          <View style={styles.bottomContainer}>
+            <TouchableOpacity>
+              <Text>{"설정 완료"}</Text>
+            </TouchableOpacity>
+          </View>
+        </ImageBackground>
+      </SafeAreaView>
+    ) : (
+      <AppLoading />
+    );
   }
+
+  _controlInputLocation = (text) => {
+    this.setState({
+      location: text,
+    });
+  };
 }
 
 export default LocationScreen;
