@@ -66,7 +66,10 @@ class HomeScreen extends React.Component {
       } = await Location.getCurrentPositionAsync();
       this._getReverseGeo(latitude, longitude);
     } catch (error) {
-      Alert.alert("Can't find you.", "So sad");
+      Alert.alert(
+        "위치를 찾을 수 없습니다.",
+        "앱 설정에서 위치 정보를 허용해주세요."
+      );
     }
   };
 
