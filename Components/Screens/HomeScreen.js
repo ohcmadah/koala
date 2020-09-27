@@ -20,6 +20,7 @@ import * as config from "../../config";
 import firstCircle from "../../assets/home/first_circle.png";
 import secondCircle from "../../assets/home/second_circle.png";
 import thirdCircle from "../../assets/home/third_circle.png";
+import { add } from "react-native-reanimated";
 
 const GOOGLE_API_KEY = config.GOOGLE_API_KEY;
 
@@ -73,12 +74,64 @@ class HomeScreen extends React.Component {
 
   _getReverseGeo = async (latitude, longitude) => {
     const GEOLOCATION_API_URL = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GOOGLE_API_KEY}`;
+    const koreanRegion = [
+      "제주특별자치도",
+      "경상남도",
+      "경상북도",
+      "전라남도",
+      "전라북도",
+      "충청남도",
+      "충청북도",
+      "강원도",
+      "경기도",
+      "세종특별자치시",
+      "울산광역시",
+      "대전광역시",
+      "광주광역시",
+      "인천광역시",
+      "대구광역시",
+      "부산광역시",
+      "서울특별시",
+    ];
+    const englishRegion = [
+      "Jeju",
+      "Gyeongsangnam-do",
+      "Gyeongsangbuk-do",
+      "Jeollanam-do",
+      "Jeollabuk-do",
+      "Chungcheongnam-do",
+      "Chungcheongbuk-do",
+      "Gangwon-do",
+      "Gyeonggi-do",
+      "Sejong",
+      "Ulsan",
+      "Daejeon",
+      "Gwangju",
+      "Incheon",
+      "Daegu",
+      "Busan",
+      "Seoul",
+    ];
+    let resultLocation;
     await fetch(GEOLOCATION_API_URL)
       .then((response) => response.json())
       .then((data) => {
-        const { long_name } = data.results[0].address_components[3];
+        const address = data.results[0].address_components;
+        for (let i = 0; i < address.length; i++) {
+          const addr = address[i].long_name;
+          for (let j = 0; j < koreanRegion.length; j++) {
+            const kRegion = koreanRegion[j];
+            const eRegion = englishRegion[j];
+            if (addr == kRegion || addr == eRegion) {
+              resultLocation = kRegion;
+              console.log(resultLocation);
+              break;
+            }
+          }
+        }
+
         this.setState({
-          location: long_name,
+          location: resultLocation,
           isLoaded: true,
         });
       });
