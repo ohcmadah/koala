@@ -49,7 +49,6 @@ class Area extends React.Component {
             let index;
             Object.values(items).some((item, i) => {
               const { gubun } = item;
-              console.log(gubun[0], location);
               if (location == gubun) index = i;
               return location == gubun;
             });
