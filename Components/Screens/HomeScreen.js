@@ -125,7 +125,6 @@ class HomeScreen extends React.Component {
             const eRegion = englishRegion[j];
             if (addr == kRegion || addr == eRegion) {
               resultLocation = kRegion;
-              console.log(resultLocation);
               break;
             }
           }
