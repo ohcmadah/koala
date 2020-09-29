@@ -15,18 +15,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: mainColor,
   },
-  topContainer: {
-    flex: 2.1,
-    alignItems: "center",
-  },
-  contentContainer: {
-    flex: 1,
-    paddingHorizontal: 42,
-  },
   textContentTitle: {
     ...text,
     fontSize: basicFontSize + 2,
     marginTop: 70,
+  },
+  topContainer: {
+    flex: 2.1,
+    alignItems: "center",
   },
   searchContainer: {
     flexDirection: "row",
