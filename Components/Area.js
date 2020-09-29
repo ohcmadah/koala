@@ -42,8 +42,14 @@ class Area extends React.Component {
           if (isRegion) {
             const items = parsedDatas.response.body[0].items[0].item;
             let { location } = this.props;
-            if (location.length == 5 || location.length == 3) {
+            if (
+              location.length == 5 ||
+              location.length == 3 ||
+              location.length == 7
+            ) {
               location = location.substring(0, 2);
+            } else {
+              location = location.charAt(0) + location.charAt(2);
             }
 
             let index;
