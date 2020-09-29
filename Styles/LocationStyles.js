@@ -57,6 +57,7 @@ const styles = StyleSheet.create({
     flex: 1,
     ...text,
     fontSize: basicFontSize - 1,
+    textAlign: "left",
   },
 
   descContainer: {
