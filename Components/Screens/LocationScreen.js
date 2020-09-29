@@ -12,6 +12,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import styles from "../../Styles/LocationStyles";
 import { AppLoading } from "expo";
 import * as config from "../../config";
+import { ScrollView } from "react-native-gesture-handler";
 
 const GOOGLE_API_KEY = config.GOOGLE_API_KEY;
 
@@ -83,42 +84,44 @@ class LocationScreen extends React.Component {
 
     return isLoaded ? (
       <SafeAreaView style={styles.container}>
-        <ImageBackground
-          source={require(`${IMAGE_URL}/background.png`)}
-          style={styles.backgroundImg}
-        >
-          <View style={styles.topContainer}>
-            <Text style={styles.textContentTitle}>{"우리 지역 수정"}</Text>
-            <View style={styles.searchContainer}>
+        <ScrollView>
+          <ImageBackground
+            source={require(`${IMAGE_URL}/background.png`)}
+            style={styles.backgroundImg}
+          >
+            <View style={styles.topContainer}>
+              <Text style={styles.textContentTitle}>{"우리 지역 수정"}</Text>
+              <View style={styles.searchContainer}>
+                <Image
+                  source={require(`${IMAGE_URL}/search_icon.png`)}
+                  style={styles.searchIcon}
+                />
+                <TextInput
+                  style={styles.input}
+                  value={location}
+                  onChangeText={this._controlInputLocation}
+                  returnKeyType={"done"}
+                />
+              </View>
+            </View>
+
+            <View style={styles.descContainer}>
+              <Text style={styles.description}>
+                {"현황을 알고 싶은\n장소를 검색해주세요!\nex. 서울특별시"}
+              </Text>
               <Image
-                source={require(`${IMAGE_URL}/search_icon.png`)}
-                style={styles.searchIcon}
-              />
-              <TextInput
-                style={styles.input}
-                value={location}
-                onChangeText={this._controlInputLocation}
-                returnKeyType={"done"}
+                source={require(`${IMAGE_URL}/koala.png`)}
+                style={styles.koala}
               />
             </View>
-          </View>
 
-          <View style={styles.descContainer}>
-            <Text style={styles.description}>
-              {"현황을 알고 싶은\n장소를 검색해주세요!\nex. 서울특별시"}
-            </Text>
-            <Image
-              source={require(`${IMAGE_URL}/koala.png`)}
-              style={styles.koala}
-            />
-          </View>
-
-          <View style={styles.bottomContainer}>
-            <TouchableOpacity>
-              <Text>{"설정 완료"}</Text>
-            </TouchableOpacity>
-          </View>
-        </ImageBackground>
+            <View style={styles.bottomContainer}>
+              <TouchableOpacity style={styles.btnSubmit} disabled={true}>
+                <Text style={styles.textBtnSubmit}>{"설정 완료"}</Text>
+              </TouchableOpacity>
+            </View>
+          </ImageBackground>
+        </ScrollView>
       </SafeAreaView>
     ) : (
       <AppLoading />

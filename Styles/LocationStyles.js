@@ -1,8 +1,10 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 
 const mainColor = "#9DB4CE";
 const basicFontSize = 17;
 const basicMargin = 36;
+
+const { height } = Dimensions.get("window");
 
 const text = {
   color: "white",
@@ -17,6 +19,7 @@ const styles = StyleSheet.create({
   },
   backgroundImg: {
     flex: 1,
+    paddingHorizontal: 42,
   },
   textContentTitle: {
     ...text,
@@ -24,7 +27,7 @@ const styles = StyleSheet.create({
     marginTop: 70,
   },
   topContainer: {
-    flex: 2.1,
+    height: height * 0.25,
     alignItems: "center",
   },
   searchContainer: {
@@ -50,7 +53,7 @@ const styles = StyleSheet.create({
   },
 
   descContainer: {
-    flex: 5.9,
+    height: height * 0.55,
     flexDirection: "row",
     alignItems: "flex-end",
     justifyContent: "space-between",
@@ -59,15 +62,32 @@ const styles = StyleSheet.create({
     ...text,
     fontSize: basicFontSize + 2,
     textAlign: "center",
+    lineHeight: 30,
+    alignSelf: "flex-start",
+    marginTop: height * 0.25,
   },
   koala: {
-    width: "40%",
+    width: 158,
+    height: 183,
     resizeMode: "contain",
   },
 
   bottomContainer: {
-    flex: 2,
+    height: height * 0.2,
     justifyContent: "center",
+  },
+  btnSubmit: {
+    height: 50,
+    justifyContent: "center",
+    borderColor: "white",
+    borderWidth: 2,
+    borderRadius: 60,
+    backgroundColor: mainColor,
+    opacity: 0.5,
+  },
+  textBtnSubmit: {
+    ...text,
+    textAlign: "center",
   },
 });
 
