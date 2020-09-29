@@ -22,6 +22,7 @@ class LocationScreen extends React.Component {
   state = {
     location: "",
     isLoaded: true,
+    haveLocation: false,
   };
 
   _setLocation = async (address) => {
@@ -80,7 +81,7 @@ class LocationScreen extends React.Component {
   }
 
   render() {
-    const { location, isLoaded } = this.state;
+    const { location, isLoaded, haveLocation } = this.state;
 
     return isLoaded ? (
       <SafeAreaView style={styles.container}>
@@ -105,20 +106,41 @@ class LocationScreen extends React.Component {
               </View>
             </View>
 
-            <View style={styles.descContainer}>
-              <Text style={styles.description}>
-                {"현황을 알고 싶은\n장소를 검색해주세요!\nex. 서울특별시"}
-              </Text>
-              <Image
-                source={require(`${IMAGE_URL}/koala.png`)}
-                style={styles.koala}
-              />
-            </View>
+            {haveLocation ? (
+              <View style={styles.descContainer}>
+                <Text style={styles.description}>
+                  {"설정을 완료했다면,\n설정 완료를 꾸욱!"}
+                </Text>
+                <Image
+                  source={require(`${IMAGE_URL}/koala_down.png`)}
+                  style={styles.koala}
+                />
+              </View>
+            ) : (
+              <View style={styles.descContainer}>
+                <Text style={styles.description}>
+                  {"현황을 알고 싶은\n장소를 검색해주세요!\nex. 서울특별시"}
+                </Text>
+                <Image
+                  source={require(`${IMAGE_URL}/koala.png`)}
+                  style={styles.koala}
+                />
+              </View>
+            )}
 
             <View style={styles.bottomContainer}>
-              <TouchableOpacity style={styles.btnSubmit} disabled={true}>
-                <Text style={styles.textBtnSubmit}>{"설정 완료"}</Text>
-              </TouchableOpacity>
+              {haveLocation ? (
+                <TouchableOpacity style={styles.btnSubmit}>
+                  <Text style={styles.textBtnSubmit}>{"설정 완료"}</Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  style={styles.btnSubmitDisable}
+                  disabled={true}
+                >
+                  <Text style={styles.textBtnSubmitDisable}>{"설정 완료"}</Text>
+                </TouchableOpacity>
+              )}
             </View>
           </ImageBackground>
         </ScrollView>

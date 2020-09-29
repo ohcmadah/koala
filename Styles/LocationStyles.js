@@ -10,6 +10,13 @@ const text = {
   color: "white",
   fontSize: basicFontSize,
   fontWeight: "bold",
+  textAlign: "center",
+};
+const btnSubmit = {
+  height: 50,
+  justifyContent: "center",
+  borderRadius: 60,
+  backgroundColor: mainColor,
 };
 
 const styles = StyleSheet.create({
@@ -77,17 +84,21 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   btnSubmit: {
-    height: 50,
-    justifyContent: "center",
+    ...btnSubmit,
+    backgroundColor: "white",
+  },
+  btnSubmitDisable: {
+    ...btnSubmit,
     borderColor: "white",
     borderWidth: 2,
-    borderRadius: 60,
-    backgroundColor: mainColor,
     opacity: 0.5,
   },
   textBtnSubmit: {
     ...text,
-    textAlign: "center",
+    color: mainColor,
+  },
+  textBtnSubmitDisable: {
+    ...text,
   },
 });
 
