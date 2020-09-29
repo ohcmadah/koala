@@ -85,7 +85,7 @@ class LocationScreen extends React.Component {
       <SafeAreaView style={styles.container}>
         <ImageBackground
           source={require(`${IMAGE_URL}/background.png`)}
-          style={styles.contentContainer}
+          style={styles.backgroundImg}
         >
           <View style={styles.topContainer}>
             <Text style={styles.textContentTitle}>{"우리 지역 수정"}</Text>

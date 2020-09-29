@@ -15,6 +15,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: mainColor,
   },
+  backgroundImg: {
+    flex: 1,
+  },
   textContentTitle: {
     ...text,
     fontSize: basicFontSize + 2,
