@@ -6,13 +6,12 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
-  Alert,
+  ScrollView,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styles from "../../Styles/LocationStyles";
-import { AppLoading } from "expo";
 import * as config from "../../config";
-import { ScrollView } from "react-native-gesture-handler";
+import { CommonActions } from "@react-navigation/native";
 
 const GOOGLE_API_KEY = config.GOOGLE_API_KEY;
 
@@ -191,9 +190,17 @@ class LocationScreen extends React.Component {
 
   _submitLocation = () => {
     const { navigation } = this.props;
-    navigation.push("Home", {
-      settingLocation: this.state.settingLocation,
-    });
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [
+          {
+            name: "Home",
+            params: { settingLocation: this.state.settingLocation },
+          },
+        ],
+      })
+    );
   };
 }
 
