@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
     height: 20,
     width: 20,
     marginHorizontal: 17,
+    resizeMode: "contain",
   },
   input: {
     flex: 1,
