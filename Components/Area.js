@@ -106,7 +106,7 @@ class Area extends React.Component {
     let startDate = year + month + (date.getDate() - 1);
     let endDate = year + month + date.getDate();
 
-    if (date.getHours() < 4) {
+    if (date.getHours() < 10) {
       startDate = year + month + (date.getDate() - 2);
       endDate = year + month + (date.getDate() - 1);
     }
