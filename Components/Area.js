@@ -63,15 +63,18 @@ class Area extends React.Component {
             careCnt = items[index].isolIngCnt;
             clearCnt = items[index].isolClearCnt;
           } else {
-            const items = parsedDatas.response.body[0].items[0];
-
-            decideCnt = items.item[0].decideCnt;
-            careCnt = items.item[0].careCnt;
-            clearCnt = items.item[0].clearCnt;
-
-            decideDiff = decideCnt - items.item[1].decideCnt;
-            careDiff = careCnt - items.item[1].careCnt;
-            clearDiff = clearCnt - items.item[1].clearCnt;
+            const items = parsedDatas.response.body[0].items[0].item;
+            items.map((item) => {
+              if (item.stateDt == this.state.endDate) {
+                decideCnt = item.decideCnt;
+                careCnt = item.careCnt;
+                clearCnt = item.clearCnt;
+              } else if (item.stateDt == this.state.startDate) {
+                decideDiff = decideCnt - item.decideCnt;
+                careDiff = careCnt - item.careCnt;
+                clearDiff = clearCnt - item.clearCnt;
+              }
+            });
           }
 
           this.setState({
