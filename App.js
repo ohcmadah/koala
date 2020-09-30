@@ -10,12 +10,15 @@ const Stack = createStackNavigator();
 class App extends React.Component {
   render() {
     return (
-      <NavigationContainer>
-        <Stack.Navigator headerMode={"none"}>
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="Location" component={LocationScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <>
+        <StatusBar translucent={true} backgroundColor={"transparent"} />
+        <NavigationContainer>
+          <Stack.Navigator headerMode={"none"}>
+            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="Location" component={LocationScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </>
     );
   }
 }
