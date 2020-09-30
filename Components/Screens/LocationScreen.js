@@ -21,7 +21,6 @@ const IMAGE_URL = "../../assets/location";
 class LocationScreen extends React.Component {
   state = {
     location: "",
-    isLoaded: true,
     haveLocation: false,
   };
 
@@ -69,21 +68,29 @@ class LocationScreen extends React.Component {
     await fetch(GEOLOCATION_API_URL)
       .then((response) => response.json())
       .then((data) => {
+        const address = data.results[0].address_components;
+        for (let i = 0; i < address.length; i++) {
+          const addr = address[i].long_name;
+          for (let j = 0; j < koreanRegion.length; j++) {
+            const kRegion = koreanRegion[j];
+            const eRegion = englishRegion[j];
+            if (addr == kRegion || addr == eRegion) {
+              resultLocation = kRegion;
+              break;
+            }
+          }
+        }
+
         this.setState({
           location: resultLocation,
-          isLoaded: true,
         });
       });
   };
 
-  componentDidMount() {
-    // this._setLocation();
-  }
-
   render() {
     const { location, isLoaded, haveLocation } = this.state;
 
-    return isLoaded ? (
+    return (
       <SafeAreaView style={styles.container}>
         <ScrollView>
           <ImageBackground
@@ -102,6 +109,8 @@ class LocationScreen extends React.Component {
                   value={location}
                   onChangeText={this._controlInputLocation}
                   returnKeyType={"done"}
+                  autoCorrect={false}
+                  onSubmitEditing={this._searchLocation}
                 />
               </View>
             </View>
@@ -130,7 +139,10 @@ class LocationScreen extends React.Component {
 
             <View style={styles.bottomContainer}>
               {haveLocation ? (
-                <TouchableOpacity style={styles.btnSubmit}>
+                <TouchableOpacity
+                  style={styles.btnSubmit}
+                  onPress={this._submitLocation}
+                >
                   <Text style={styles.textBtnSubmit}>{"설정 완료"}</Text>
                 </TouchableOpacity>
               ) : (
@@ -145,14 +157,27 @@ class LocationScreen extends React.Component {
           </ImageBackground>
         </ScrollView>
       </SafeAreaView>
-    ) : (
-      <AppLoading />
     );
   }
 
   _controlInputLocation = (text) => {
     this.setState({
       location: text,
+    });
+  };
+
+  _searchLocation = () => {
+    const { location } = this.state;
+    this._setLocation(location);
+    this.setState({
+      haveLocation: true,
+    });
+  };
+
+  _submitLocation = () => {
+    const { navigation } = this.props;
+    navigation.push("Home", {
+      settingLocation: this.state.location,
     });
   };
 }

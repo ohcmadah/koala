@@ -138,7 +138,14 @@ class HomeScreen extends React.Component {
   };
 
   componentDidMount() {
-    this._getLocation();
+    if (this.props.route.params != undefined) {
+      this.setState({
+        location: this.props.route.params.settingLocation,
+        isLoaded: true,
+      });
+    } else {
+      this._getLocation();
+    }
   }
 
   render() {
