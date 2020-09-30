@@ -22,6 +22,7 @@ class LocationScreen extends React.Component {
   state = {
     location: "",
     haveLocation: false,
+    settingLocation: "",
   };
 
   _setLocation = async (address) => {
@@ -64,31 +65,44 @@ class LocationScreen extends React.Component {
       "Busan",
       "Seoul",
     ];
-    let resultLocation;
+    let resultLocation = "";
     await fetch(GEOLOCATION_API_URL)
       .then((response) => response.json())
       .then((data) => {
-        const address = data.results[0].address_components;
-        for (let i = 0; i < address.length; i++) {
-          const addr = address[i].long_name;
-          for (let j = 0; j < koreanRegion.length; j++) {
-            const kRegion = koreanRegion[j];
-            const eRegion = englishRegion[j];
-            if (addr == kRegion || addr == eRegion) {
-              resultLocation = kRegion;
-              break;
+        if (data.status != "ZERO_RESULTS") {
+          const address = data.results[0].address_components;
+          for (let i = 0; i < address.length; i++) {
+            const addr = address[i].long_name;
+            for (let j = 0; j < koreanRegion.length; j++) {
+              const kRegion = koreanRegion[j];
+              const eRegion = englishRegion[j];
+              if (addr == kRegion || addr == eRegion) {
+                resultLocation = kRegion;
+                break;
+              }
             }
           }
         }
 
+        if (resultLocation == "") {
+          resultLocation = "검색 결과가 없습니다.";
+          this.setState({
+            haveLocation: false,
+          });
+        } else {
+          this.setState({
+            haveLocation: true,
+          });
+        }
         this.setState({
           location: resultLocation,
+          settingLocation: resultLocation,
         });
       });
   };
 
   render() {
-    const { location, isLoaded, haveLocation } = this.state;
+    const { location, haveLocation } = this.state;
 
     return (
       <SafeAreaView style={styles.container}>
@@ -106,7 +120,11 @@ class LocationScreen extends React.Component {
                 />
                 <TextInput
                   style={styles.input}
-                  value={location}
+                  value={location == "검색 결과가 없습니다." ? "" : location}
+                  placeholder={
+                    location == "검색 결과가 없습니다." ? location : ""
+                  }
+                  placeholderTextColor={"#fff"}
                   onChangeText={this._controlInputLocation}
                   returnKeyType={"done"}
                   autoCorrect={false}
@@ -169,15 +187,12 @@ class LocationScreen extends React.Component {
   _searchLocation = () => {
     const { location } = this.state;
     this._setLocation(location);
-    this.setState({
-      haveLocation: true,
-    });
   };
 
   _submitLocation = () => {
     const { navigation } = this.props;
     navigation.push("Home", {
-      settingLocation: this.state.location,
+      settingLocation: this.state.settingLocation,
     });
   };
 }
