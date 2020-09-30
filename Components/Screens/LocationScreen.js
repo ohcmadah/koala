@@ -36,7 +36,6 @@ class LocationScreen extends React.Component {
       "충청북도",
       "강원도",
       "경기도",
-      "세종특별자치시",
       "울산광역시",
       "대전광역시",
       "광주광역시",
@@ -46,7 +45,7 @@ class LocationScreen extends React.Component {
       "서울특별시",
     ];
     const englishRegion = [
-      "Jeju",
+      "Jeju-do",
       "Gyeongsangnam-do",
       "Gyeongsangbuk-do",
       "Jeollanam-do",
@@ -55,7 +54,6 @@ class LocationScreen extends React.Component {
       "Chungcheongbuk-do",
       "Gangwon-do",
       "Gyeonggi-do",
-      "Sejong",
       "Ulsan",
       "Daejeon",
       "Gwangju",
@@ -81,6 +79,10 @@ class LocationScreen extends React.Component {
               }
             }
           }
+        }
+
+        if (address.includes("세종")) {
+          resultLocation = "세종특별자치시";
         }
 
         if (resultLocation == "") {
