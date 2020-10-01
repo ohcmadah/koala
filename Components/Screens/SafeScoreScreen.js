@@ -59,7 +59,7 @@ class SafeScoreScreen extends React.Component {
           </View>
         </View>
 
-        <View>
+        <View style={styles.bottomCardContainer}>
           <View />
           <Text>{"월"}</Text>
         </View>

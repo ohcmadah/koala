@@ -100,25 +100,32 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    ...Platform.select({
-      ios: {
-        shadowColor: "rgb(0, 0, 0)",
-        shadowOpacity: 0.08,
-        shadowRadius: 4,
-        shadowOffset: {
-          height: -1,
-          width: 0,
-        },
-      },
-      android: {
-        elevation: 5,
-      },
-    }),
   },
   textAgain: {
     color: "#707070",
     fontWeight: "bold",
     fontSize: basicFontSize - 2,
+  },
+
+  bottomCardContainer: {
+    flex: 0.51,
+    marginTop: 38,
+    borderTopLeftRadius: 50,
+    borderTopRightRadius: 50,
+    ...Platform.select({
+      ios: {
+        shadowColor: "rgb(0, 0, 0)",
+        shadowOpacity: 0.08,
+        shadowRadius: 10,
+        shadowOffset: {
+          height: 2,
+          width: 0,
+        },
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
   },
 });
 
