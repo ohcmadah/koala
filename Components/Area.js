@@ -44,11 +44,9 @@ class Area extends React.Component {
             } else {
               location = location.charAt(0) + location.charAt(2);
             }
-
             Object.values(items).map((item) => {
               const { gubun, createDt } = item;
-              let date = createDt[0].split(" ")[0].replaceAll("-", "");
-
+              let date = createDt[0].split(" ")[0].replace(/-/g, "");
               if (location == gubun) {
                 if (date == endDate) {
                   decideCnt = item.defCnt;
