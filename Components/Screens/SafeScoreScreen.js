@@ -29,19 +29,34 @@ class SafeScoreScreen extends React.Component {
                 <Text style={styles.textScoreDesc}>{"점"}</Text>
               </View>
               <View style={styles.divider} />
-              <View>
-                <Image />
-                <View />
-                <Image />
-                <View />
-                <Image />
-                <View />
+              <View style={styles.iconsContainer}>
+                <View style={styles.iconContainer}>
+                  <Image
+                    source={require(`${IMAGE_URL}/mask_icon.png`)}
+                    style={{ width: 26, height: 16 }}
+                  />
+                  <View style={styles.circle} />
+                </View>
+                <View style={styles.iconContainer}>
+                  <Image
+                    source={require(`${IMAGE_URL}/hand_cleaner_icon.png`)}
+                    style={{ width: 17, height: 24 }}
+                  />
+                  <View style={styles.circle} />
+                </View>
+                <View style={styles.iconContainer}>
+                  <Image
+                    source={require(`${IMAGE_URL}/location_icon.png`)}
+                    style={{ width: 21, height: 21 }}
+                  />
+                  <View style={styles.circle} />
+                </View>
               </View>
             </View>
+            <TouchableOpacity style={styles.btnAgain}>
+              <Text style={styles.textAgain}>{"다시 기록하기"}</Text>
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity>
-            <Text>{"다시 기록하기"}</Text>
-          </TouchableOpacity>
         </View>
 
         <View>

@@ -74,10 +74,51 @@ const styles = StyleSheet.create({
     marginTop: 41,
   },
   divider: {
-    height: "100%",
+    height: "90%",
     width: 1,
     backgroundColor: "#707070",
     opacity: 0.3,
+  },
+  iconsContainer: {
+    flex: 0.5,
+    justifyContent: "space-between",
+    marginVertical: 25,
+  },
+  iconContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginHorizontal: 40,
+  },
+  circle: {
+    width: 14,
+    height: 14,
+    backgroundColor: "#F9D315",
+    borderRadius: 7,
+  },
+  btnAgain: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    ...Platform.select({
+      ios: {
+        shadowColor: "rgb(0, 0, 0)",
+        shadowOpacity: 0.08,
+        shadowRadius: 4,
+        shadowOffset: {
+          height: -1,
+          width: 0,
+        },
+      },
+      android: {
+        elevation: 5,
+      },
+    }),
+  },
+  textAgain: {
+    color: "#707070",
+    fontWeight: "bold",
+    fontSize: basicFontSize - 2,
   },
 });
 
