@@ -20,9 +20,7 @@ class Area extends React.Component {
 
   _getData = async (startDate, endDate) => {
     const { isRegion } = this.state;
-    const CORONA_API_URL = `http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19SidoInfStateJson?serviceKey=${CORONA_API_KEY}&pageNo=1&numOfRows=10&startCreateDt=${
-      startDate + 1
-    }&endCreateDt=${endDate}&`;
+    const CORONA_API_URL = `http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19SidoInfStateJson?serviceKey=${CORONA_API_KEY}&pageNo=1&numOfRows=10&startCreateDt=${startDate}&endCreateDt=${endDate}&`;
     const KOREA_API_URL = `http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19InfStateJson?serviceKey=${CORONA_API_KEY}&pageNo=1&numOfRows=10&startCreateDt=${startDate}&endCreateDt=${endDate}&`;
 
     await fetch(isRegion ? CORONA_API_URL : KOREA_API_URL)
@@ -32,12 +30,7 @@ class Area extends React.Component {
           const datas = JSON.stringify(result);
           const parsedDatas = JSON.parse(datas);
 
-          let decideCnt,
-            careCnt,
-            clearCnt,
-            decideDiff = 0,
-            careDiff = 0,
-            clearDiff = 0;
+          let decideCnt, careCnt, clearCnt, decideDiff, careDiff, clearDiff;
 
           const items = parsedDatas.response.body[0].items[0].item;
           if (isRegion) {
@@ -52,16 +45,22 @@ class Area extends React.Component {
               location = location.charAt(0) + location.charAt(2);
             }
 
-            let index;
-            Object.values(items).some((item, i) => {
-              const { gubun } = item;
-              if (location == gubun) index = i;
-              return location == gubun;
-            });
+            Object.values(items).map((item) => {
+              const { gubun, createDt } = item;
+              let date = createDt[0].split(" ")[0].replaceAll("-", "");
 
-            decideCnt = items[index].defCnt;
-            careCnt = items[index].isolIngCnt;
-            clearCnt = items[index].isolClearCnt;
+              if (location == gubun) {
+                if (date == endDate) {
+                  decideCnt = item.defCnt;
+                  careCnt = item.isolIngCnt;
+                  clearCnt = item.isolClearCnt;
+                } else if (date == startDate) {
+                  decideDiff = decideCnt - item.defCnt;
+                  careDiff = careCnt - item.isolIngCnt;
+                  clearDiff = clearCnt - item.isolClearCnt;
+                }
+              }
+            });
           } else {
             Object.values(items).map((item) => {
               if (item.stateDt == endDate) {
@@ -127,7 +126,7 @@ class Area extends React.Component {
   }
 
   render() {
-    const { datas, isLoaded, isRegion } = this.state;
+    const { datas, isLoaded } = this.state;
     return (
       <View style={styles.container}>
         {isLoaded ? (
@@ -137,7 +136,6 @@ class Area extends React.Component {
               title={data.title}
               number={data.number}
               diff={data.diff}
-              isRegion={isRegion}
             />
           ))
         ) : (

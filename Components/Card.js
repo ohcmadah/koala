@@ -1,9 +1,9 @@
 import React from "react";
 import { View, Text, Image } from "react-native";
 import styles from "../Styles/CardStyles";
+
 import greenTri from "../assets/home/green_tri.png";
 import redTri from "../assets/home/red_tri.png";
-import { color } from "react-native-reanimated";
 
 const basicFontSize = 17;
 const colors = ["#FF7A7A", "#707070", "#84DB6A"];
@@ -23,7 +23,7 @@ class Card extends React.Component {
     },
   };
   componentDidMount() {
-    const { title, isRegion, diff } = this.props;
+    const { diff } = this.props;
     let diffColor = diff >= 0 ? colors[0] : colors[2];
     this.setState({
       diffStyle: {
@@ -31,26 +31,9 @@ class Card extends React.Component {
         fontSize: basicFontSize - 4,
       },
     });
-
-    if (isRegion) {
-      let color =
-        title == "확진자"
-          ? colors[0]
-          : title == "격리중"
-          ? colors[1]
-          : colors[2];
-
-      this.setState({
-        numberStyle: {
-          ...this.state.numberStyle,
-          color: color,
-          paddingBottom: 17,
-        },
-      });
-    }
   }
   render() {
-    const { title, number, isRegion, diff } = this.props;
+    const { title, number, diff } = this.props;
     const { numberStyle, diffStyle } = this.state;
 
     return (
@@ -59,19 +42,15 @@ class Card extends React.Component {
         <Text style={[styles.fontWeight, numberStyle]}>
           {this._comma(number)}
         </Text>
-        {isRegion ? (
-          <></>
-        ) : (
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Text style={[styles.fontWeight, diffStyle]}>
-              {this._comma(diff)}
-            </Text>
-            <Image
-              style={{ width: 9, height: 5, marginLeft: 5 }}
-              source={diff >= 0 ? redTri : greenTri}
-            />
-          </View>
-        )}
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <Text style={[styles.fontWeight, diffStyle]}>
+            {this._comma(diff)}
+          </Text>
+          <Image
+            style={{ width: 9, height: 5, marginLeft: 5 }}
+            source={diff >= 0 ? redTri : greenTri}
+          />
+        </View>
       </View>
     );
   }
