@@ -39,8 +39,8 @@ class Area extends React.Component {
             careDiff = 0,
             clearDiff = 0;
 
+          const items = parsedDatas.response.body[0].items[0].item;
           if (isRegion) {
-            const items = parsedDatas.response.body[0].items[0].item;
             let { location } = this.props;
             if (
               location.length == 5 ||
@@ -63,13 +63,12 @@ class Area extends React.Component {
             careCnt = items[index].isolIngCnt;
             clearCnt = items[index].isolClearCnt;
           } else {
-            const items = parsedDatas.response.body[0].items[0].item;
-            items.map((item) => {
-              if (item.stateDt == this.state.endDate) {
+            Object.values(items).map((item) => {
+              if (item.stateDt == endDate) {
                 decideCnt = item.decideCnt;
                 careCnt = item.careCnt;
                 clearCnt = item.clearCnt;
-              } else if (item.stateDt == this.state.startDate) {
+              } else if (item.stateDt == startDate) {
                 decideDiff = decideCnt - item.decideCnt;
                 careDiff = careCnt - item.careCnt;
                 clearDiff = clearCnt - item.clearCnt;
@@ -95,27 +94,35 @@ class Area extends React.Component {
       });
   };
 
-  componentDidMount() {
-    const date = new Date();
-    const year = date.getFullYear();
-    const month =
-      date.getMonth() + 1 > 9
-        ? date.getMonth() + 1
-        : "0" + (date.getMonth() + 1);
-
-    let startDate = year + month + (date.getDate() - 1);
-    let endDate = year + month + date.getDate();
-
-    if (date.getHours() < 10) {
-      startDate = year + month + (date.getDate() - 2);
-      endDate = year + month + (date.getDate() - 1);
+  _setDate = () => {
+    const nowDate = new Date();
+    if (nowDate.getHours() < 10) {
+      const yesterDate = nowDate.getTime() - 1 * 24 * 60 * 60 * 1000;
+      nowDate.setTime(yesterDate);
     }
+    const endDate = this._getDate(nowDate);
 
+    const yesterDate = nowDate.getTime() - 1 * 24 * 60 * 60 * 1000;
+    nowDate.setTime(yesterDate);
+    const startDate = this._getDate(nowDate);
+
+    return { endDate: endDate, startDate: startDate };
+  };
+
+  _getDate = (date) => {
+    let year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+    if (month < 10) month = "0" + month;
+    if (day < 10) day = "0" + day;
+    return `${year}${month}${day}`;
+  };
+
+  componentDidMount() {
+    const { startDate, endDate } = this._setDate();
     this._getData(startDate, endDate);
     this.setState({
       isLoaded: true,
-      startDate: startDate,
-      endDate: endDate,
     });
   }
 
