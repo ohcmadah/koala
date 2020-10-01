@@ -211,7 +211,7 @@ class HomeScreen extends React.Component {
                 key={index}
                 style={styles.btnCircle}
                 onPress={() => {
-                  console.log(`${menu}`);
+                  this._bottomMenuHandle(menu[1]);
                 }}
               >
                 <Image source={menu[0]} />
@@ -242,6 +242,15 @@ class HomeScreen extends React.Component {
   _goToCoronaSite = () => {
     const URL = "http://ncov.mohw.go.kr/";
     Linking.openURL(URL).catch((err) => console.log(err));
+  };
+
+  _bottomMenuHandle = (textMenu) => {
+    const { navigation } = this.props;
+    if (textMenu == menus.first[1]) {
+      navigation.push("SafeScore");
+    } else if (textMenu == menus.second[1]) {
+    } else {
+    }
   };
 }
 
