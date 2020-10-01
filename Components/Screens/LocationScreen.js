@@ -115,10 +115,17 @@ class LocationScreen extends React.Component {
             <View style={styles.topContainer}>
               <Text style={styles.textContentTitle}>{"우리 지역 수정"}</Text>
               <View style={styles.searchContainer}>
-                <Image
-                  source={require(`${IMAGE_URL}/search_icon.png`)}
-                  style={styles.searchIcon}
-                />
+                {haveLocation ? (
+                  <Image
+                    source={require(`${IMAGE_URL}/check_icon.png`)}
+                    style={styles.searchIcon}
+                  />
+                ) : (
+                  <Image
+                    source={require(`${IMAGE_URL}/search_icon.png`)}
+                    style={styles.searchIcon}
+                  />
+                )}
                 <TextInput
                   style={styles.input}
                   value={location == "검색 결과가 없습니다." ? "" : location}
