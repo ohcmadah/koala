@@ -234,9 +234,7 @@ class HomeScreen extends React.Component {
 
   _locationHandle = () => {
     const { navigation } = this.props;
-    navigation.push("Location", {
-      location: this.state.location,
-    });
+    navigation.push("Location");
   };
 
   _goToCoronaSite = () => {
