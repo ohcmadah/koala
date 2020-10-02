@@ -26,6 +26,10 @@ class SafeScoreCheckScreen extends React.Component {
         </View>
 
         <View style={styles.contentContainer}>
+          <Text>{"외출 시 마스크를 잘 착용했나요?"}</Text>
+          <Text>{"실내에서 손을 잘 씻었나요?"}</Text>
+          <Text>{"우리 지역의 전일 대비 확진자 수 증감"}</Text>
+
           {isAllChecked ? (
             <TouchableOpacity style={styles.btnSubmit}>
               <Text style={styles.textBtnSubmit}>{"기록 완료"}</Text>

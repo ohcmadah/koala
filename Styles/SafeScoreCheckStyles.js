@@ -16,6 +16,7 @@ const btnSubmit = {
   justifyContent: "center",
   borderRadius: 30,
   backgroundColor: blueColor,
+  marginVertical: 49,
 };
 
 const styles = StyleSheet.create({
