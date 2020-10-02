@@ -62,10 +62,14 @@ class SafeScoreCheckScreen extends React.Component {
 class CustomSlider extends React.Component {
   state = {
     slideValue: 0,
+    color: "",
   };
 
   render() {
     const { width } = Dimensions.get("window");
+    const { changeValue } = this.props;
+    const { color, slideValue } = this.state;
+
     const sliderStyle = {
       slideContainer: {
         justifyContent: "center",
@@ -82,8 +86,8 @@ class CustomSlider extends React.Component {
         position: "absolute",
       },
       slideColor: {
-        backgroundColor: "#A3C1E2",
-        width: (this.state.slideValue / 4) * (width - 80),
+        backgroundColor: color == "" ? "#9A9A9A" : color,
+        width: (slideValue / 4) * (width - 80),
         height: 6,
         borderRadius: 3,
       },
@@ -94,7 +98,6 @@ class CustomSlider extends React.Component {
       },
     };
 
-    const { changeValue } = this.props;
     return (
       <View style={sliderStyle.slideContainer}>
         <View style={{ flexDirection: "row", position: "absolute" }}>
@@ -106,18 +109,45 @@ class CustomSlider extends React.Component {
           minimumValue={0}
           maximumValue={4}
           step={1}
-          value={this.state.slideValue}
+          value={slideValue}
           onValueChange={(value) => {
             changeValue(value);
-            this.setState({ slideValue: value });
+            this._changeValue(value);
           }}
           maximumTrackTintColor="transparent"
           minimumTrackTintColor="transparent"
-          thumbTintColor={"#A3C1E2"}
+          thumbTintColor={color == "" ? "#9A9A9A" : color}
         />
       </View>
     );
   }
+
+  _changeValue = (value) => {
+    const colors = {
+      grey: "#9A9A9A",
+      red: "#F57272",
+      yellow: "#F9D315",
+      blue: "#A3C1E2",
+    };
+    this.setState({ slideValue: value });
+    if (value == 0) {
+      this.setState({
+        color: colors.grey,
+      });
+    } else if (value == 1) {
+      this.setState({
+        color: colors.red,
+      });
+    } else if (value == 2) {
+      this.setState({
+        color: colors.yellow,
+      });
+    } else {
+      this.setState({
+        color: colors.blue,
+      });
+    }
+  };
 }
 
 export default SafeScoreCheckScreen;
