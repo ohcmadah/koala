@@ -25,15 +25,19 @@ class SafeScoreCheckScreen extends React.Component {
   state = {
     target: "",
     slideValue: 0,
+    score: {},
   };
   render() {
-    const { target } = this.state;
-    const isAllChecked = target.length == 16 ? true : false;
+    const { first, second, third } = this.state;
+    const isAllChecked = first && second && third;
 
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.navContainer}>
-          <TouchableOpacity style={{ width: 30 }}>
+          <TouchableOpacity
+            style={{ width: 30 }}
+            onPress={() => this.props.navigation.goBack()}
+          >
             <Image
               source={require(`${IMAGE_URL}/safe-score/btn_back.png`)}
               style={{ width: 10, height: 20 }}
@@ -62,7 +66,10 @@ class SafeScoreCheckScreen extends React.Component {
 
         <View style={styles.btnContainer}>
           {isAllChecked ? (
-            <TouchableOpacity style={styles.btnSubmit}>
+            <TouchableOpacity
+              style={styles.btnSubmit}
+              onPress={this._completeCheck}
+            >
               <Text style={styles.textBtnSubmit}>{"기록 완료"}</Text>
             </TouchableOpacity>
           ) : (
@@ -81,17 +88,17 @@ class SafeScoreCheckScreen extends React.Component {
 
   _completeSliding = (value, target) => {
     if (value != 0) {
-      if (!this.state.target.includes(target)) {
-        this.setState({
-          target: this.state.target + target,
-        });
-      }
+      this.setState({
+        [target]: true,
+      });
     } else {
       this.setState({
-        target: this.state.target.replace(target, ""),
+        [target]: false,
       });
     }
   };
+
+  _completeCheck = () => {};
 }
 
 class CustomSlider extends React.Component {

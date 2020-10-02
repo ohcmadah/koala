@@ -15,7 +15,10 @@ class SafeScoreScreen extends React.Component {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.navContainer}>
-          <TouchableOpacity style={{ width: 30 }}>
+          <TouchableOpacity
+            style={{ width: 30 }}
+            onPress={() => this.props.navigation.goBack()}
+          >
             <Image
               source={require(`${IMAGE_URL}/btn_back.png`)}
               style={{ width: 10, height: 20 }}
