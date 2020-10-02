@@ -23,8 +23,8 @@ import thirdCircle from "../../assets/home/third_circle.png";
 const GOOGLE_API_KEY = config.GOOGLE_API_KEY;
 
 const menus = {
-  first: [firstCircle, "나의 안전지수"],
-  second: [secondCircle, "TODAY 이동경로"],
+  first: [firstCircle, "TODAY 이동경로"],
+  second: [secondCircle, "나의 안전지수"],
   third: [thirdCircle, "나의\n이동기록"],
 };
 const IMAGE_URL = "../../assets/home";
@@ -246,7 +246,7 @@ class HomeScreen extends React.Component {
 
   _bottomMenuHandle = (textMenu) => {
     const { navigation } = this.props;
-    if (textMenu == menus.first[1]) {
+    if (textMenu == menus.second[1]) {
       navigation.push("SafeScore");
     } else if (textMenu == menus.second[1]) {
     } else {
