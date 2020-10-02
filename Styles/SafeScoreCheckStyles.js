@@ -34,12 +34,18 @@ const styles = StyleSheet.create({
   textNav: {
     color: greyColor,
     fontWeight: "bold",
-    fontSize: basicFontSize + 2,
+    fontSize: basicFontSize + 3,
   },
 
   contentContainer: {
     flex: 0.85,
     paddingHorizontal: basicPadding + 2,
+  },
+  textQuestion: {
+    fontSize: basicFontSize,
+    fontWeight: "bold",
+    color: greyColor,
+    opacity: 0.9,
   },
   btnSubmit: {
     ...btnSubmit,
