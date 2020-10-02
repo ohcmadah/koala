@@ -20,6 +20,7 @@ class Area extends React.Component {
 
   _getData = async (startDate, endDate) => {
     const { isRegion } = this.state;
+    const { setDiff } = this.props;
     const CORONA_API_URL = `http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19SidoInfStateJson?serviceKey=${CORONA_API_KEY}&pageNo=1&numOfRows=10&startCreateDt=${startDate}&endCreateDt=${endDate}&`;
     const KOREA_API_URL = `http://openapi.data.go.kr/openapi/service/rest/Covid19/getCovid19InfStateJson?serviceKey=${CORONA_API_KEY}&pageNo=1&numOfRows=10&startCreateDt=${startDate}&endCreateDt=${endDate}&`;
 
@@ -72,6 +73,8 @@ class Area extends React.Component {
               }
             });
           }
+
+          setDiff(decideDiff);
 
           this.setState({
             datas: {
