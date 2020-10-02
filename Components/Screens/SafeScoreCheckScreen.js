@@ -6,6 +6,21 @@ import styles from "../../Styles/SafeScoreCheckStyles";
 
 const IMAGE_URL = "../../assets";
 
+const questions = {
+  first: {
+    target: "first",
+    text: "사회적 거리두기를 잘 실천했나요?",
+  },
+  second: {
+    target: "second",
+    text: "외출 시 마스크를 잘 착용했나요?",
+  },
+  third: {
+    target: "third",
+    text: "손을 올바르게 잘 씻었나요?",
+  },
+};
+
 class SafeScoreCheckScreen extends React.Component {
   state = {
     target: "",
@@ -29,36 +44,20 @@ class SafeScoreCheckScreen extends React.Component {
         </View>
 
         <View style={styles.contentContainer}>
-          <Text style={styles.textQuestion}>
-            {"사회적 거리두기를 잘 실천했나요?"}
-          </Text>
-          <View style={{ left: -10 }}>
-            <CustomSlider
-              changeValue={this._changeValue}
-              completeSliding={this._completeSliding}
-              target={"first"}
-            />
-          </View>
-          <Text style={[styles.textQuestion, { marginTop: 16 }]}>
-            {"외출 시 마스크를 잘 착용했나요?"}
-          </Text>
-          <View style={{ left: -10 }}>
-            <CustomSlider
-              changeValue={this._changeValue}
-              completeSliding={this._completeSliding}
-              target={"second"}
-            />
-          </View>
-          <Text style={[styles.textQuestion, { marginTop: 16 }]}>
-            {"손을 올바르게 잘 씻었나요?"}
-          </Text>
-          <View style={{ left: -10 }}>
-            <CustomSlider
-              changeValue={this._changeValue}
-              completeSliding={this._completeSliding}
-              target={"third"}
-            />
-          </View>
+          {Object.values(questions).map((question, index) => {
+            return (
+              <View key={index}>
+                <Text style={styles.textQuestion}>{question.text}</Text>
+                <View style={{ left: -10, marginBottom: 16 }}>
+                  <CustomSlider
+                    changeValue={this._changeValue}
+                    completeSliding={this._completeSliding}
+                    target={question.target}
+                  />
+                </View>
+              </View>
+            );
+          })}
         </View>
 
         <View style={styles.btnContainer}>
