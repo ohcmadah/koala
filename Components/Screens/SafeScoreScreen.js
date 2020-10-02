@@ -131,17 +131,35 @@ class SafeScoreScreen extends React.Component {
                   </Text>
                   <View style={styles.daysContainer}>
                     {Object.values(scores).map((score, index) => {
-                      <View key={index} style={styles.dayContainer}>
-                        <Text style={styles.textDay}>
-                          {`${score.id.substring(8, 10)}일`}
-                        </Text>
-                        <View style={styles.barContainer}>
-                          <View style={styles.colorBar} />
+                      const barColor =
+                        score.score <= 50
+                          ? score.score <= 25
+                            ? colors[1]
+                            : colors[2]
+                          : score.score <= 75
+                          ? colors[3]
+                          : colors[4];
+                      return (
+                        <View key={index} style={styles.dayContainer}>
+                          <Text style={styles.textDay}>
+                            {`${score.id.substring(8, 10)}일`}
+                          </Text>
+                          <View style={styles.barContainer}>
+                            <View
+                              style={[
+                                styles.colorBar,
+                                {
+                                  width: `${score.score}%`,
+                                  backgroundColor: barColor,
+                                },
+                              ]}
+                            />
+                          </View>
+                          <Text
+                            style={[styles.textDayScore, { color: barColor }]}
+                          >{`${score.score}점`}</Text>
                         </View>
-                        <Text
-                          style={styles.textDayScore}
-                        >{`${score.score}점`}</Text>
-                      </View>;
+                      );
                     })}
                   </View>
                 </View>
@@ -161,7 +179,6 @@ class SafeScoreScreen extends React.Component {
 
   _getScores = async () => {
     const scores = await AsyncStorage.getItem("scores");
-    const todayScore = await AsyncStorage.getItem("todayScore");
 
     if (scores != null) {
       const parsedScores = JSON.parse(scores);
@@ -169,16 +186,15 @@ class SafeScoreScreen extends React.Component {
         scores: parsedScores,
         haveScore: true,
       });
-    }
 
-    if (todayScore != null) {
-      const parsedToday = JSON.parse(todayScore);
-      if (parsedToday.id == this.state.today) {
-        this.setState({
-          todayScore: parsedToday,
-          haveTodayScore: true,
-        });
-      }
+      Object.values(parsedScores).map((score) => {
+        if (score.id == this.state.today) {
+          this.setState({
+            todayScore: { ...score },
+            haveTodayScore: true,
+          });
+        }
+      });
     }
 
     this.setState({
@@ -196,22 +212,18 @@ class SafeScoreScreen extends React.Component {
 
     const date = new Date();
     const ID = date.toISOString().substring(0, 10); // yyyy-mm-dd
-    const todayScore = {
-      id: ID,
-      score: resultScore,
-      location: score.first,
-      mask: score.second,
-      hand: score.third,
-    };
     const scores = {
       ...this.state.scores,
       [ID]: {
-        ...todayScore,
+        id: ID,
+        score: resultScore,
+        location: score.first,
+        mask: score.second,
+        hand: score.third,
       },
     };
 
     AsyncStorage.setItem("scores", JSON.stringify(scores));
-    AsyncStorage.setItem("todayScore", JSON.stringify(todayScore));
 
     this._getScores();
   };

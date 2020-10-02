@@ -188,13 +188,10 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   colorBar: {
-    width: width - 320,
     height: 7,
-    backgroundColor: "#F9D315",
     borderRadius: 20,
   },
   textDayScore: {
-    color: "#F9D315",
     fontWeight: "bold",
     fontSize: basicFontSize - 1,
   },
