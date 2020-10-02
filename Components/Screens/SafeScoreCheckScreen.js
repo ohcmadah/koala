@@ -29,6 +29,12 @@ class SafeScoreCheckScreen extends React.Component {
 
         <View style={styles.contentContainer}>
           <Text style={styles.textQuestion}>
+            {"사회적 거리두기를 잘 실천했나요?"}
+          </Text>
+          <View style={{ left: -10 }}>
+            <CustomSlider changeValue={this._changeValue} />
+          </View>
+          <Text style={[styles.textQuestion, { marginTop: 16 }]}>
             {"외출 시 마스크를 잘 착용했나요?"}
           </Text>
           <View style={{ left: -10 }}>
@@ -40,9 +46,6 @@ class SafeScoreCheckScreen extends React.Component {
           <View style={{ left: -10 }}>
             <CustomSlider changeValue={this._changeValue} />
           </View>
-          <Text style={[styles.textQuestion, { marginTop: 16 }]}>
-            {"우리 지역의 전일 대비 확진자 수 증감"}
-          </Text>
 
           {isAllChecked ? (
             <TouchableOpacity style={styles.btnSubmit}>
