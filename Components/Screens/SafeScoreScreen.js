@@ -59,7 +59,10 @@ class SafeScoreScreen extends React.Component {
                   </View>
                 </View>
               </View>
-              <TouchableOpacity style={styles.btnAgain}>
+              <TouchableOpacity
+                style={styles.btnAgain}
+                onPress={this._goSafeCheck}
+              >
                 <Text style={styles.textAgain}>
                   {haveScore ? "다시 기록하기" : "기록하기"}
                 </Text>
@@ -94,6 +97,15 @@ class SafeScoreScreen extends React.Component {
       </SafeAreaView>
     );
   }
+  _goSafeCheck = () => {
+    const { navigation } = this.props;
+    const { location, diff } = this.props.route.params;
+    console.log(location, diff);
+    navigation.push("SafeScoreCheck", {
+      location: location,
+      diff: diff,
+    });
+  };
 }
 
 export default SafeScoreScreen;

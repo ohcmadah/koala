@@ -55,6 +55,7 @@ const tabStyle = {
 class HomeScreen extends React.Component {
   state = {
     location: "",
+    diff: 0,
     isLoaded: false,
   };
 
@@ -141,6 +142,7 @@ class HomeScreen extends React.Component {
     if (this.props.route.params != undefined) {
       this.setState({
         location: this.props.route.params.settingLocation,
+        diff: this.props.route.params.diff,
         isLoaded: true,
       });
     } else {
@@ -182,11 +184,19 @@ class HomeScreen extends React.Component {
             <Tab.Navigator initialRouteName="전국" tabBarOptions={tabStyle}>
               <Tab.Screen
                 name="전국"
-                children={() => <Area isRegion={false} />}
+                children={() => (
+                  <Area isRegion={false} setDiff={this._setDiff} />
+                )}
               />
               <Tab.Screen
                 name="우리 지역"
-                children={() => <Area location={location} isRegion={true} />}
+                children={() => (
+                  <Area
+                    location={location}
+                    isRegion={true}
+                    setDiff={this._setDiff}
+                  />
+                )}
               />
             </Tab.Navigator>
           </View>
@@ -232,6 +242,12 @@ class HomeScreen extends React.Component {
     );
   }
 
+  _setDiff = (diff) => {
+    this.setState({
+      diff: diff,
+    });
+  };
+
   _locationHandle = () => {
     const { navigation } = this.props;
     navigation.push("Location", {
@@ -247,7 +263,10 @@ class HomeScreen extends React.Component {
   _bottomMenuHandle = (textMenu) => {
     const { navigation } = this.props;
     if (textMenu == menus.first[1]) {
-      navigation.push("SafeScore");
+      navigation.push("SafeScore", {
+        location: this.state.location,
+        diff: this.state.diff,
+      });
     } else if (textMenu == menus.second[1]) {
     } else {
     }
