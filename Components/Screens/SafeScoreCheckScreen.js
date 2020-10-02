@@ -1,4 +1,4 @@
-import React, { useDebugValue } from "react";
+import React from "react";
 import { View, Text, TouchableOpacity, Image, Dimensions } from "react-native";
 import Slider from "@react-native-community/slider";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -31,11 +31,15 @@ class SafeScoreCheckScreen extends React.Component {
           <Text style={styles.textQuestion}>
             {"외출 시 마스크를 잘 착용했나요?"}
           </Text>
-          <CustomSlider changeValue={this._changeValue} />
+          <View style={{ left: -10 }}>
+            <CustomSlider changeValue={this._changeValue} />
+          </View>
           <Text style={[styles.textQuestion, { marginTop: 18 }]}>
             {"실내에서 손을 잘 씻었나요?"}
           </Text>
-          <CustomSlider changeValue={this._changeValue} />
+          <View style={{ left: -10 }}>
+            <CustomSlider changeValue={this._changeValue} />
+          </View>
           <Text style={[styles.textQuestion, { marginTop: 18 }]}>
             {"우리 지역의 전일 대비 확진자 수 증감"}
           </Text>
@@ -69,6 +73,7 @@ class CustomSlider extends React.Component {
     const { width } = Dimensions.get("window");
     const { changeValue } = this.props;
     const { color, slideValue } = this.state;
+    const maxValue = 4;
 
     const sliderStyle = {
       slideContainer: {
@@ -80,19 +85,21 @@ class CustomSlider extends React.Component {
       },
       slideBar: {
         backgroundColor: "#E2E2E2",
-        width: width - 80,
+        width: width - 90,
+        left: 10,
         height: 6,
         borderRadius: 3,
         position: "absolute",
       },
       slideColor: {
         backgroundColor: color == "" ? "#9A9A9A" : color,
-        width: (slideValue / 4) * (width - 80),
+        width: (slideValue / maxValue) * (width - 90),
+        left: 10,
         height: 6,
         borderRadius: 3,
       },
       slideReal: {
-        width: width - 80,
+        width: width - 70,
         height: 20,
         borderRadius: 10,
       },
@@ -107,7 +114,7 @@ class CustomSlider extends React.Component {
         <Slider
           style={sliderStyle.slideReal}
           minimumValue={0}
-          maximumValue={4}
+          maximumValue={maxValue}
           step={1}
           value={slideValue}
           onValueChange={(value) => {
@@ -129,16 +136,17 @@ class CustomSlider extends React.Component {
       yellow: "#F9D315",
       blue: "#A3C1E2",
     };
+
     this.setState({ slideValue: value });
     if (value == 0) {
       this.setState({
         color: colors.grey,
       });
-    } else if (value == 1) {
+    } else if (value <= 1) {
       this.setState({
         color: colors.red,
       });
-    } else if (value == 2) {
+    } else if (value <= 2) {
       this.setState({
         color: colors.yellow,
       });
