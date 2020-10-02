@@ -5,6 +5,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from "./Components/Screens/HomeScreen";
 import LocationScreen from "./Components/Screens/LocationScreen";
 import SafeScoreScreen from "./Components/Screens/SafeScoreScreen";
+import SafeScoreCheckScreen from "./Components/Screens/SafeScoreCheckScreen";
 
 const Stack = createStackNavigator();
 
@@ -18,6 +19,11 @@ class App extends React.Component {
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="Location" component={LocationScreen} />
             <Stack.Screen name="SafeScore" component={SafeScoreScreen} />
+            <Stack.Screen
+              name="SafeScoreCheck"
+              component={SafeScoreCheckScreen}
+              options={{ gestureEnabled: false }}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </>
