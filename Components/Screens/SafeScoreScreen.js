@@ -1,5 +1,6 @@
 import React from "react";
 import { Text, View, Image, TouchableOpacity } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styles from "../../Styles/SafeScoreStyles";
 
@@ -20,34 +21,60 @@ class SafeScoreScreen extends React.Component {
           <View style={{ width: 30 }} />
         </View>
 
-        <View style={styles.cardContainer}>
-          <View style={styles.cardView}>
-            <Text style={styles.textCardTitle}>{"TODAY"}</Text>
-            <View style={{ flexDirection: "row" }}>
-              <View style={styles.scoreContainer}>
-                <Text style={styles.textScore}>{"80"}</Text>
-                <Text style={styles.textScoreDesc}>{"점"}</Text>
+        <ScrollView style={{ flex: 0.84 }}>
+          <View style={styles.cardContainer}>
+            <View style={styles.cardView}>
+              <Text style={styles.textCardTitle}>{"TODAY"}</Text>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <View style={styles.scoreContainer}>
+                  <Text style={styles.textScore}>{"80"}</Text>
+                  <Text style={styles.textScoreDesc}>{"점"}</Text>
+                </View>
+                <View style={styles.divider} />
+                <View style={styles.iconsContainer}>
+                  <View style={styles.iconContainer}>
+                    <Image
+                      source={require(`${IMAGE_URL}/mask_icon.png`)}
+                      style={{ width: 26, height: 16, resizeMode: "contain" }}
+                    />
+                    <Image
+                      source={require(`${IMAGE_URL}/hand_cleaner_icon.png`)}
+                      style={{ width: 17, height: 24, resizeMode: "contain" }}
+                    />
+                    <Image
+                      source={require(`${IMAGE_URL}/location_icon.png`)}
+                      style={{ width: 21, height: 21, resizeMode: "contain" }}
+                    />
+                  </View>
+                  <View style={styles.circleContainer}>
+                    <View style={styles.circle} />
+                    <View style={styles.circle} />
+                    <View style={styles.circle} />
+                  </View>
+                </View>
               </View>
-              <View style={styles.divider} />
-              <View>
-                <Image />
-                <View />
-                <Image />
-                <View />
-                <Image />
-                <View />
+              <TouchableOpacity style={styles.btnAgain}>
+                <Text style={styles.textAgain}>{"다시 기록하기"}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          <View style={styles.bottomCardContainer}>
+            <View style={styles.line} />
+            <View style={styles.monthContainer}>
+              <Text style={styles.textMonth}>{"9월"}</Text>
+              <View style={styles.daysContainer}>
+                <View style={styles.dayContainer}>
+                  <Text style={styles.textDay}>{"10일"}</Text>
+                  <View style={styles.barContainer}>
+                    <View style={styles.colorBar} />
+                  </View>
+                  <Text style={styles.textDayScore}>{"56점"}</Text>
+                </View>
               </View>
             </View>
           </View>
-          <TouchableOpacity>
-            <Text>{"다시 기록하기"}</Text>
-          </TouchableOpacity>
-        </View>
-
-        <View>
-          <View />
-          <Text>{"월"}</Text>
-        </View>
+        </ScrollView>
       </SafeAreaView>
     );
   }
