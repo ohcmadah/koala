@@ -101,7 +101,6 @@ const styles = StyleSheet.create({
   circle: {
     width: 14,
     height: 14,
-    backgroundColor: "#F9D315",
     borderRadius: 7,
   },
   btnAgain: {

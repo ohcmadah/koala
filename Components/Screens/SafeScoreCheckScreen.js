@@ -111,20 +111,9 @@ class SafeScoreCheckScreen extends React.Component {
 
   _completeCheck = () => {
     const { score } = this.state;
-    let resultScore = 0;
-    if (score.first == 4) {
-      resultScore = 99;
-    } else {
-      resultScore = score.first * 25;
-    }
-
-    const date = new Date();
-    const ID = date.toISOString().substring(0, 10); // yyyy-mm-dd
-    const scores = {
-      [ID]: { id: ID, score: resultScore },
-    };
-
-    AsyncStorage.setItem("scores", JSON.stringify(scores));
+    const { setScores } = this.props.route.params;
+    setScores(score);
+    this.props.navigation.goBack();
   };
 }
 
