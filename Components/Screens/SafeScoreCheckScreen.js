@@ -1,5 +1,12 @@
 import React from "react";
-import { View, Text, TouchableOpacity, Image, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  Dimensions,
+  AsyncStorage,
+} from "react-native";
 import Slider from "@react-native-community/slider";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styles from "../../Styles/SafeScoreCheckStyles";
@@ -25,15 +32,19 @@ class SafeScoreCheckScreen extends React.Component {
   state = {
     target: "",
     slideValue: 0,
+    score: {},
   };
   render() {
-    const { target } = this.state;
-    const isAllChecked = target.length == 16 ? true : false;
+    const { first, second, third } = this.state;
+    const isAllChecked = first && second && third;
 
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.navContainer}>
-          <TouchableOpacity style={{ width: 30 }}>
+          <TouchableOpacity
+            style={{ width: 30 }}
+            onPress={() => this.props.navigation.goBack()}
+          >
             <Image
               source={require(`${IMAGE_URL}/safe-score/btn_back.png`)}
               style={{ width: 10, height: 20 }}
@@ -48,7 +59,7 @@ class SafeScoreCheckScreen extends React.Component {
             return (
               <View key={index}>
                 <Text style={styles.textQuestion}>{question.text}</Text>
-                <View style={{ left: -10, marginBottom: 16 }}>
+                <View style={{ marginBottom: 16 }}>
                   <CustomSlider
                     changeValue={this._changeValue}
                     completeSliding={this._completeSliding}
@@ -62,7 +73,10 @@ class SafeScoreCheckScreen extends React.Component {
 
         <View style={styles.btnContainer}>
           {isAllChecked ? (
-            <TouchableOpacity style={styles.btnSubmit}>
+            <TouchableOpacity
+              style={styles.btnSubmit}
+              onPress={this._completeCheck}
+            >
               <Text style={styles.textBtnSubmit}>{"기록 완료"}</Text>
             </TouchableOpacity>
           ) : (
@@ -81,16 +95,25 @@ class SafeScoreCheckScreen extends React.Component {
 
   _completeSliding = (value, target) => {
     if (value != 0) {
-      if (!this.state.target.includes(target)) {
-        this.setState({
-          target: this.state.target + target,
-        });
-      }
+      this.setState({
+        [target]: true,
+        score: {
+          ...this.state.score,
+          [target]: value,
+        },
+      });
     } else {
       this.setState({
-        target: this.state.target.replace(target, ""),
+        [target]: false,
       });
     }
+  };
+
+  _completeCheck = () => {
+    const { score } = this.state;
+    const { setScores } = this.props.route.params;
+    setScores(score);
+    this.props.navigation.goBack();
   };
 }
 

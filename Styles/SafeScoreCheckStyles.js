@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
 
   contentContainer: {
     flex: 0.65,
-    paddingHorizontal: basicPadding + 2,
+    paddingHorizontal: basicPadding - 8,
     marginTop: 15,
   },
   textQuestion: {
@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: greyColor,
     opacity: 0.9,
+    marginLeft: 10,
   },
 
   btnContainer: {
