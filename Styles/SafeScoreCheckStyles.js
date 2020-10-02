@@ -16,7 +16,6 @@ const btnSubmit = {
   justifyContent: "center",
   borderRadius: 30,
   backgroundColor: blueColor,
-  marginVertical: 49,
 };
 
 const styles = StyleSheet.create({
@@ -38,14 +37,21 @@ const styles = StyleSheet.create({
   },
 
   contentContainer: {
-    flex: 0.85,
+    flex: 0.65,
     paddingHorizontal: basicPadding + 2,
+    marginTop: 15,
   },
   textQuestion: {
     fontSize: basicFontSize,
     fontWeight: "bold",
     color: greyColor,
     opacity: 0.9,
+  },
+
+  btnContainer: {
+    flex: 0.2,
+    paddingHorizontal: basicPadding + 2,
+    justifyContent: "center",
   },
   btnSubmit: {
     ...btnSubmit,

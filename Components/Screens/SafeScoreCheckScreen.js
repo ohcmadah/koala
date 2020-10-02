@@ -46,7 +46,9 @@ class SafeScoreCheckScreen extends React.Component {
           <View style={{ left: -10 }}>
             <CustomSlider changeValue={this._changeValue} />
           </View>
+        </View>
 
+        <View style={styles.btnContainer}>
           {isAllChecked ? (
             <TouchableOpacity style={styles.btnSubmit}>
               <Text style={styles.textBtnSubmit}>{"기록 완료"}</Text>
@@ -137,6 +139,7 @@ class CustomSlider extends React.Component {
       red: "#F57272",
       yellow: "#F9D315",
       blue: "#A3C1E2",
+      green: "#84DB6A",
     };
 
     this.setState({ slideValue: value });
@@ -152,9 +155,13 @@ class CustomSlider extends React.Component {
       this.setState({
         color: colors.yellow,
       });
-    } else {
+    } else if (value <= 3) {
       this.setState({
         color: colors.blue,
+      });
+    } else {
+      this.setState({
+        color: colors.green,
       });
     }
   };
