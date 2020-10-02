@@ -50,7 +50,7 @@ class SafeScoreCheckScreen extends React.Component {
             />
           </View>
           <Text style={[styles.textQuestion, { marginTop: 16 }]}>
-            {"실내에서 손을 잘 씻었나요?"}
+            {"손을 올바르게 잘 씻었나요?"}
           </Text>
           <View style={{ left: -10 }}>
             <CustomSlider
