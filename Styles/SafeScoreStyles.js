@@ -141,6 +141,14 @@ const styles = StyleSheet.create({
       },
     }),
   },
+  textNoneScore: {
+    width: width,
+    textAlign: "center",
+    color: greyColor,
+    opacity: 0.5,
+    fontSize: basicFontSize - 1,
+    fontWeight: "bold",
+  },
   line: {
     height: "80%",
     width: 1,
@@ -156,7 +164,7 @@ const styles = StyleSheet.create({
   },
   textMonth: {
     color: "#9DB4CE",
-    fontSize: basicFontSize - 4,
+    fontSize: basicFontSize - 3,
     fontWeight: "bold",
   },
   daysContainer: {
