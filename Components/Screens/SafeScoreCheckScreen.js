@@ -59,7 +59,7 @@ class SafeScoreCheckScreen extends React.Component {
             return (
               <View key={index}>
                 <Text style={styles.textQuestion}>{question.text}</Text>
-                <View style={{ left: -10, marginBottom: 16 }}>
+                <View style={{ marginBottom: 16 }}>
                   <CustomSlider
                     changeValue={this._changeValue}
                     completeSliding={this._completeSliding}
