@@ -34,13 +34,13 @@ class SafeScoreCheckScreen extends React.Component {
           <View style={{ left: -10 }}>
             <CustomSlider changeValue={this._changeValue} />
           </View>
-          <Text style={[styles.textQuestion, { marginTop: 18 }]}>
+          <Text style={[styles.textQuestion, { marginTop: 16 }]}>
             {"실내에서 손을 잘 씻었나요?"}
           </Text>
           <View style={{ left: -10 }}>
             <CustomSlider changeValue={this._changeValue} />
           </View>
-          <Text style={[styles.textQuestion, { marginTop: 18 }]}>
+          <Text style={[styles.textQuestion, { marginTop: 16 }]}>
             {"우리 지역의 전일 대비 확진자 수 증감"}
           </Text>
 
@@ -78,10 +78,9 @@ class CustomSlider extends React.Component {
     const sliderStyle = {
       slideContainer: {
         justifyContent: "center",
-        height: 20,
+        height: 80,
         borderRadius: 3,
         overflow: "hidden",
-        marginVertical: 21,
       },
       slideBar: {
         backgroundColor: "#E2E2E2",
@@ -100,7 +99,7 @@ class CustomSlider extends React.Component {
       },
       slideReal: {
         width: width - 70,
-        height: 20,
+        height: 80,
         borderRadius: 10,
       },
     };
