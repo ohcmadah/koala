@@ -1,5 +1,12 @@
 import React from "react";
-import { View, Text, TouchableOpacity, Image, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  Dimensions,
+  AsyncStorage,
+} from "react-native";
 import Slider from "@react-native-community/slider";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styles from "../../Styles/SafeScoreCheckStyles";
@@ -90,6 +97,10 @@ class SafeScoreCheckScreen extends React.Component {
     if (value != 0) {
       this.setState({
         [target]: true,
+        score: {
+          ...this.state.score,
+          [target]: value,
+        },
       });
     } else {
       this.setState({
@@ -98,7 +109,23 @@ class SafeScoreCheckScreen extends React.Component {
     }
   };
 
-  _completeCheck = () => {};
+  _completeCheck = () => {
+    const { score } = this.state;
+    let resultScore = 0;
+    if (score.first == 4) {
+      resultScore = 99;
+    } else {
+      resultScore = score.first * 25;
+    }
+
+    const date = new Date();
+    const ID = date.toISOString().substring(0, 10); // yyyy-mm-dd
+    const scores = {
+      [ID]: { id: ID, score: resultScore },
+    };
+
+    AsyncStorage.setItem("scores", JSON.stringify(scores));
+  };
 }
 
 class CustomSlider extends React.Component {

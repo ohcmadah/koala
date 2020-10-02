@@ -1,5 +1,6 @@
 import React from "react";
 import { Text, View, Image, TouchableOpacity } from "react-native";
+import AsyncStorage from "@react-native-community/async-storage";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styles from "../../Styles/SafeScoreStyles";
@@ -9,7 +10,14 @@ const IMAGE_URL = "../../assets/safe-score";
 class SafeScoreScreen extends React.Component {
   state = {
     haveScore: true,
+    isGetted: false,
+    scores: {},
   };
+
+  componentDidMount() {
+    this._getScores();
+  }
+
   render() {
     const { haveScore } = this.state;
     return (
@@ -100,6 +108,17 @@ class SafeScoreScreen extends React.Component {
       </SafeAreaView>
     );
   }
+
+  _getScores = async () => {
+    const scores = await AsyncStorage.getItem("scores");
+    if (scores != null) {
+      this.setState({
+        scores: scores,
+      });
+    }
+    console.log(this.state.scores);
+  };
+
   _goSafeCheck = () => {
     const { navigation } = this.props;
     navigation.push("SafeScoreCheck");
