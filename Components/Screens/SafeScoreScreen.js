@@ -61,8 +61,17 @@ class SafeScoreScreen extends React.Component {
 
           <View style={styles.bottomCardContainer}>
             <View style={styles.line} />
-            <View style={styles.dateContainer}>
+            <View style={styles.monthContainer}>
               <Text style={styles.textMonth}>{"9월"}</Text>
+              <View style={styles.daysContainer}>
+                <View style={styles.dayContainer}>
+                  <Text style={styles.textDay}>{"10일"}</Text>
+                  <View style={styles.barContainer}>
+                    <View style={styles.colorBar} />
+                  </View>
+                  <Text style={styles.textDayScore}>{"56점"}</Text>
+                </View>
+              </View>
             </View>
           </View>
         </ScrollView>

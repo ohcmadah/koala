@@ -148,14 +148,48 @@ const styles = StyleSheet.create({
     opacity: 0.2,
     marginLeft: 38,
   },
-  dateContainer: {
-    height: "80%",
+  monthContainer: {
+    minHeight: height * 0.37,
     marginLeft: 20,
+    marginTop: 39,
+    marginBottom: 59,
   },
   textMonth: {
     color: "#9DB4CE",
     fontSize: basicFontSize - 4,
     fontWeight: "bold",
+  },
+  daysContainer: {
+    marginTop: -4,
+  },
+  dayContainer: {
+    width: width - 101,
+    marginTop: 31,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  textDay: {
+    color: greyColor,
+    fontWeight: "bold",
+    fontSize: basicFontSize,
+  },
+  barContainer: {
+    width: width - 231,
+    height: 7,
+    backgroundColor: "#E2E2E2",
+    borderRadius: 20,
+  },
+  colorBar: {
+    width: width - 320,
+    height: 7,
+    backgroundColor: "#F9D315",
+    borderRadius: 20,
+  },
+  textDayScore: {
+    color: "#F9D315",
+    fontWeight: "bold",
+    fontSize: basicFontSize - 1,
   },
 });
 
