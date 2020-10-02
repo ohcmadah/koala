@@ -8,11 +8,12 @@ const IMAGE_URL = "../../assets";
 
 class SafeScoreCheckScreen extends React.Component {
   state = {
-    isAllChecked: true,
+    target: "",
     slideValue: 0,
   };
   render() {
-    const { isAllChecked } = this.state;
+    const { target } = this.state;
+    const isAllChecked = target.length == 16 ? true : false;
 
     return (
       <SafeAreaView style={styles.container}>
@@ -32,19 +33,31 @@ class SafeScoreCheckScreen extends React.Component {
             {"사회적 거리두기를 잘 실천했나요?"}
           </Text>
           <View style={{ left: -10 }}>
-            <CustomSlider changeValue={this._changeValue} />
+            <CustomSlider
+              changeValue={this._changeValue}
+              completeSliding={this._completeSliding}
+              target={"first"}
+            />
           </View>
           <Text style={[styles.textQuestion, { marginTop: 16 }]}>
             {"외출 시 마스크를 잘 착용했나요?"}
           </Text>
           <View style={{ left: -10 }}>
-            <CustomSlider changeValue={this._changeValue} />
+            <CustomSlider
+              changeValue={this._changeValue}
+              completeSliding={this._completeSliding}
+              target={"second"}
+            />
           </View>
           <Text style={[styles.textQuestion, { marginTop: 16 }]}>
             {"실내에서 손을 잘 씻었나요?"}
           </Text>
           <View style={{ left: -10 }}>
-            <CustomSlider changeValue={this._changeValue} />
+            <CustomSlider
+              changeValue={this._changeValue}
+              completeSliding={this._completeSliding}
+              target={"third"}
+            />
           </View>
         </View>
 
@@ -65,6 +78,20 @@ class SafeScoreCheckScreen extends React.Component {
 
   _changeValue = (value) => {
     this.setState({ slideValue: value });
+  };
+
+  _completeSliding = (value, target) => {
+    if (value != 0) {
+      if (!this.state.target.includes(target)) {
+        this.setState({
+          target: this.state.target + target,
+        });
+      }
+    } else {
+      this.setState({
+        target: this.state.target.replace(target, ""),
+      });
+    }
   };
 }
 
@@ -125,6 +152,9 @@ class CustomSlider extends React.Component {
             changeValue(value);
             this._changeValue(value);
           }}
+          onSlidingComplete={(value) =>
+            this.props.completeSliding(value, this.props.target)
+          }
           maximumTrackTintColor="transparent"
           minimumTrackTintColor="transparent"
           thumbTintColor={color == "" ? "#9A9A9A" : color}
