@@ -99,12 +99,7 @@ class SafeScoreScreen extends React.Component {
   }
   _goSafeCheck = () => {
     const { navigation } = this.props;
-    const { location, diff } = this.props.route.params;
-    console.log(location, diff);
-    navigation.push("SafeScoreCheck", {
-      location: location,
-      diff: diff,
-    });
+    navigation.push("SafeScoreCheck");
   };
 }
 
