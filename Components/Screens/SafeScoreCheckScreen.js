@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, TouchableOpacity, Image } from "react-native";
+import Slider from "@react-native-community/slider";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styles from "../../Styles/SafeScoreCheckStyles";
 
@@ -27,6 +28,14 @@ class SafeScoreCheckScreen extends React.Component {
 
         <View style={styles.contentContainer}>
           <Text>{"외출 시 마스크를 잘 착용했나요?"}</Text>
+          <Slider
+            style={{ width: 200, height: 40 }}
+            minimumValue={0}
+            maximumValue={4}
+            step={1}
+            minimumTrackTintColor="#A3C1E2"
+            maximumTrackTintColor="#E2E2E2"
+          />
           <Text>{"실내에서 손을 잘 씻었나요?"}</Text>
           <Text>{"우리 지역의 전일 대비 확진자 수 증감"}</Text>
 
