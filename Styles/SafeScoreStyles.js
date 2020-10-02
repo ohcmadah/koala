@@ -1,6 +1,7 @@
 import { StyleSheet, Platform, Dimensions } from "react-native";
 
-const mainColor = "#FAFAFA";
+const mainColor = "#A3C1E2";
+const greyColor = "#707070";
 const basicFontSize = 18;
 const basicPadding = 38;
 const { width, height } = Dimensions.get("window");
@@ -8,23 +9,24 @@ const { width, height } = Dimensions.get("window");
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: mainColor,
+    backgroundColor: "#FAFAFA",
   },
   navContainer: {
-    flex: 0.16,
+    flex: 0.15,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: basicPadding,
   },
   textNav: {
-    color: "#707070",
+    color: greyColor,
     fontWeight: "bold",
     fontSize: basicFontSize + 2,
   },
 
   cardContainer: {
-    flex: 0.33,
+    height: height * 0.33,
+    marginTop: 10,
     paddingHorizontal: basicPadding,
   },
   cardView: {
@@ -48,7 +50,7 @@ const styles = StyleSheet.create({
     }),
   },
   textCardTitle: {
-    color: "#9DB4CE",
+    color: mainColor,
     fontWeight: "bold",
     fontSize: basicFontSize + 2,
     marginLeft: 23,
@@ -62,33 +64,39 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   textScore: {
-    color: "#707070",
+    color: greyColor,
     fontWeight: "bold",
     fontSize: basicFontSize + 39,
   },
   textScoreDesc: {
-    color: "#707070",
+    color: greyColor,
     fontWeight: "bold",
     fontSize: basicFontSize - 2,
     marginLeft: 7,
     marginTop: 41,
   },
   divider: {
-    height: "90%",
+    height: height * 0.15,
     width: 1,
-    backgroundColor: "#707070",
+    backgroundColor: greyColor,
     opacity: 0.3,
   },
   iconsContainer: {
     flex: 0.5,
-    justifyContent: "space-between",
-    marginVertical: 25,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
   },
   iconContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    height: height * 0.15,
+    justifyContent: "space-around",
     alignItems: "center",
-    marginHorizontal: 40,
+  },
+  circleContainer: {
+    height: height * 0.15,
+    justifyContent: "space-around",
+    alignItems: "center",
+    marginLeft: 41,
   },
   circle: {
     width: 14,
@@ -100,18 +108,24 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#BACCE1",
+    borderBottomRightRadius: 20,
+    borderBottomLeftRadius: 20,
   },
   textAgain: {
-    color: "#707070",
+    color: "white",
     fontWeight: "bold",
     fontSize: basicFontSize - 2,
   },
 
   bottomCardContainer: {
-    flex: 0.51,
+    minHeight: height * 0.51,
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "white",
     marginTop: 38,
-    borderTopLeftRadius: 50,
-    borderTopRightRadius: 50,
+    marginBottom: 10,
+    borderRadius: 50,
     ...Platform.select({
       ios: {
         shadowColor: "rgb(0, 0, 0)",
@@ -126,6 +140,22 @@ const styles = StyleSheet.create({
         elevation: 2,
       },
     }),
+  },
+  line: {
+    height: "80%",
+    width: 1,
+    backgroundColor: greyColor,
+    opacity: 0.2,
+    marginLeft: 38,
+  },
+  dateContainer: {
+    height: "80%",
+    marginLeft: 20,
+  },
+  textMonth: {
+    color: "#9DB4CE",
+    fontSize: basicFontSize - 4,
+    fontWeight: "bold",
   },
 });
 
