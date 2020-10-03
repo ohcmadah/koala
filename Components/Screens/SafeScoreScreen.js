@@ -126,9 +126,7 @@ class SafeScoreScreen extends React.Component {
               <>
                 <View style={styles.line} />
                 <View style={styles.monthContainer}>
-                  <Text style={styles.textMonth}>
-                    {`${today.substring(5, 7)}월`}
-                  </Text>
+                  <Text style={styles.textMonth}>{"10월"}</Text>
                   <View style={styles.daysContainer}>
                     {Object.values(scores).map((score, index) => {
                       const barColor =
@@ -179,15 +177,27 @@ class SafeScoreScreen extends React.Component {
 
   _getScores = async () => {
     const scores = await AsyncStorage.getItem("scores");
+    const { today } = this.state;
+    const timestamp = Date.parse(today) - 13 * 24 * 3600 * 1000;
 
+    let scores14 = {};
     if (scores != null) {
       const parsedScores = JSON.parse(scores);
-      this.setState({
-        scores: parsedScores,
-        haveScore: true,
-      });
 
       Object.values(parsedScores).map((score) => {
+        if (Date.parse(score.id) >= timestamp) {
+          scores14 = {
+            ...scores14,
+            [score.id]: {
+              ...score,
+            },
+          };
+          this.setState({
+            scores: scores14,
+            haveScore: true,
+          });
+        }
+
         if (score.id == this.state.today) {
           this.setState({
             todayScore: { ...score },
