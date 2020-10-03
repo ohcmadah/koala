@@ -19,12 +19,9 @@ class SafeScoreScreen extends React.Component {
   };
 
   componentDidMount() {
-    const date = new Date();
-    const today = date.toISOString().substring(0, 10);
     this.setState({
-      today: today,
+      today: this._getYYYYMMDD(),
     });
-
     this._getScores();
   }
 
@@ -221,8 +218,7 @@ class SafeScoreScreen extends React.Component {
       resultScore = score.first * 25;
     }
 
-    const date = new Date();
-    const ID = date.toISOString().substring(0, 10); // yyyy-mm-dd
+    const ID = this._getYYYYMMDD();
     const scores = {
       ...this.state.scores,
       [ID]: {
@@ -244,6 +240,11 @@ class SafeScoreScreen extends React.Component {
     navigation.push("SafeScoreCheck", {
       setScores: this._setScores,
     });
+  };
+
+  _getYYYYMMDD = () => {
+    const date = new Date();
+    return date.toISOString().substring(0, 10);
   };
 }
 
