@@ -19,12 +19,9 @@ class SafeScoreScreen extends React.Component {
   };
 
   componentDidMount() {
-    const date = new Date();
-    const today = date.toISOString().substring(0, 10);
     this.setState({
-      today: today,
+      today: this._getYYYYMMDD(),
     });
-
     this._getScores();
   }
 
@@ -127,7 +124,7 @@ class SafeScoreScreen extends React.Component {
                 <View style={styles.line} />
                 <View style={styles.monthContainer}>
                   <Text style={styles.textMonth}>
-                    {`${today.substring(5, 7)}월`}
+                    {today.substring(5, 7) + "월"}
                   </Text>
                   <View style={styles.daysContainer}>
                     {Object.values(scores).map((score, index) => {
@@ -179,15 +176,26 @@ class SafeScoreScreen extends React.Component {
 
   _getScores = async () => {
     const scores = await AsyncStorage.getItem("scores");
+    const { today } = this.state;
 
+    let scoresMonth = {};
     if (scores != null) {
       const parsedScores = JSON.parse(scores);
-      this.setState({
-        scores: parsedScores,
-        haveScore: true,
-      });
 
       Object.values(parsedScores).map((score) => {
+        if (score.id.substring(0, 7) == today.substring(0, 7)) {
+          scoresMonth = {
+            ...scoresMonth,
+            [score.id]: {
+              ...score,
+            },
+          };
+          this.setState({
+            scores: scoresMonth,
+            haveScore: true,
+          });
+        }
+
         if (score.id == this.state.today) {
           this.setState({
             todayScore: { ...score },
@@ -210,8 +218,7 @@ class SafeScoreScreen extends React.Component {
       resultScore = score.first * 25;
     }
 
-    const date = new Date();
-    const ID = date.toISOString().substring(0, 10); // yyyy-mm-dd
+    const ID = this._getYYYYMMDD();
     const scores = {
       ...this.state.scores,
       [ID]: {
@@ -233,6 +240,11 @@ class SafeScoreScreen extends React.Component {
     navigation.push("SafeScoreCheck", {
       setScores: this._setScores,
     });
+  };
+
+  _getYYYYMMDD = () => {
+    const date = new Date();
+    return date.toISOString().substring(0, 10);
   };
 }
 
