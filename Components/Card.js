@@ -24,7 +24,7 @@ class Card extends React.Component {
   };
   componentDidMount() {
     const { diff } = this.props;
-    let diffColor = diff >= 0 ? colors[0] : colors[2];
+    let diffColor = diff > 0 ? colors[0] : colors[2];
     this.setState({
       diffStyle: {
         color: diffColor,
@@ -48,7 +48,7 @@ class Card extends React.Component {
           </Text>
           <Image
             style={{ width: 9, height: 5, marginLeft: 5 }}
-            source={diff >= 0 ? redTri : greenTri}
+            source={diff > 0 ? redTri : greenTri}
           />
         </View>
       </View>
