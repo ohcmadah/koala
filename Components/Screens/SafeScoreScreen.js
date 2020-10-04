@@ -183,26 +183,33 @@ class SafeScoreScreen extends React.Component {
     if (scores != null) {
       const parsedScores = JSON.parse(scores);
 
-      Object.values(parsedScores).map((score) => {
-        if (Date.parse(score.id) >= timestamp) {
-          scores14 = {
-            ...scores14,
-            [score.id]: {
-              ...score,
-            },
-          };
-          this.setState({
-            scores: scores14,
-            haveScore: true,
-          });
-        }
+      Object.values(parsedScores).map((month) => {
+        Object.values(month).map((score) => {
+          const id = score.id;
+          const scoreMonth = id.substring(0, 7);
+          if (Date.parse(id) >= timestamp) {
+            scores14 = {
+              ...scores14,
+              [scoreMonth]: {
+                ...scores14[scoreMonth],
+                [id]: {
+                  ...score,
+                },
+              },
+            };
+            this.setState({
+              scores: scores14,
+              haveScore: true,
+            });
+          }
 
-        if (score.id == this.state.today) {
-          this.setState({
-            todayScore: { ...score },
-            haveTodayScore: true,
-          });
-        }
+          if (id == this.state.today) {
+            this.setState({
+              todayScore: { ...score },
+              haveTodayScore: true,
+            });
+          }
+        });
       });
     }
 
@@ -219,17 +226,22 @@ class SafeScoreScreen extends React.Component {
       resultScore = score.first * 25;
     }
 
-    const ID = this._getYYYYMMDD();
+    const ID = "2020-10-04";
+    const month = this._getYYYYMMDD().substring(0, 7);
     const scores = {
       ...this.state.scores,
-      [ID]: {
-        id: ID,
-        score: resultScore,
-        location: score.first,
-        mask: score.second,
-        hand: score.third,
+      [month]: {
+        ...this.state.scores[month],
+        [ID]: {
+          id: ID,
+          score: resultScore,
+          location: score.first,
+          mask: score.second,
+          hand: score.third,
+        },
       },
     };
+    console.log(scores);
 
     AsyncStorage.setItem("scores", JSON.stringify(scores));
 
