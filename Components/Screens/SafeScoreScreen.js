@@ -87,8 +87,9 @@ class SafeScoreScreen extends React.Component {
                     })}
                   </View>
                   <View style={styles.circleContainer}>
-                    {Object.keys(imageInfo).map((str) => (
+                    {Object.keys(imageInfo).map((str, index) => (
                       <View
+                        key={index}
                         style={[
                           styles.circle,
                           haveTodayScore
