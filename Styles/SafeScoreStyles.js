@@ -155,11 +155,14 @@ const styles = StyleSheet.create({
     opacity: 0.2,
     marginLeft: 38,
   },
-  monthContainer: {
+  monthsContainer: {
     minHeight: height * 0.37,
+    alignSelf: "flex-start",
     marginLeft: 20,
     marginTop: 39,
-    marginBottom: 59,
+  },
+  monthContainer: {
+    marginBottom: 39,
   },
   textMonth: {
     color: "#9DB4CE",
