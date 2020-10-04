@@ -50,10 +50,16 @@ class TodayRoute extends React.Component {
         </ImageBackground>
 
         <View>
-          <View />
-          <View>
-            <View>{"서울특별시 관악구 호암로 546"}</View>
-          </View>
+          {haveLocations ? (
+            <>
+              <View />
+              <View>
+                <View>{"서울특별시 관악구 호암로 546"}</View>
+              </View>
+            </>
+          ) : (
+            <Text>{"오늘 하루 기록된 장소가 없습니다."}</Text>
+          )}
         </View>
       </SafeAreaView>
     );
