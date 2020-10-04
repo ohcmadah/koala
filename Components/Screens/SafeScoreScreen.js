@@ -28,6 +28,7 @@ class SafeScoreScreen extends React.Component {
   };
 
   componentDidMount() {
+    console.log(this._getYYYYMMDD());
     this.setState({
       today: this._getYYYYMMDD(),
     });
@@ -260,8 +261,9 @@ class SafeScoreScreen extends React.Component {
   };
 
   _getYYYYMMDD = () => {
-    const date = new Date();
-    return date.toISOString().substring(0, 10);
+    const timezoneOffset = new Date().getTimezoneOffset() * 60000;
+    const timezoneDate = new Date(Date.now() - timezoneOffset);
+    return timezoneDate.toISOString().substring(0, 10);
   };
 }
 
