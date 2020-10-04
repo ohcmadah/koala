@@ -244,9 +244,10 @@ class HomeScreen extends React.Component {
 
   _bottomMenuHandle = (textMenu) => {
     const { navigation } = this.props;
-    if (textMenu == menus.second[1]) {
-      navigation.push("SafeScore");
+    if (textMenu == menus.first[1]) {
+      navigation.push("TodayRoute");
     } else if (textMenu == menus.second[1]) {
+      navigation.push("SafeScore");
     } else {
     }
   };

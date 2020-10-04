@@ -15,7 +15,7 @@ const GOOGLE_API_KEY = config.GOOGLE_API_KEY;
 
 class TodayRoute extends React.Component {
   render() {
-    return <SafeAreaView></SafeAreaView>;
+    return <SafeAreaView style={styles.container}></SafeAreaView>;
   }
 }
 
