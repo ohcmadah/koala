@@ -5,8 +5,17 @@ import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styles from "../../Styles/SafeScoreStyles";
 
+import locationIcon from "../../assets/safe-score/location_icon.png";
+import maskIcon from "../../assets/safe-score/mask_icon.png";
+import handCleanerIcon from "../../assets/safe-score/hand_cleaner_icon.png";
+
 const IMAGE_URL = "../../assets/safe-score";
 const colors = ["#9A9A9A", "#F57272", "#F9D315", "#A3C1E2", "#84DB6A"];
+const imageInfo = {
+  location: [locationIcon, 21, 21],
+  mask: [maskIcon, 26, 16],
+  hand: [handCleanerIcon, 17, 24],
+};
 
 class SafeScoreScreen extends React.Component {
   state = {
@@ -32,7 +41,6 @@ class SafeScoreScreen extends React.Component {
       haveTodayScore,
       scores,
       todayScore,
-      today,
     } = this.state;
 
     return isGetted ? (
@@ -64,46 +72,33 @@ class SafeScoreScreen extends React.Component {
                 <View style={styles.divider} />
                 <View style={styles.iconsContainer}>
                   <View style={styles.iconContainer}>
-                    <Image
-                      source={require(`${IMAGE_URL}/location_icon.png`)}
-                      style={{ width: 21, height: 21, resizeMode: "contain" }}
-                    />
-                    <Image
-                      source={require(`${IMAGE_URL}/mask_icon.png`)}
-                      style={{ width: 26, height: 16, resizeMode: "contain" }}
-                    />
-                    <Image
-                      source={require(`${IMAGE_URL}/hand_cleaner_icon.png`)}
-                      style={{ width: 17, height: 24, resizeMode: "contain" }}
-                    />
+                    {Object.values(imageInfo).map((item) => {
+                      return (
+                        <Image
+                          key={item[1]}
+                          source={item[0]}
+                          style={{
+                            width: item[1],
+                            height: item[2],
+                            resizeMode: "contain",
+                          }}
+                        />
+                      );
+                    })}
                   </View>
                   <View style={styles.circleContainer}>
-                    <View
-                      style={[
-                        styles.circle,
-                        haveTodayScore
-                          ? {
-                              backgroundColor: colors[todayScore.location],
-                            }
-                          : { backgroundColor: "#E1E1E1" },
-                      ]}
-                    />
-                    <View
-                      style={[
-                        styles.circle,
-                        haveTodayScore
-                          ? { backgroundColor: colors[todayScore.mask] }
-                          : { backgroundColor: "#E1E1E1" },
-                      ]}
-                    />
-                    <View
-                      style={[
-                        styles.circle,
-                        haveTodayScore
-                          ? { backgroundColor: colors[todayScore.hand] }
-                          : { backgroundColor: "#E1E1E1" },
-                      ]}
-                    />
+                    {Object.keys(imageInfo).map((str) => (
+                      <View
+                        style={[
+                          styles.circle,
+                          haveTodayScore
+                            ? {
+                                backgroundColor: colors[todayScore[str]],
+                              }
+                            : { backgroundColor: "#E1E1E1" },
+                        ]}
+                      />
+                    ))}
                   </View>
                 </View>
               </View>
@@ -130,7 +125,7 @@ class SafeScoreScreen extends React.Component {
                           {Object.keys(scores)[index].substring(5, 7) + "월"}
                         </Text>
                         <View style={styles.daysContainer}>
-                          {Object.values(month).map((score, index) => {
+                          {Object.values(month).map((score) => {
                             const barColor =
                               score.score <= 50
                                 ? score.score <= 25
