@@ -2,7 +2,6 @@ import { StyleSheet, Dimensions } from "react-native";
 
 const mainColor = "#9DB4CE";
 const basicFontSize = 17;
-const basicMargin = 36;
 
 const { height } = Dimensions.get("window");
 
@@ -17,6 +16,7 @@ const btnSubmit = {
   justifyContent: "center",
   borderRadius: 60,
   backgroundColor: mainColor,
+  marginTop: 21,
 };
 
 const styles = StyleSheet.create({
@@ -28,14 +28,14 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 42,
   },
+  topContainer: {
+    height: height * 0.25,
+    alignItems: "center",
+  },
   textContentTitle: {
     ...text,
     fontSize: basicFontSize + 2,
     marginTop: 70,
-  },
-  topContainer: {
-    height: height * 0.25,
-    alignItems: "center",
   },
   searchContainer: {
     flexDirection: "row",
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
   },
 
   descContainer: {
-    height: height * 0.55,
+    height: height * 0.52,
     flexDirection: "row",
     alignItems: "flex-end",
     justifyContent: "space-between",
@@ -82,8 +82,7 @@ const styles = StyleSheet.create({
   },
 
   bottomContainer: {
-    height: height * 0.2,
-    justifyContent: "center",
+    height: height * 0.15,
   },
   btnSubmit: {
     ...btnSubmit,
