@@ -6,21 +6,17 @@ import {
   Image,
   TouchableOpacity,
   Linking,
-  Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import styles from "../../Styles/HomeStyles";
 import Area from "../Area";
-import * as Location from "expo-location";
 import { AppLoading } from "expo";
-import * as config from "../../config";
+import * as fmodule from "../../FunctionModule";
 
 import firstCircle from "../../assets/home/first_circle.png";
 import secondCircle from "../../assets/home/second_circle.png";
 import thirdCircle from "../../assets/home/third_circle.png";
-
-const GOOGLE_API_KEY = config.GOOGLE_API_KEY;
 
 const menus = {
   first: [firstCircle, "TODAY 이동경로"],
@@ -58,83 +54,13 @@ class HomeScreen extends React.Component {
     isLoaded: false,
   };
 
-  _getLocation = async () => {
-    try {
-      await Location.requestPermissionsAsync();
-      const {
-        coords: { latitude, longitude },
-      } = await Location.getCurrentPositionAsync();
-      this._getReverseGeo(latitude, longitude);
-    } catch (error) {
-      Alert.alert(
-        "위치를 찾을 수 없습니다.",
-        "앱 설정에서 위치 정보를 허용해주세요."
-      );
-    }
-  };
-
-  _getReverseGeo = async (latitude, longitude) => {
-    const GEOLOCATION_API_URL = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GOOGLE_API_KEY}`;
-    const koreanRegion = [
-      "제주특별자치도",
-      "경상남도",
-      "경상북도",
-      "전라남도",
-      "전라북도",
-      "충청남도",
-      "충청북도",
-      "강원도",
-      "경기도",
-      "세종특별자치시",
-      "울산광역시",
-      "대전광역시",
-      "광주광역시",
-      "인천광역시",
-      "대구광역시",
-      "부산광역시",
-      "서울특별시",
-    ];
-    const englishRegion = [
-      "Jeju",
-      "Gyeongsangnam-do",
-      "Gyeongsangbuk-do",
-      "Jeollanam-do",
-      "Jeollabuk-do",
-      "Chungcheongnam-do",
-      "Chungcheongbuk-do",
-      "Gangwon-do",
-      "Gyeonggi-do",
-      "Sejong",
-      "Ulsan",
-      "Daejeon",
-      "Gwangju",
-      "Incheon",
-      "Daegu",
-      "Busan",
-      "Seoul",
-    ];
-    let resultLocation;
-    await fetch(GEOLOCATION_API_URL)
-      .then((response) => response.json())
-      .then((data) => {
-        const address = data.results[0].address_components;
-        for (let i = 0; i < address.length; i++) {
-          const addr = address[i].long_name;
-          for (let j = 0; j < koreanRegion.length; j++) {
-            const kRegion = koreanRegion[j];
-            const eRegion = englishRegion[j];
-            if (addr == kRegion || addr == eRegion) {
-              resultLocation = kRegion;
-              break;
-            }
-          }
-        }
-
-        this.setState({
-          location: resultLocation,
-          isLoaded: true,
-        });
-      });
+  _callAPI = async () => {
+    const location = await fmodule._getLocation();
+    console.log(location);
+    this.setState({
+      location: location,
+      isLoaded: true,
+    });
   };
 
   componentDidMount() {
@@ -144,7 +70,7 @@ class HomeScreen extends React.Component {
         isLoaded: true,
       });
     } else {
-      this._getLocation();
+      this._callAPI();
     }
   }
 
