@@ -28,7 +28,6 @@ class SafeScoreScreen extends React.Component {
   };
 
   componentDidMount() {
-    console.log(this._getYYYYMMDD());
     this.setState({
       today: this._getYYYYMMDD(),
     });
@@ -109,7 +108,7 @@ class SafeScoreScreen extends React.Component {
                 onPress={this._goSafeCheck}
               >
                 <Text style={styles.textAgain}>
-                  {haveScore ? "다시 기록하기" : "기록하기"}
+                  {haveTodayScore ? "다시 기록하기" : "기록하기"}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -137,7 +136,7 @@ class SafeScoreScreen extends React.Component {
                                 ? colors[3]
                                 : colors[4];
                             return (
-                              <View style={styles.dayContainer}>
+                              <View key={score.id} style={styles.dayContainer}>
                                 <Text style={styles.textDay}>
                                   {score.id.substring(8, 10) + "일"}
                                 </Text>
