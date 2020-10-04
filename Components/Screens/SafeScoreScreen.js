@@ -177,21 +177,22 @@ class SafeScoreScreen extends React.Component {
   _getScores = async () => {
     const scores = await AsyncStorage.getItem("scores");
     const { today } = this.state;
+    const timestamp = Date.parse(today) - 13 * 24 * 3600 * 1000;
 
-    let scoresMonth = {};
+    let scores14 = {};
     if (scores != null) {
       const parsedScores = JSON.parse(scores);
 
       Object.values(parsedScores).map((score) => {
-        if (score.id.substring(0, 7) == today.substring(0, 7)) {
-          scoresMonth = {
-            ...scoresMonth,
+        if (Date.parse(score.id) >= timestamp) {
+          scores14 = {
+            ...scores14,
             [score.id]: {
               ...score,
             },
           };
           this.setState({
-            scores: scoresMonth,
+            scores: scores14,
             haveScore: true,
           });
         }
