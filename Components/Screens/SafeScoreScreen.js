@@ -122,43 +122,52 @@ class SafeScoreScreen extends React.Component {
             {haveScore ? (
               <>
                 <View style={styles.line} />
-                <View style={styles.monthContainer}>
-                  <Text style={styles.textMonth}>
-                    {today.substring(5, 7) + "월"}
-                  </Text>
-                  <View style={styles.daysContainer}>
-                    {Object.values(scores).map((score, index) => {
-                      const barColor =
-                        score.score <= 50
-                          ? score.score <= 25
-                            ? colors[1]
-                            : colors[2]
-                          : score.score <= 75
-                          ? colors[3]
-                          : colors[4];
-                      return (
-                        <View key={index} style={styles.dayContainer}>
-                          <Text style={styles.textDay}>
-                            {`${score.id.substring(8, 10)}일`}
-                          </Text>
-                          <View style={styles.barContainer}>
-                            <View
-                              style={[
-                                styles.colorBar,
-                                {
-                                  width: `${score.score}%`,
-                                  backgroundColor: barColor,
-                                },
-                              ]}
-                            />
-                          </View>
-                          <Text
-                            style={[styles.textDayScore, { color: barColor }]}
-                          >{`${score.score}점`}</Text>
+                <View style={styles.monthsContainer}>
+                  {Object.values(scores).map((month, index) => {
+                    return (
+                      <View key={index} style={styles.monthContainer}>
+                        <Text style={styles.textMonth}>
+                          {Object.keys(scores)[index].substring(5, 7) + "월"}
+                        </Text>
+                        <View style={styles.daysContainer}>
+                          {Object.values(month).map((score, index) => {
+                            const barColor =
+                              score.score <= 50
+                                ? score.score <= 25
+                                  ? colors[1]
+                                  : colors[2]
+                                : score.score <= 75
+                                ? colors[3]
+                                : colors[4];
+                            return (
+                              <View style={styles.dayContainer}>
+                                <Text style={styles.textDay}>
+                                  {score.id.substring(8, 10) + "일"}
+                                </Text>
+                                <View style={styles.barContainer}>
+                                  <View
+                                    style={[
+                                      styles.colorBar,
+                                      {
+                                        width: `${score.score}%`,
+                                        backgroundColor: barColor,
+                                      },
+                                    ]}
+                                  />
+                                </View>
+                                <Text
+                                  style={[
+                                    styles.textDayScore,
+                                    { color: barColor },
+                                  ]}
+                                >{`${score.score}점`}</Text>
+                              </View>
+                            );
+                          })}
                         </View>
-                      );
-                    })}
-                  </View>
+                      </View>
+                    );
+                  })}
                 </View>
               </>
             ) : (
@@ -177,31 +186,39 @@ class SafeScoreScreen extends React.Component {
   _getScores = async () => {
     const scores = await AsyncStorage.getItem("scores");
     const { today } = this.state;
+    const timestamp = Date.parse(today) - 13 * 24 * 3600 * 1000;
 
-    let scoresMonth = {};
+    let scores14 = {};
     if (scores != null) {
       const parsedScores = JSON.parse(scores);
 
-      Object.values(parsedScores).map((score) => {
-        if (score.id.substring(0, 7) == today.substring(0, 7)) {
-          scoresMonth = {
-            ...scoresMonth,
-            [score.id]: {
-              ...score,
-            },
-          };
-          this.setState({
-            scores: scoresMonth,
-            haveScore: true,
-          });
-        }
+      Object.values(parsedScores).map((month) => {
+        Object.values(month).map((score) => {
+          const id = score.id;
+          const scoreMonth = id.substring(0, 7);
+          if (Date.parse(id) >= timestamp) {
+            scores14 = {
+              ...scores14,
+              [scoreMonth]: {
+                ...scores14[scoreMonth],
+                [id]: {
+                  ...score,
+                },
+              },
+            };
+            this.setState({
+              scores: scores14,
+              haveScore: true,
+            });
+          }
 
-        if (score.id == this.state.today) {
-          this.setState({
-            todayScore: { ...score },
-            haveTodayScore: true,
-          });
-        }
+          if (id == this.state.today) {
+            this.setState({
+              todayScore: { ...score },
+              haveTodayScore: true,
+            });
+          }
+        });
       });
     }
 
@@ -219,14 +236,18 @@ class SafeScoreScreen extends React.Component {
     }
 
     const ID = this._getYYYYMMDD();
+    const month = ID.substring(0, 7);
     const scores = {
       ...this.state.scores,
-      [ID]: {
-        id: ID,
-        score: resultScore,
-        location: score.first,
-        mask: score.second,
-        hand: score.third,
+      [month]: {
+        ...this.state.scores[month],
+        [ID]: {
+          id: ID,
+          score: resultScore,
+          location: score.first,
+          mask: score.second,
+          hand: score.third,
+        },
       },
     };
 
