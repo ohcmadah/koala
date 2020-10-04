@@ -56,7 +56,6 @@ class HomeScreen extends React.Component {
 
   _callAPI = async () => {
     const location = await fmodule._getLocation();
-    console.log(location);
     this.setState({
       location: location,
       isLoaded: true,

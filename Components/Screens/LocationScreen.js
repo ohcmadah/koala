@@ -10,10 +10,8 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styles from "../../Styles/LocationStyles";
-import * as config from "../../config";
 import { CommonActions } from "@react-navigation/native";
-
-const GOOGLE_API_KEY = config.GOOGLE_API_KEY;
+import * as fModule from "../../FunctionModule";
 
 const IMAGE_URL = "../../assets/location";
 
@@ -22,84 +20,6 @@ class LocationScreen extends React.Component {
     location: "",
     haveLocation: false,
     settingLocation: "",
-  };
-
-  _setLocation = async (address) => {
-    const GEOLOCATION_API_URL = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${GOOGLE_API_KEY}`;
-    const koreanRegion = [
-      "제주특별자치도",
-      "경상남도",
-      "경상북도",
-      "전라남도",
-      "전라북도",
-      "충청남도",
-      "충청북도",
-      "강원도",
-      "경기도",
-      "울산광역시",
-      "대전광역시",
-      "광주광역시",
-      "인천광역시",
-      "대구광역시",
-      "부산광역시",
-      "서울특별시",
-    ];
-    const englishRegion = [
-      "Jeju-do",
-      "Gyeongsangnam-do",
-      "Gyeongsangbuk-do",
-      "Jeollanam-do",
-      "Jeollabuk-do",
-      "Chungcheongnam-do",
-      "Chungcheongbuk-do",
-      "Gangwon-do",
-      "Gyeonggi-do",
-      "Ulsan",
-      "Daejeon",
-      "Gwangju",
-      "Incheon",
-      "Daegu",
-      "Busan",
-      "Seoul",
-    ];
-    let resultLocation = "";
-    await fetch(GEOLOCATION_API_URL)
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.status != "ZERO_RESULTS") {
-          const address = data.results[0].address_components;
-          for (let i = 0; i < address.length; i++) {
-            const addr = address[i].long_name;
-            for (let j = 0; j < koreanRegion.length; j++) {
-              const kRegion = koreanRegion[j];
-              const eRegion = englishRegion[j];
-              if (addr == kRegion || addr == eRegion) {
-                resultLocation = kRegion;
-                break;
-              }
-            }
-          }
-        }
-
-        if (address.includes("세종")) {
-          resultLocation = "세종특별자치시";
-        }
-
-        if (resultLocation == "") {
-          resultLocation = "검색 결과가 없습니다.";
-          this.setState({
-            haveLocation: false,
-          });
-        } else {
-          this.setState({
-            haveLocation: true,
-          });
-        }
-        this.setState({
-          location: resultLocation,
-          settingLocation: resultLocation,
-        });
-      });
   };
 
   render() {
@@ -192,9 +112,23 @@ class LocationScreen extends React.Component {
     });
   };
 
-  _searchLocation = () => {
+  _searchLocation = async () => {
     const { location } = this.state;
-    this._setLocation(location);
+    const resultLocation = await fModule._setLocation(location);
+    if (resultLocation == "") {
+      resultLocation = "검색 결과가 없습니다.";
+      this.setState({
+        haveLocation: false,
+      });
+    } else {
+      this.setState({
+        haveLocation: true,
+      });
+    }
+    this.setState({
+      location: resultLocation,
+      settingLocation: resultLocation,
+    });
   };
 
   _submitLocation = () => {
