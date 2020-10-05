@@ -1,5 +1,5 @@
 import * as Location from "expo-location";
-import { Alert } from "react-native";
+import { Alert, Platform } from "react-native";
 import * as config from "./config";
 
 const GOOGLE_API_KEY = config.GOOGLE_API_KEY;
@@ -69,7 +69,22 @@ async function _getReverseGeo(latitude, longitude, detail) {
         location = _findLocation(data);
       }
     });
+
+  if (Platform.OS == "android" && detail) {
+    location = await _translate(location);
+  }
   return location;
+}
+
+async function _translate(text) {
+  const TRANSLATE_API_URL = `https://translation.googleapis.com/language/translate/v2?&q=${text}&target=ko&key=${GOOGLE_API_KEY}`;
+  let korean;
+  await fetch(TRANSLATE_API_URL)
+    .then((response) => response.json())
+    .then((data) => {
+      korean = data.data.translations[0].translatedText;
+    });
+  return korean;
 }
 
 export async function _setLocation(address) {
