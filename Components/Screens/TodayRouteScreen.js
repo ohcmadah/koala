@@ -8,6 +8,7 @@ import {
   Dimensions,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import AsyncStorage from "@react-native-community/async-storage";
 import styles from "../../Styles/TodayRouteStyles";
 import { _getLocation, _getYYYYMMDD } from "../../FunctionModule";
 
@@ -16,24 +17,37 @@ const { height } = Dimensions.get("window");
 
 class TodayRoute extends React.Component {
   state = {
+    isLoaded: false,
     haveLocation: false,
     haveLocations: false,
     isEditing: false,
     opacity: 0.7,
     address: "",
+    addresses: {},
+    todayAddr: [],
+    delete: [],
   };
+
+  componentDidMount() {
+    this._getAddress();
+    this.setState({
+      isLoaded: true,
+    });
+  }
 
   render() {
     const {
+      isLoaded,
       haveLocation,
       haveLocations,
       isEditing,
       opacity,
       address,
+      todayAddr,
     } = this.state;
     const cardHeight = haveLocation ? height * 0.45 : height * 0.55;
 
-    return (
+    return isLoaded ? (
       <SafeAreaView style={styles.container}>
         <View style={styles.navContainer}>
           <TouchableOpacity style={styles.btnBack}>
@@ -111,7 +125,7 @@ class TodayRoute extends React.Component {
                 style={styles.btnChoice}
                 onPress={() => {
                   const flag = !isEditing;
-                  this.setState({ isEditing: flag, opacity: 0.35 });
+                  this.setState({ isEditing: flag, opacity: 0.35, delete: [] });
                 }}
               >
                 <Text style={styles.textChoice}>
@@ -126,17 +140,23 @@ class TodayRoute extends React.Component {
             <View style={styles.rowContainer}>
               <View style={styles.line} />
               <View style={styles.locationsContainer}>
-                <TouchableOpacity
-                  activeOpacity={1}
-                  disabled={isEditing ? false : true}
-                  onPress={() => {
-                    this.setState({ opacity: 0.9 });
-                  }}
-                >
-                  <Text style={[styles.textLocations, { opacity: opacity }]}>
-                    {"서울특별시 관악구 호암로 546"}
-                  </Text>
-                </TouchableOpacity>
+                {todayAddr.map((addr, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    activeOpacity={1}
+                    disabled={isEditing ? false : true}
+                    onPress={() => {
+                      this.setState({
+                        opacity: 0.9,
+                        delete: [...this.state.delete, index],
+                      });
+                    }}
+                  >
+                    <Text style={[styles.textLocations, { opacity: opacity }]}>
+                      {addr}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
               </View>
             </View>
           ) : (
@@ -158,15 +178,67 @@ class TodayRoute extends React.Component {
           )}
         </View>
       </SafeAreaView>
+    ) : (
+      <View />
     );
   }
 
+  _getAddress = async () => {
+    const dbAddr = await AsyncStorage.getItem("addresses");
+
+    if (dbAddr != null) {
+      const parsedAddr = JSON.parse(dbAddr);
+      this.setState({ addresses: parsedAddr });
+      Object.values(parsedAddr).map((month) => {
+        Object.values(month).map((address) => {
+          if (address.id == _getYYYYMMDD()) {
+            const todayAddr = [...address.address];
+            this.setState({
+              todayAddr: todayAddr,
+              haveLocations: true,
+            });
+          }
+        });
+      });
+    }
+  };
+
   _saveLocation = () => {
     const { address } = this.state;
+
+    const ID = _getYYYYMMDD();
+    const month = ID.substring(0, 7);
+    let addresses;
+    if (Object.keys(this.state.addresses).length != 0) {
+      addresses = {
+        ...this.state.addresses,
+        [month]: {
+          ...this.state.addresses[month],
+          [ID]: {
+            id: ID,
+            address: [...this.state.addresses[month][ID].address, address],
+          },
+        },
+      };
+    } else {
+      addresses = {
+        [month]: {
+          [ID]: {
+            id: ID,
+            address: [address],
+          },
+        },
+      };
+    }
+
     this.setState({
       haveLocations: true,
       haveLocation: false,
     });
+
+    AsyncStorage.setItem("addresses", JSON.stringify(addresses));
+
+    this._getAddress();
   };
 
   _getTodayLocation = async () => {
