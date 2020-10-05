@@ -130,6 +130,22 @@ const styles = StyleSheet.create({
     opacity: 0.7,
     marginBottom: 20,
   },
+
+  btnChoiceContainer: {
+    height: 70,
+    width: width,
+    justifyContent: "center",
+    alignItems: "flex-end",
+    marginRight: 45,
+  },
+  btnChoice: {
+    width: 50,
+    alignItems: "flex-end",
+  },
+  textChoice: {
+    ...text,
+    color: "#9DB4CE",
+  },
 });
 
 export default styles;

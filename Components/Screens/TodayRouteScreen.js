@@ -16,7 +16,7 @@ const { height } = Dimensions.get("window");
 
 class TodayRoute extends React.Component {
   state = {
-    haveLocation: true,
+    haveLocation: false,
     haveLocations: true,
   };
   render() {
@@ -72,15 +72,28 @@ class TodayRoute extends React.Component {
                   source={require(IMAGE_URL + "/koala.png")}
                   style={{ width: 134, height: 148, resizeMode: "contain" }}
                 />
-                <Text style={styles.textDesc}>
-                  {"아이콘을 눌러\n현위치를 기록해요!"}
-                </Text>
+                {haveLocations ? (
+                  <></>
+                ) : (
+                  <Text style={styles.textDesc}>
+                    {"아이콘을 눌러\n현위치를 기록해요!"}
+                  </Text>
+                )}
               </View>
             )}
           </View>
         </ImageBackground>
 
         <View style={[styles.cardContainer, { height: cardHeight }]}>
+          {haveLocation ? (
+            <></>
+          ) : (
+            <View style={styles.btnChoiceContainer}>
+              <TouchableOpacity style={styles.btnChoice}>
+                <Text style={styles.textChoice}>{"선택"}</Text>
+              </TouchableOpacity>
+            </View>
+          )}
           {haveLocations ? (
             <View style={styles.rowContainer}>
               <View style={styles.line} />
