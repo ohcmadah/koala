@@ -40,13 +40,13 @@ const englishRegion = [
   "Seoul",
 ];
 
-export async function _getLocation() {
+export async function _getLocation(detail) {
   try {
     await Location.requestPermissionsAsync();
     const {
       coords: { latitude, longitude },
     } = await Location.getCurrentPositionAsync();
-    return await _getReverseGeo(latitude, longitude);
+    return await _getReverseGeo(latitude, longitude, detail);
   } catch (error) {
     Alert.alert(
       "위치를 찾을 수 없습니다.",
@@ -55,14 +55,19 @@ export async function _getLocation() {
   }
 }
 
-async function _getReverseGeo(latitude, longitude) {
+async function _getReverseGeo(latitude, longitude, detail) {
   const GEOLOCATION_API_URL = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GOOGLE_API_KEY}`;
 
   let location;
   await fetch(GEOLOCATION_API_URL)
     .then((response) => response.json())
     .then((data) => {
-      location = _findLocation(data);
+      if (detail) {
+        const address = data.results[0].formatted_address;
+        location = address;
+      } else {
+        location = _findLocation(data);
+      }
     });
   return location;
 }

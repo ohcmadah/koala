@@ -20,10 +20,17 @@ class TodayRoute extends React.Component {
     haveLocations: false,
     isEditing: false,
     opacity: 0.7,
+    location: "",
   };
 
   render() {
-    const { haveLocation, haveLocations, isEditing, opacity } = this.state;
+    const {
+      haveLocation,
+      haveLocations,
+      isEditing,
+      opacity,
+      location,
+    } = this.state;
     const cardHeight = haveLocation ? height * 0.45 : height * 0.55;
 
     return (
@@ -44,7 +51,10 @@ class TodayRoute extends React.Component {
           style={styles.backgroundImg}
         >
           <View style={styles.contentContainer}>
-            <TouchableOpacity style={{ alignSelf: "center" }}>
+            <TouchableOpacity
+              style={{ alignSelf: "center" }}
+              onPress={this._getTodayLocation}
+            >
               <Image
                 source={require(IMAGE_URL + "/btn_location.png")}
                 style={{ width: 92, height: 92, resizeMode: "contain" }}
@@ -52,9 +62,7 @@ class TodayRoute extends React.Component {
             </TouchableOpacity>
             {haveLocation ? (
               <View style={styles.locationContainer}>
-                <Text style={styles.textLocation}>
-                  {"강원 동해시 평원로 100"}
-                </Text>
+                <Text style={styles.textLocation}>{location}</Text>
                 <View style={styles.btnContainer}>
                   <TouchableOpacity
                     style={styles.btnCircle}
@@ -157,6 +165,14 @@ class TodayRoute extends React.Component {
     this.setState({
       haveLocations: true,
       haveLocation: false,
+    });
+  };
+
+  _getTodayLocation = async () => {
+    const location = await _getLocation(true);
+    this.setState({
+      haveLocation: true,
+      location: location,
     });
   };
 }
