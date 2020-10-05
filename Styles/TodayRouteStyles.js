@@ -127,7 +127,6 @@ const styles = StyleSheet.create({
   },
   textLocations: {
     ...text,
-    opacity: 0.7,
     marginBottom: 20,
   },
 
@@ -136,7 +135,7 @@ const styles = StyleSheet.create({
     width: width,
     justifyContent: "center",
     alignItems: "flex-end",
-    marginRight: 45,
+    marginRight: width * 0.15,
   },
   btnChoice: {
     width: 50,
@@ -145,6 +144,39 @@ const styles = StyleSheet.create({
   textChoice: {
     ...text,
     color: "#9DB4CE",
+  },
+
+  btnDelContainer: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    width: width,
+    height: 64,
+    justifyContent: "center",
+    alignItems: "flex-end",
+    paddingRight: 35,
+    backgroundColor: "white",
+
+    ...Platform.select({
+      ios: {
+        shadowColor: "rgb(0, 0, 0)",
+        shadowOpacity: 0.16,
+        shadowRadius: 6,
+        shadowOffset: {
+          height: 0,
+          width: 0,
+        },
+      },
+      android: {
+        elevation: 6,
+      },
+    }),
+  },
+  btnDelete: {
+    width: 40,
+    height: 40,
+    justifyContent: "center",
+    alignItems: "flex-end",
   },
 });
 

@@ -18,10 +18,14 @@ class TodayRoute extends React.Component {
   state = {
     haveLocation: false,
     haveLocations: true,
+    isEditing: false,
+    opacity: 0.7,
   };
+
   render() {
-    const { haveLocation, haveLocations } = this.state;
+    const { haveLocation, haveLocations, isEditing, opacity } = this.state;
     const cardHeight = haveLocation ? height * 0.45 : height * 0.55;
+
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.navContainer}>
@@ -89,8 +93,16 @@ class TodayRoute extends React.Component {
             <></>
           ) : (
             <View style={styles.btnChoiceContainer}>
-              <TouchableOpacity style={styles.btnChoice}>
-                <Text style={styles.textChoice}>{"선택"}</Text>
+              <TouchableOpacity
+                style={styles.btnChoice}
+                onPress={() => {
+                  const flag = !isEditing;
+                  this.setState({ isEditing: flag, opacity: 0.35 });
+                }}
+              >
+                <Text style={styles.textChoice}>
+                  {isEditing ? "취소" : "선택"}
+                </Text>
               </TouchableOpacity>
             </View>
           )}
@@ -98,18 +110,35 @@ class TodayRoute extends React.Component {
             <View style={styles.rowContainer}>
               <View style={styles.line} />
               <View style={styles.locationsContainer}>
-                <Text style={styles.textLocations}>
-                  {"서울특별시 관악구 호암로 546"}
-                </Text>
-                <Text style={styles.textLocations}>
-                  {"서울특별시 관악구 호암로 547"}
-                </Text>
+                <TouchableOpacity
+                  activeOpacity={1}
+                  disabled={isEditing ? false : true}
+                  onPress={() => {
+                    this.setState({ opacity: 0.9 });
+                  }}
+                >
+                  <Text style={[styles.textLocations, { opacity: opacity }]}>
+                    {"서울특별시 관악구 호암로 546"}
+                  </Text>
+                </TouchableOpacity>
               </View>
             </View>
           ) : (
             <Text style={styles.textNone}>
               {"오늘 하루 기록된 장소가 없습니다."}
             </Text>
+          )}
+          {isEditing ? (
+            <View style={styles.btnDelContainer}>
+              <TouchableOpacity style={styles.btnDelete}>
+                <Image
+                  source={require(IMAGE_URL + "/btn_delete.png")}
+                  style={{ width: 24, height: 28, resizeMode: "contain" }}
+                />
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <></>
           )}
         </View>
       </SafeAreaView>
