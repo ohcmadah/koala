@@ -97,6 +97,8 @@ const styles = StyleSheet.create({
     ...text,
     opacity: 0.9,
     fontSize: basicFontSize + 1,
+    marginHorizontal: width * 0.1,
+    textAlign: "center",
   },
   btnContainer: {
     flexDirection: "row",
