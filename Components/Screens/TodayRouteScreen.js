@@ -17,7 +17,7 @@ const { height } = Dimensions.get("window");
 class TodayRoute extends React.Component {
   state = {
     haveLocation: false,
-    haveLocations: true,
+    haveLocations: false,
     isEditing: false,
     opacity: 0.7,
   };
@@ -56,13 +56,21 @@ class TodayRoute extends React.Component {
                   {"강원 동해시 평원로 100"}
                 </Text>
                 <View style={styles.btnContainer}>
-                  <TouchableOpacity style={styles.btnCircle}>
+                  <TouchableOpacity
+                    style={styles.btnCircle}
+                    onPress={this._saveLocation}
+                  >
                     <Image
                       source={require(IMAGE_URL + "/btn_check.png")}
                       style={[styles.btnImg, { marginRight: 12 }]}
                     />
                   </TouchableOpacity>
-                  <TouchableOpacity style={styles.btnCircle}>
+                  <TouchableOpacity
+                    style={styles.btnCircle}
+                    onPress={() => {
+                      this.setState({ haveLocation: false });
+                    }}
+                  >
                     <Image
                       source={require(IMAGE_URL + "/btn_cancel.png")}
                       style={styles.btnImg}
@@ -89,9 +97,7 @@ class TodayRoute extends React.Component {
         </ImageBackground>
 
         <View style={[styles.cardContainer, { height: cardHeight }]}>
-          {haveLocation ? (
-            <></>
-          ) : (
+          {!haveLocation && haveLocations ? (
             <View style={styles.btnChoiceContainer}>
               <TouchableOpacity
                 style={styles.btnChoice}
@@ -105,6 +111,8 @@ class TodayRoute extends React.Component {
                 </Text>
               </TouchableOpacity>
             </View>
+          ) : (
+            <></>
           )}
           {haveLocations ? (
             <View style={styles.rowContainer}>
@@ -144,6 +152,13 @@ class TodayRoute extends React.Component {
       </SafeAreaView>
     );
   }
+
+  _saveLocation = () => {
+    this.setState({
+      haveLocations: true,
+      haveLocation: false,
+    });
+  };
 }
 
 export default TodayRoute;
