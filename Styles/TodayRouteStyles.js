@@ -4,6 +4,12 @@ const greyColor = "#707070";
 const basicFontSize = 17;
 const { width, height } = Dimensions.get("window");
 
+const text = {
+  fontSize: basicFontSize,
+  color: greyColor,
+  fontWeight: "bold",
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -17,9 +23,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   textNav: {
+    ...text,
     fontSize: basicFontSize + 3,
-    color: greyColor,
-    fontWeight: "bold",
   },
   btnBack: {
     width: 30,
@@ -28,46 +33,102 @@ const styles = StyleSheet.create({
   },
 
   backgroundImg: {
-    height: height * 0.55,
+    height: height * 0.5,
     width: width,
     resizeMode: "contain",
-  },
-  contentContainer: {
-    backgroundColor: "transparent",
     justifyContent: "flex-end",
   },
+  contentContainer: {
+    paddingBottom: height * 0.17,
+  },
   descContainer: {
-    backgroundColor: "transparent",
     flexDirection: "row",
-    paddingHorizontal: 34,
+    paddingHorizontal: width * 0.1,
     justifyContent: "space-between",
-    alignItems: "center",
   },
   textDesc: {
+    ...text,
     // fontFamily: "Daegu"
-    fontWeight: "bold",
-    color: greyColor,
     fontSize: basicFontSize + 2,
     textAlign: "center",
+    marginTop: 25,
   },
 
   cardContainer: {
     position: "absolute",
     bottom: 0,
     left: 0,
-    height: height * 0.55,
     width: width,
     backgroundColor: "white",
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
     justifyContent: "center",
     alignItems: "center",
+    paddingTop: 50,
+
+    ...Platform.select({
+      ios: {
+        shadowColor: "rgb(0, 0, 0)",
+        shadowOpacity: 0.08,
+        shadowRadius: 10,
+        shadowOffset: {
+          height: 2,
+          width: 0,
+        },
+      },
+      android: {
+        elevation: 5,
+      },
+    }),
   },
   textNone: {
-    fontSize: basicFontSize,
-    color: greyColor,
+    ...text,
     opacity: 0.5,
-    fontWeight: "bold",
+  },
+
+  locationContainer: {
+    height: height * 0.12,
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginTop: 30,
+    marginBottom: 20,
+  },
+  textLocation: {
+    ...text,
+    opacity: 0.9,
+    fontSize: basicFontSize + 1,
+  },
+  btnContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  btnImg: {
+    width: 53,
+    height: 53,
+    resizeMode: "contain",
+  },
+
+  rowContainer: {
+    flexDirection: "row",
+    width: width,
+    height: "100%",
+    alignItems: "flex-start",
+  },
+  line: {
+    height: "100%",
+    backgroundColor: greyColor,
+    opacity: 0.2,
+    width: 1,
+    marginLeft: 38,
+    marginRight: 19,
+  },
+  locationsContainer: {
+    marginBottom: height * 0.09,
+  },
+  textLocations: {
+    ...text,
+    opacity: 0.7,
+    marginBottom: 20,
   },
 });
 
