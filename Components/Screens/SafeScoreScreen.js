@@ -4,6 +4,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styles from "../../Styles/SafeScoreStyles";
+import { _getYYYYMMDD } from "../../FunctionModule";
 
 import locationIcon from "../../assets/safe-score/location_icon.png";
 import maskIcon from "../../assets/safe-score/mask_icon.png";
@@ -29,7 +30,7 @@ class SafeScoreScreen extends React.Component {
 
   componentDidMount() {
     this.setState({
-      today: this._getYYYYMMDD(),
+      today: _getYYYYMMDD(),
     });
     this._getScores();
   }
@@ -231,7 +232,7 @@ class SafeScoreScreen extends React.Component {
       resultScore = score.first * 25;
     }
 
-    const ID = this._getYYYYMMDD();
+    const ID = _getYYYYMMDD();
     const month = ID.substring(0, 7);
     const scores = {
       ...this.state.scores,
@@ -257,12 +258,6 @@ class SafeScoreScreen extends React.Component {
     navigation.push("SafeScoreCheck", {
       setScores: this._setScores,
     });
-  };
-
-  _getYYYYMMDD = () => {
-    const timezoneOffset = new Date().getTimezoneOffset() * 60000;
-    const timezoneDate = new Date(Date.now() - timezoneOffset);
-    return timezoneDate.toISOString().substring(0, 10);
   };
 }
 

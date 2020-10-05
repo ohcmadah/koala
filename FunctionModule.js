@@ -120,3 +120,9 @@ function _findLocation(data) {
   }
   return resultLocation;
 }
+
+export const _getYYYYMMDD = () => {
+  const timezoneOffset = new Date().getTimezoneOffset() * 60000;
+  const timezoneDate = new Date(Date.now() - timezoneOffset);
+  return timezoneDate.toISOString().substring(0, 10);
+};

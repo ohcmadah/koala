@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styles from "../../Styles/TodayRouteStyles";
-import { _getLocation } from "../../FunctionModule";
+import { _getLocation, _getYYYYMMDD } from "../../FunctionModule";
 
 const IMAGE_URL = "../../assets/today-route";
 const { height } = Dimensions.get("window");
@@ -20,7 +20,7 @@ class TodayRoute extends React.Component {
     haveLocations: false,
     isEditing: false,
     opacity: 0.7,
-    location: "",
+    address: "",
   };
 
   render() {
@@ -29,7 +29,7 @@ class TodayRoute extends React.Component {
       haveLocations,
       isEditing,
       opacity,
-      location,
+      address,
     } = this.state;
     const cardHeight = haveLocation ? height * 0.45 : height * 0.55;
 
@@ -62,7 +62,7 @@ class TodayRoute extends React.Component {
             </TouchableOpacity>
             {haveLocation ? (
               <View style={styles.locationContainer}>
-                <Text style={styles.textLocation}>{location}</Text>
+                <Text style={styles.textLocation}>{address}</Text>
                 <View style={styles.btnContainer}>
                   <TouchableOpacity
                     style={styles.btnCircle}
@@ -162,6 +162,7 @@ class TodayRoute extends React.Component {
   }
 
   _saveLocation = () => {
+    const { address } = this.state;
     this.setState({
       haveLocations: true,
       haveLocation: false,
@@ -169,10 +170,10 @@ class TodayRoute extends React.Component {
   };
 
   _getTodayLocation = async () => {
-    const location = await _getLocation(true);
+    const address = await _getLocation(true);
     this.setState({
       haveLocation: true,
-      location: location,
+      address: address,
     });
   };
 }
