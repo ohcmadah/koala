@@ -6,6 +6,8 @@ import {
   Image,
   TouchableOpacity,
   Linking,
+  Platform,
+  Dimensions,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
@@ -24,6 +26,7 @@ const menus = {
   third: [thirdCircle, "나의\n이동기록"],
 };
 const IMAGE_URL = "../../assets/home";
+const { width, height } = Dimensions.get("window");
 
 const Tab = createMaterialTopTabNavigator();
 const tabStyle = {
@@ -81,8 +84,7 @@ class HomeScreen extends React.Component {
         <SafeAreaView style={{ flex: 4 }}>
           <View style={styles.topNavContainer}>
             <ImageBackground
-              style={styles.topNavContainer}
-              resizeMode={"contain"}
+              style={styles.topNavImg}
               source={require(`${IMAGE_URL}/top_bar.png`)}
             >
               <Image
@@ -114,24 +116,48 @@ class HomeScreen extends React.Component {
                 children={() => <Area location={location} isRegion={true} />}
               />
             </Tab.Navigator>
+            <TouchableOpacity
+              style={styles.btnSite}
+              onPress={this._goToCoronaSite}
+            >
+              <Text style={styles.textSite}>
+                중앙재난안전대책본부 사이트 바로가기
+              </Text>
+            </TouchableOpacity>
           </View>
-
-          <TouchableOpacity
-            style={styles.btnSite}
-            onPress={this._goToCoronaSite}
-          >
-            <Text style={styles.textSite}>
-              중앙재난안전대책본부 사이트 바로가기
-            </Text>
-          </TouchableOpacity>
         </SafeAreaView>
 
         <View style={styles.bottomNavContainer}>
-          <View style={styles.btnCircle}>
-            <Image source={firstCircle} />
-          </View>
+          {Platform.isPad ? (
+            <></>
+          ) : (
+            <View style={styles.btnCircle}>
+              <Image source={firstCircle} />
+            </View>
+          )}
           {Object.values(menus).map((menu, index) => {
-            return (
+            return Platform.isPad ? (
+              <TouchableOpacity
+                key={index}
+                style={styles.padMenu}
+                onPress={() => {
+                  this._bottomMenuHandle(menu[1]);
+                }}
+              >
+                <View
+                  style={[
+                    styles.padTextMenu,
+                    { marginBottom: ((height * 0.3) / 3) * (2 - index) },
+                  ]}
+                >
+                  <Image
+                    style={{ height: 7, width: 13.5, alignSelf: "center" }}
+                    source={require(`${IMAGE_URL}/grey_tri.png`)}
+                  />
+                  <Text style={styles.textMenu}>{menu[1]}</Text>
+                </View>
+              </TouchableOpacity>
+            ) : (
               <TouchableOpacity
                 key={index}
                 style={styles.btnCircle}
