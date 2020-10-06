@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 10,
     padding: 10,
-    justifyContent: "space-between",
+    justifyContent: Platform.isPad ? "space-around" : "space-between",
     alignItems: "center",
     marginHorizontal: 4,
 
