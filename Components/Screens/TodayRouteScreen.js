@@ -274,7 +274,23 @@ class TodayRoute extends React.Component {
     });
   };
 
-  _deleteHandle = () => {};
+  _deleteHandle = () => {
+    const { deleteAddr, todayAddr } = this.state;
+    let _todayAddr = [...todayAddr];
+    Object.keys(deleteAddr)
+      .reverse()
+      .forEach((key) => {
+        if (deleteAddr[key]) {
+          _todayAddr.splice(key, 1);
+        }
+      });
+    this.setState({
+      todayAddr: _todayAddr,
+      isEditing: false,
+      opacity: 0.7,
+      deleteAddr: {},
+    });
+  };
 }
 
 export default TodayRoute;
