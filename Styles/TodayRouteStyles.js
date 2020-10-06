@@ -33,13 +33,15 @@ const styles = StyleSheet.create({
   },
 
   backgroundImg: {
-    height: height * 0.5,
+    height: height * 0.55,
     width: width,
     resizeMode: "contain",
     justifyContent: "flex-end",
   },
   contentContainer: {
-    paddingBottom: height * 0.17,
+    width: width,
+    height: height * 0.34,
+    marginBottom: height * 0.17,
   },
   descContainer: {
     flexDirection: "row",
@@ -87,10 +89,10 @@ const styles = StyleSheet.create({
   },
 
   locationContainer: {
-    height: height * 0.12,
+    height: height * 0.14,
     alignItems: "center",
     justifyContent: "space-between",
-    marginTop: 30,
+    marginTop: height * 0.04,
     marginBottom: 20,
   },
   textLocation: {

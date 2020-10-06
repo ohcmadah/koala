@@ -25,7 +25,7 @@ class TodayRoute extends React.Component {
     address: "",
     addresses: {},
     todayAddr: [],
-    delete: [],
+    delete: {},
   };
 
   componentDidMount() {
@@ -125,7 +125,11 @@ class TodayRoute extends React.Component {
                 style={styles.btnChoice}
                 onPress={() => {
                   const flag = !isEditing;
-                  this.setState({ isEditing: flag, opacity: 0.35, delete: [] });
+                  this.setState({
+                    isEditing: flag,
+                    opacity: isEditing ? 0.7 : 0.35,
+                    delete: {},
+                  });
                 }}
               >
                 <Text style={styles.textChoice}>
@@ -145,14 +149,14 @@ class TodayRoute extends React.Component {
                     key={index}
                     activeOpacity={1}
                     disabled={isEditing ? false : true}
-                    onPress={() => {
-                      this.setState({
-                        opacity: 0.9,
-                        delete: [...this.state.delete, index],
-                      });
-                    }}
+                    onPress={() => {}}
                   >
-                    <Text style={[styles.textLocations, { opacity: opacity }]}>
+                    <Text
+                      style={[
+                        styles.textLocations,
+                        { opacity: this.state.delete[index] ? 0.9 : opacity },
+                      ]}
+                    >
                       {addr}
                     </Text>
                   </TouchableOpacity>
@@ -166,7 +170,10 @@ class TodayRoute extends React.Component {
           )}
           {isEditing ? (
             <View style={styles.btnDelContainer}>
-              <TouchableOpacity style={styles.btnDelete}>
+              <TouchableOpacity
+                style={styles.btnDelete}
+                onPress={this._deleteHandle}
+              >
                 <Image
                   source={require(IMAGE_URL + "/btn_delete.png")}
                   style={{ width: 24, height: 28, resizeMode: "contain" }}
@@ -204,24 +211,27 @@ class TodayRoute extends React.Component {
   };
 
   _saveLocation = () => {
-    const { address } = this.state;
+    const { address, addresses } = this.state;
 
     const ID = _getYYYYMMDD();
     const month = ID.substring(0, 7);
-    let addresses;
-    if (Object.keys(this.state.addresses).length != 0) {
-      addresses = {
-        ...this.state.addresses,
+    let saveAddr;
+    if (Object.keys(addresses).length != 0) {
+      saveAddr = {
+        ...addresses,
         [month]: {
-          ...this.state.addresses[month],
+          ...addresses[month],
           [ID]: {
             id: ID,
-            address: [...this.state.addresses[month][ID].address, address],
+            address:
+              addresses[month][ID] != undefined
+                ? [...addresses[month][ID].address, address]
+                : [address],
           },
         },
       };
     } else {
-      addresses = {
+      saveAddr = {
         [month]: {
           [ID]: {
             id: ID,
@@ -236,7 +246,7 @@ class TodayRoute extends React.Component {
       haveLocation: false,
     });
 
-    AsyncStorage.setItem("addresses", JSON.stringify(addresses));
+    AsyncStorage.setItem("addresses", JSON.stringify(saveAddr));
 
     this._getAddress();
   };
@@ -248,6 +258,8 @@ class TodayRoute extends React.Component {
       address: address,
     });
   };
+
+  _deleteHandle = () => {};
 }
 
 export default TodayRoute;
