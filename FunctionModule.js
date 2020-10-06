@@ -1,5 +1,5 @@
 import * as Location from "expo-location";
-import { Alert } from "react-native";
+import { Alert, Platform } from "react-native";
 import * as config from "./config";
 
 const GOOGLE_API_KEY = config.GOOGLE_API_KEY;
@@ -40,13 +40,13 @@ const englishRegion = [
   "Seoul",
 ];
 
-export async function _getLocation() {
+export async function _getLocation(detail) {
   try {
     await Location.requestPermissionsAsync();
     const {
       coords: { latitude, longitude },
     } = await Location.getCurrentPositionAsync();
-    return await _getReverseGeo(latitude, longitude);
+    return await _getReverseGeo(latitude, longitude, detail);
   } catch (error) {
     Alert.alert(
       "위치를 찾을 수 없습니다.",
@@ -55,16 +55,36 @@ export async function _getLocation() {
   }
 }
 
-async function _getReverseGeo(latitude, longitude) {
+async function _getReverseGeo(latitude, longitude, detail) {
   const GEOLOCATION_API_URL = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GOOGLE_API_KEY}`;
 
   let location;
   await fetch(GEOLOCATION_API_URL)
     .then((response) => response.json())
     .then((data) => {
-      location = _findLocation(data);
+      if (detail) {
+        const address = data.results[0].formatted_address;
+        location = address;
+      } else {
+        location = _findLocation(data);
+      }
     });
+
+  if (Platform.OS == "android" && detail) {
+    location = await _translate(location);
+  }
   return location;
+}
+
+async function _translate(text) {
+  const TRANSLATE_API_URL = `https://translation.googleapis.com/language/translate/v2?&q=${text}&target=ko&key=${GOOGLE_API_KEY}`;
+  let korean;
+  await fetch(TRANSLATE_API_URL)
+    .then((response) => response.json())
+    .then((data) => {
+      korean = data.data.translations[0].translatedText;
+    });
+  return korean;
 }
 
 export async function _setLocation(address) {
@@ -100,3 +120,9 @@ function _findLocation(data) {
   }
   return resultLocation;
 }
+
+export const _getYYYYMMDD = () => {
+  const timezoneOffset = new Date().getTimezoneOffset() * 60000;
+  const timezoneDate = new Date(Date.now() - timezoneOffset);
+  return timezoneDate.toISOString().substring(0, 10);
+};

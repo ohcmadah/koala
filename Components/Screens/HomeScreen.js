@@ -6,6 +6,8 @@ import {
   Image,
   TouchableOpacity,
   Linking,
+  Platform,
+  Dimensions,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
@@ -24,6 +26,7 @@ const menus = {
   third: [thirdCircle, "나의\n이동기록"],
 };
 const IMAGE_URL = "../../assets/home";
+const { width, height } = Dimensions.get("window");
 
 const Tab = createMaterialTopTabNavigator();
 const tabStyle = {
@@ -55,7 +58,7 @@ class HomeScreen extends React.Component {
   };
 
   _callAPI = async () => {
-    const location = await fmodule._getLocation();
+    const location = await fmodule._getLocation(false);
     this.setState({
       location: location,
       isLoaded: true,
@@ -78,11 +81,10 @@ class HomeScreen extends React.Component {
 
     return isLoaded ? (
       <View style={styles.container}>
-        <SafeAreaView style={{ flex: 4 }}>
+        <SafeAreaView style={{ flex: 1 }}>
           <View style={styles.topNavContainer}>
             <ImageBackground
-              style={styles.topNavContainer}
-              resizeMode={"contain"}
+              style={styles.topNavImg}
               source={require(`${IMAGE_URL}/top_bar.png`)}
             >
               <Image
@@ -103,44 +105,70 @@ class HomeScreen extends React.Component {
           </View>
 
           <View style={styles.contentContainer}>
-            <Text style={styles.textContentTitle}>국내현황</Text>
-            <Tab.Navigator initialRouteName="전국" tabBarOptions={tabStyle}>
-              <Tab.Screen
-                name="전국"
-                children={() => <Area isRegion={false} />}
-              />
-              <Tab.Screen
-                name="우리 지역"
-                children={() => <Area location={location} isRegion={true} />}
-              />
-            </Tab.Navigator>
+            <View style={{ height: height * 0.37 }}>
+              <Text style={styles.textContentTitle}>국내현황</Text>
+              <Tab.Navigator initialRouteName="전국" tabBarOptions={tabStyle}>
+                <Tab.Screen
+                  name="전국"
+                  children={() => <Area isRegion={false} />}
+                />
+                <Tab.Screen
+                  name="우리 지역"
+                  children={() => <Area location={location} isRegion={true} />}
+                />
+              </Tab.Navigator>
+              <TouchableOpacity
+                style={styles.btnSite}
+                onPress={this._goToCoronaSite}
+              >
+                <Text style={styles.textSite}>
+                  중앙재난안전대책본부 사이트 바로가기
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
-
-          <TouchableOpacity
-            style={styles.btnSite}
-            onPress={this._goToCoronaSite}
-          >
-            <Text style={styles.textSite}>
-              중앙재난안전대책본부 사이트 바로가기
-            </Text>
-          </TouchableOpacity>
         </SafeAreaView>
 
         <View style={styles.bottomNavContainer}>
-          <View style={styles.btnCircle}>
-            <Image source={firstCircle} />
-          </View>
+          {Platform.isPad ? (
+            <></>
+          ) : (
+            <View style={styles.btnCircle}>
+              <Image
+                source={firstCircle}
+                style={{ height: height * 0.16 + 94 * 2 }}
+                resizeMode={"contain"}
+              />
+            </View>
+          )}
           {Object.values(menus).map((menu, index) => {
             return (
               <TouchableOpacity
                 key={index}
-                style={styles.btnCircle}
+                style={Platform.isPad ? styles.padMenu : styles.btnCircle}
                 onPress={() => {
                   this._bottomMenuHandle(menu[1]);
                 }}
               >
-                <Image source={menu[0]} />
-                <View style={styles.textMenuContainer}>
+                {Platform.isPad ? (
+                  <></>
+                ) : (
+                  <Image
+                    source={menu[0]}
+                    style={{ height: height * 0.16 + 94 * (2 - index) }}
+                    resizeMode={"contain"}
+                  />
+                )}
+                <View
+                  style={
+                    Platform.isPad
+                      ? [
+                          styles.padTextMenu,
+                          { marginBottom: ((height * 0.3) / 3) * (2 - index) },
+                        ]
+                      : styles.textMenuContainer
+                  }
+                >
                   <Image
                     style={{ height: 7, width: 13.5, alignSelf: "center" }}
                     source={require(`${IMAGE_URL}/grey_tri.png`)}

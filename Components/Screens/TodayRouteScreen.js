@@ -6,30 +6,58 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
+  Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import AsyncStorage from "@react-native-community/async-storage";
 import styles from "../../Styles/TodayRouteStyles";
-import { _getLocation } from "../../FunctionModule";
+import { _getLocation, _getYYYYMMDD } from "../../FunctionModule";
 
 const IMAGE_URL = "../../assets/today-route";
 const { height } = Dimensions.get("window");
 
 class TodayRoute extends React.Component {
   state = {
+    isLoaded: false,
     haveLocation: false,
     haveLocations: false,
     isEditing: false,
     opacity: 0.7,
+    address: "",
+    addresses: {},
+    todayAddr: [],
+    deleteAddr: {},
   };
 
+  componentDidMount() {
+    this._getAddress();
+    this.setState({
+      isLoaded: true,
+    });
+  }
+
   render() {
-    const { haveLocation, haveLocations, isEditing, opacity } = this.state;
+    const {
+      isLoaded,
+      haveLocation,
+      haveLocations,
+      isEditing,
+      opacity,
+      address,
+      todayAddr,
+      deleteAddr,
+    } = this.state;
     const cardHeight = haveLocation ? height * 0.45 : height * 0.55;
 
-    return (
+    return isLoaded ? (
       <SafeAreaView style={styles.container}>
         <View style={styles.navContainer}>
-          <TouchableOpacity style={styles.btnBack}>
+          <TouchableOpacity
+            style={styles.btnBack}
+            onPress={() => {
+              this.props.navigation.goBack();
+            }}
+          >
             <Image
               source={require(IMAGE_URL + "/btn_back.png")}
               style={{ width: 10, height: 20 }}
@@ -44,7 +72,10 @@ class TodayRoute extends React.Component {
           style={styles.backgroundImg}
         >
           <View style={styles.contentContainer}>
-            <TouchableOpacity style={{ alignSelf: "center" }}>
+            <TouchableOpacity
+              style={{ alignSelf: "center" }}
+              onPress={this._getTodayLocation}
+            >
               <Image
                 source={require(IMAGE_URL + "/btn_location.png")}
                 style={{ width: 92, height: 92, resizeMode: "contain" }}
@@ -52,13 +83,11 @@ class TodayRoute extends React.Component {
             </TouchableOpacity>
             {haveLocation ? (
               <View style={styles.locationContainer}>
-                <Text style={styles.textLocation}>
-                  {"강원 동해시 평원로 100"}
-                </Text>
+                <Text style={styles.textLocation}>{address}</Text>
                 <View style={styles.btnContainer}>
                   <TouchableOpacity
                     style={styles.btnCircle}
-                    onPress={this._saveLocation}
+                    onPress={this._saveHandle}
                   >
                     <Image
                       source={require(IMAGE_URL + "/btn_check.png")}
@@ -103,7 +132,11 @@ class TodayRoute extends React.Component {
                 style={styles.btnChoice}
                 onPress={() => {
                   const flag = !isEditing;
-                  this.setState({ isEditing: flag, opacity: 0.35 });
+                  this.setState({
+                    isEditing: flag,
+                    opacity: isEditing ? 0.7 : 0.35,
+                    deleteAddr: {},
+                  });
                 }}
               >
                 <Text style={styles.textChoice}>
@@ -118,17 +151,37 @@ class TodayRoute extends React.Component {
             <View style={styles.rowContainer}>
               <View style={styles.line} />
               <View style={styles.locationsContainer}>
-                <TouchableOpacity
-                  activeOpacity={1}
-                  disabled={isEditing ? false : true}
-                  onPress={() => {
-                    this.setState({ opacity: 0.9 });
-                  }}
-                >
-                  <Text style={[styles.textLocations, { opacity: opacity }]}>
-                    {"서울특별시 관악구 호암로 546"}
-                  </Text>
-                </TouchableOpacity>
+                {todayAddr.map((addr, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    activeOpacity={1}
+                    disabled={isEditing ? false : true}
+                    onPress={() => {
+                      const { deleteAddr } = this.state;
+                      const flag =
+                        Object.keys(deleteAddr).length == 0
+                          ? true
+                          : !deleteAddr[index];
+                      this.setState({
+                        deleteAddr: {
+                          ...deleteAddr,
+                          [index]: flag,
+                        },
+                      });
+                    }}
+                  >
+                    <Text
+                      style={[
+                        styles.textLocations,
+                        {
+                          opacity: this.state.deleteAddr[index] ? 0.9 : opacity,
+                        },
+                      ]}
+                    >
+                      {addr}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
               </View>
             </View>
           ) : (
@@ -138,7 +191,10 @@ class TodayRoute extends React.Component {
           )}
           {isEditing ? (
             <View style={styles.btnDelContainer}>
-              <TouchableOpacity style={styles.btnDelete}>
+              <TouchableOpacity
+                style={styles.btnDelete}
+                onPress={this._deleteConfirm}
+              >
                 <Image
                   source={require(IMAGE_URL + "/btn_delete.png")}
                   style={{ width: 24, height: 28, resizeMode: "contain" }}
@@ -150,14 +206,144 @@ class TodayRoute extends React.Component {
           )}
         </View>
       </SafeAreaView>
+    ) : (
+      <View />
     );
   }
 
-  _saveLocation = () => {
+  _getAddress = async () => {
+    const dbAddr = await AsyncStorage.getItem("addresses");
+
+    if (dbAddr != null) {
+      const parsedAddr = JSON.parse(dbAddr);
+      this.setState({ addresses: parsedAddr });
+      Object.values(parsedAddr).map((month) => {
+        Object.values(month).map((address) => {
+          if (address.id == _getYYYYMMDD()) {
+            const todayAddr = [...address.address];
+            this.setState({
+              todayAddr: todayAddr,
+              haveLocations: todayAddr.length == 0 ? false : true,
+            });
+          }
+        });
+      });
+    }
+  };
+
+  _saveHandle = () => {
+    const { address, addresses } = this.state;
+    const ID = _getYYYYMMDD();
+    const month = ID.substring(0, 7);
+
+    const today = {
+      [ID]: {
+        id: ID,
+        address:
+          addresses[month][ID] != undefined
+            ? [...addresses[month][ID].address, address]
+            : [address],
+      },
+    };
+
+    this._saveLocation(today);
+  };
+
+  _saveLocation = (todayAddr) => {
+    const { addresses } = this.state;
+
+    const ID = _getYYYYMMDD();
+    const month = ID.substring(0, 7);
+    let saveAddr;
+    if (Object.keys(addresses).length != 0) {
+      saveAddr = {
+        ...addresses,
+        [month]: {
+          ...addresses[month],
+          ...todayAddr,
+        },
+      };
+    } else {
+      saveAddr = {
+        [month]: {
+          ...todayAddr,
+        },
+      };
+    }
+
     this.setState({
       haveLocations: true,
       haveLocation: false,
     });
+
+    AsyncStorage.setItem("addresses", JSON.stringify(saveAddr));
+
+    this._getAddress();
+  };
+
+  _getTodayLocation = async () => {
+    const address = await _getLocation(true);
+    this.setState({
+      haveLocation: true,
+      address: address,
+    });
+  };
+
+  _deleteConfirm = () => {
+    const { deleteAddr } = this.state;
+    let flag = false;
+    Object.keys(deleteAddr).forEach((key, index) => {
+      if (deleteAddr[key]) {
+        flag = true;
+      }
+    });
+    if (!flag) {
+      Alert.alert("삭제", "삭제할 이동경로를 선택해주세요.");
+    } else {
+      const msg = "선택한 이동경로를 삭제하시겠습니까?";
+      Alert.alert("취소", msg, [
+        {
+          text: "Cancel",
+          onPress: () => {},
+          style: "cancel",
+        },
+        {
+          text: "OK",
+          onPress: () => this._deleteHandle(),
+        },
+      ]);
+    }
+  };
+
+  _deleteHandle = () => {
+    const { deleteAddr, todayAddr } = this.state;
+    let _todayAddr = [...todayAddr];
+    Object.keys(deleteAddr)
+      .reverse()
+      .forEach((key) => {
+        if (deleteAddr[key]) {
+          _todayAddr.splice(key, 1);
+        }
+      });
+
+    this.setState({
+      todayAddr: _todayAddr,
+      isEditing: false,
+      opacity: 0.7,
+      deleteAddr: {},
+      haveLocations: _todayAddr.length == 0 ? false : true,
+    });
+
+    const ID = _getYYYYMMDD();
+
+    const today = {
+      [ID]: {
+        id: ID,
+        address: [..._todayAddr],
+      },
+    };
+
+    this._saveLocation(today);
   };
 }
 
