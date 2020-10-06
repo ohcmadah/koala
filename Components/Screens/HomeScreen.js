@@ -81,7 +81,7 @@ class HomeScreen extends React.Component {
 
     return isLoaded ? (
       <View style={styles.container}>
-        <SafeAreaView style={{ flex: 4 }}>
+        <SafeAreaView style={{ flex: 1 }}>
           <View style={styles.topNavContainer}>
             <ImageBackground
               style={styles.topNavImg}
@@ -105,25 +105,27 @@ class HomeScreen extends React.Component {
           </View>
 
           <View style={styles.contentContainer}>
-            <Text style={styles.textContentTitle}>국내현황</Text>
-            <Tab.Navigator initialRouteName="전국" tabBarOptions={tabStyle}>
-              <Tab.Screen
-                name="전국"
-                children={() => <Area isRegion={false} />}
-              />
-              <Tab.Screen
-                name="우리 지역"
-                children={() => <Area location={location} isRegion={true} />}
-              />
-            </Tab.Navigator>
-            <TouchableOpacity
-              style={styles.btnSite}
-              onPress={this._goToCoronaSite}
-            >
-              <Text style={styles.textSite}>
-                중앙재난안전대책본부 사이트 바로가기
-              </Text>
-            </TouchableOpacity>
+            <View style={{ height: height * 0.37 }}>
+              <Text style={styles.textContentTitle}>국내현황</Text>
+              <Tab.Navigator initialRouteName="전국" tabBarOptions={tabStyle}>
+                <Tab.Screen
+                  name="전국"
+                  children={() => <Area isRegion={false} />}
+                />
+                <Tab.Screen
+                  name="우리 지역"
+                  children={() => <Area location={location} isRegion={true} />}
+                />
+              </Tab.Navigator>
+              <TouchableOpacity
+                style={styles.btnSite}
+                onPress={this._goToCoronaSite}
+              >
+                <Text style={styles.textSite}>
+                  중앙재난안전대책본부 사이트 바로가기
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </SafeAreaView>
 
@@ -132,7 +134,11 @@ class HomeScreen extends React.Component {
             <></>
           ) : (
             <View style={styles.btnCircle}>
-              <Image source={firstCircle} />
+              <Image
+                source={firstCircle}
+                style={{ height: height * 0.16 + 94 * 2 }}
+                resizeMode={"contain"}
+              />
             </View>
           )}
           {Object.values(menus).map((menu, index) => {
@@ -144,7 +150,15 @@ class HomeScreen extends React.Component {
                   this._bottomMenuHandle(menu[1]);
                 }}
               >
-                {Platform.isPad ? <></> : <Image source={menu[0]} />}
+                {Platform.isPad ? (
+                  <></>
+                ) : (
+                  <Image
+                    source={menu[0]}
+                    style={{ height: height * 0.16 + 94 * (2 - index) }}
+                    resizeMode={"contain"}
+                  />
+                )}
                 <View
                   style={
                     Platform.isPad

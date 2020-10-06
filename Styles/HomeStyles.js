@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
   },
   topNavContainer: {
     width: width,
-    height: Platform.isPad ? height * 0.18 : height * 0.13,
+    height: Platform.isPad ? height * 0.18 : height * 0.11,
   },
   topNavImg: {
     width: width,
@@ -27,23 +27,21 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginRight: 12,
     marginLeft: 16,
+    marginBottom: 10,
   },
 
   contentContainer: {
-    height: height * 0.44,
+    height: height * 0.45,
     minHeight: 150,
     marginHorizontal: basicMargin,
+    justifyContent: "center",
   },
   textContentTitle: {
     color: "white",
     fontSize: basicFontSize + 5,
     fontWeight: "bold",
-    marginTop: "10%",
   },
 
-  btnContainer: {
-    height: height * 0.12,
-  },
   btnSite: {
     height: 50,
     justifyContent: "center",
@@ -76,7 +74,7 @@ const styles = StyleSheet.create({
   },
 
   bottomNavContainer: {
-    height: height * 0.38,
+    height: height * 0.44,
     justifyContent: "flex-end",
     alignItems: "center",
   },
@@ -87,13 +85,13 @@ const styles = StyleSheet.create({
   textMenuContainer: {
     width: "100%",
     position: "absolute",
-    marginTop: 43,
+    marginTop: 38,
   },
   textMenu: {
     color: "#707070",
     fontSize: basicFontSize,
     fontWeight: "bold",
-    marginTop: 11,
+    marginTop: 10,
     alignSelf: "center",
     alignItems: "center",
     textAlign: "center",
