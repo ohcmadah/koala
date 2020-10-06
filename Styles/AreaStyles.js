@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 
 const mainColor = "#9DB4CE";
 
@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: mainColor,
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: Platform.isPad ? "space-around" : "space-between",
     paddingVertical: 20,
   },
 });

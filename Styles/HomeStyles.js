@@ -1,8 +1,9 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 
 const mainColor = "#9DB4CE";
 const basicFontSize = 17;
 const basicMargin = 36;
+const { width, height } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   container: {

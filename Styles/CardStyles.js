@@ -1,7 +1,9 @@
 import { StyleSheet, Platform, Dimensions } from "react-native";
 
 const { width } = Dimensions.get("window");
-const cardWidth = (width - 36 * 2 - 30) / 3;
+const cardWidth = Platform.isPad
+  ? (width - 36 * 2 - 400) / 3
+  : (width - 36 * 2 - 30) / 3;
 
 const styles = StyleSheet.create({
   cardStyle: {
@@ -10,7 +12,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 10,
     padding: 10,
-    justifyContent: "space-between",
+    justifyContent: Platform.isPad ? "space-around" : "space-between",
     alignItems: "center",
     marginHorizontal: 4,
 
