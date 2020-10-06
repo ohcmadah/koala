@@ -2,7 +2,7 @@ import { StyleSheet, Platform, Dimensions } from "react-native";
 
 const { width } = Dimensions.get("window");
 const cardWidth = Platform.isPad
-  ? (width - 36 * 2 - 400) / 3
+  ? (width - 36 * 2 - 200) / 3
   : (width - 36 * 2 - 30) / 3;
 
 const styles = StyleSheet.create({
