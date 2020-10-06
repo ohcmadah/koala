@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
+  Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-community/async-storage";
@@ -51,7 +52,12 @@ class TodayRoute extends React.Component {
     return isLoaded ? (
       <SafeAreaView style={styles.container}>
         <View style={styles.navContainer}>
-          <TouchableOpacity style={styles.btnBack}>
+          <TouchableOpacity
+            style={styles.btnBack}
+            onPress={() => {
+              this.props.navigation.goBack();
+            }}
+          >
             <Image
               source={require(IMAGE_URL + "/btn_back.png")}
               style={{ width: 10, height: 20 }}
@@ -187,7 +193,7 @@ class TodayRoute extends React.Component {
             <View style={styles.btnDelContainer}>
               <TouchableOpacity
                 style={styles.btnDelete}
-                onPress={this._deleteHandle}
+                onPress={this._deleteConfirm}
               >
                 <Image
                   source={require(IMAGE_URL + "/btn_delete.png")}
@@ -217,7 +223,7 @@ class TodayRoute extends React.Component {
             const todayAddr = [...address.address];
             this.setState({
               todayAddr: todayAddr,
-              haveLocations: true,
+              haveLocations: todayAddr.length == 0 ? false : true,
             });
           }
         });
@@ -283,6 +289,32 @@ class TodayRoute extends React.Component {
     });
   };
 
+  _deleteConfirm = () => {
+    const { deleteAddr } = this.state;
+    let flag = false;
+    Object.keys(deleteAddr).forEach((key, index) => {
+      if (deleteAddr[key]) {
+        flag = true;
+      }
+    });
+    if (!flag) {
+      Alert.alert("삭제", "삭제할 이동경로를 선택해주세요.");
+    } else {
+      const msg = "선택한 이동경로를 삭제하시겠습니까?";
+      Alert.alert("취소", msg, [
+        {
+          text: "Cancel",
+          onPress: () => {},
+          style: "cancel",
+        },
+        {
+          text: "OK",
+          onPress: () => this._deleteHandle(),
+        },
+      ]);
+    }
+  };
+
   _deleteHandle = () => {
     const { deleteAddr, todayAddr } = this.state;
     let _todayAddr = [...todayAddr];
@@ -299,6 +331,7 @@ class TodayRoute extends React.Component {
       isEditing: false,
       opacity: 0.7,
       deleteAddr: {},
+      haveLocations: _todayAddr.length == 0 ? false : true,
     });
 
     const ID = _getYYYYMMDD();
