@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet, Dimensions, Platform } from "react-native";
 
 const mainColor = "#9DB4CE";
 const basicFontSize = 17;
@@ -11,9 +11,12 @@ const styles = StyleSheet.create({
     backgroundColor: mainColor,
   },
   topNavContainer: {
-    flex: 1.3,
-    width: "100%",
-    height: 110,
+    width: width,
+    height: Platform.isPad ? height * 0.18 : height * 0.11,
+  },
+  topNavImg: {
+    width: width,
+    height: "100%",
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
@@ -24,23 +27,23 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginRight: 12,
     marginLeft: 16,
+    marginBottom: 10,
   },
 
   contentContainer: {
-    flex: 2,
+    height: height * 0.45,
     minHeight: 150,
     marginHorizontal: basicMargin,
+    justifyContent: "center",
   },
   textContentTitle: {
     color: "white",
     fontSize: basicFontSize + 5,
     fontWeight: "bold",
-    marginTop: "10%",
   },
 
   btnSite: {
     height: 50,
-    marginHorizontal: basicMargin,
     justifyContent: "center",
     alignItems: "center",
     borderColor: "white",
@@ -71,7 +74,7 @@ const styles = StyleSheet.create({
   },
 
   bottomNavContainer: {
-    flex: 4,
+    height: height * 0.44,
     justifyContent: "flex-end",
     alignItems: "center",
   },
@@ -82,17 +85,45 @@ const styles = StyleSheet.create({
   textMenuContainer: {
     width: "100%",
     position: "absolute",
-    marginTop: 43,
+    marginTop: 38,
   },
   textMenu: {
     color: "#707070",
     fontSize: basicFontSize,
     fontWeight: "bold",
-    marginTop: 11,
+    marginTop: 10,
     alignSelf: "center",
     alignItems: "center",
     textAlign: "center",
     lineHeight: 24,
+  },
+
+  padMenu: {
+    flex: 1,
+    width: width,
+    position: "absolute",
+    backgroundColor: "white",
+    borderTopLeftRadius: 100,
+    borderTopRightRadius: 100,
+    ...Platform.select({
+      ios: {
+        shadowColor: "rgb(0, 0, 0)",
+        shadowOpacity: 0.08,
+        shadowRadius: 4,
+        shadowOffset: {
+          height: 0,
+          width: 0,
+        },
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
+  },
+  padTextMenu: {
+    width: width,
+    height: (height * 0.3) / 3,
+    justifyContent: "center",
   },
 });
 
