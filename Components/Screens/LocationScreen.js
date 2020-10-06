@@ -114,7 +114,7 @@ class LocationScreen extends React.Component {
 
   _searchLocation = async () => {
     const { location } = this.state;
-    const resultLocation = await fModule._setLocation(location);
+    let resultLocation = await fModule._setLocation(location);
     if (resultLocation == "") {
       resultLocation = "검색 결과가 없습니다.";
       this.setState({
