@@ -25,7 +25,7 @@ class TodayRoute extends React.Component {
     address: "",
     addresses: {},
     todayAddr: [],
-    delete: {},
+    deleteAddr: {},
   };
 
   componentDidMount() {
@@ -44,6 +44,7 @@ class TodayRoute extends React.Component {
       opacity,
       address,
       todayAddr,
+      deleteAddr,
     } = this.state;
     const cardHeight = haveLocation ? height * 0.45 : height * 0.55;
 
@@ -128,7 +129,7 @@ class TodayRoute extends React.Component {
                   this.setState({
                     isEditing: flag,
                     opacity: isEditing ? 0.7 : 0.35,
-                    delete: {},
+                    deleteAddr: {},
                   });
                 }}
               >
@@ -149,12 +150,26 @@ class TodayRoute extends React.Component {
                     key={index}
                     activeOpacity={1}
                     disabled={isEditing ? false : true}
-                    onPress={() => {}}
+                    onPress={() => {
+                      const { deleteAddr } = this.state;
+                      const flag =
+                        Object.keys(deleteAddr).length == 0
+                          ? true
+                          : !deleteAddr[index];
+                      this.setState({
+                        deleteAddr: {
+                          ...deleteAddr,
+                          [index]: flag,
+                        },
+                      });
+                    }}
                   >
                     <Text
                       style={[
                         styles.textLocations,
-                        { opacity: this.state.delete[index] ? 0.9 : opacity },
+                        {
+                          opacity: this.state.deleteAddr[index] ? 0.9 : opacity,
+                        },
                       ]}
                     >
                       {addr}
