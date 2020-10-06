@@ -81,7 +81,7 @@ class TodayRoute extends React.Component {
                 <View style={styles.btnContainer}>
                   <TouchableOpacity
                     style={styles.btnCircle}
-                    onPress={this._saveLocation}
+                    onPress={this._saveHandle}
                   >
                     <Image
                       source={require(IMAGE_URL + "/btn_check.png")}
@@ -225,8 +225,26 @@ class TodayRoute extends React.Component {
     }
   };
 
-  _saveLocation = () => {
+  _saveHandle = () => {
     const { address, addresses } = this.state;
+    const ID = _getYYYYMMDD();
+    const month = ID.substring(0, 7);
+
+    const today = {
+      [ID]: {
+        id: ID,
+        address:
+          addresses[month][ID] != undefined
+            ? [...addresses[month][ID].address, address]
+            : [address],
+      },
+    };
+
+    this._saveLocation(today);
+  };
+
+  _saveLocation = (todayAddr) => {
+    const { addresses } = this.state;
 
     const ID = _getYYYYMMDD();
     const month = ID.substring(0, 7);
@@ -236,22 +254,13 @@ class TodayRoute extends React.Component {
         ...addresses,
         [month]: {
           ...addresses[month],
-          [ID]: {
-            id: ID,
-            address:
-              addresses[month][ID] != undefined
-                ? [...addresses[month][ID].address, address]
-                : [address],
-          },
+          ...todayAddr,
         },
       };
     } else {
       saveAddr = {
         [month]: {
-          [ID]: {
-            id: ID,
-            address: [address],
-          },
+          ...todayAddr,
         },
       };
     }
@@ -284,12 +293,24 @@ class TodayRoute extends React.Component {
           _todayAddr.splice(key, 1);
         }
       });
+
     this.setState({
       todayAddr: _todayAddr,
       isEditing: false,
       opacity: 0.7,
       deleteAddr: {},
     });
+
+    const ID = _getYYYYMMDD();
+
+    const today = {
+      [ID]: {
+        id: ID,
+        address: [..._todayAddr],
+      },
+    };
+
+    this._saveLocation(today);
   };
 }
 
