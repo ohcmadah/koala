@@ -136,37 +136,25 @@ class HomeScreen extends React.Component {
             </View>
           )}
           {Object.values(menus).map((menu, index) => {
-            return Platform.isPad ? (
+            return (
               <TouchableOpacity
                 key={index}
-                style={styles.padMenu}
+                style={Platform.isPad ? styles.padMenu : styles.btnCircle}
                 onPress={() => {
                   this._bottomMenuHandle(menu[1]);
                 }}
               >
+                {Platform.isPad ? <></> : <Image source={menu[0]} />}
                 <View
-                  style={[
-                    styles.padTextMenu,
-                    { marginBottom: ((height * 0.3) / 3) * (2 - index) },
-                  ]}
+                  style={
+                    Platform.isPad
+                      ? [
+                          styles.padTextMenu,
+                          { marginBottom: ((height * 0.3) / 3) * (2 - index) },
+                        ]
+                      : styles.textMenuContainer
+                  }
                 >
-                  <Image
-                    style={{ height: 7, width: 13.5, alignSelf: "center" }}
-                    source={require(`${IMAGE_URL}/grey_tri.png`)}
-                  />
-                  <Text style={styles.textMenu}>{menu[1]}</Text>
-                </View>
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity
-                key={index}
-                style={styles.btnCircle}
-                onPress={() => {
-                  this._bottomMenuHandle(menu[1]);
-                }}
-              >
-                <Image source={menu[0]} />
-                <View style={styles.textMenuContainer}>
                   <Image
                     style={{ height: 7, width: 13.5, alignSelf: "center" }}
                     source={require(`${IMAGE_URL}/grey_tri.png`)}

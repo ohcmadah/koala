@@ -46,7 +46,6 @@ const styles = StyleSheet.create({
   },
   btnSite: {
     height: 50,
-    marginHorizontal: basicMargin,
     justifyContent: "center",
     alignItems: "center",
     borderColor: "white",
