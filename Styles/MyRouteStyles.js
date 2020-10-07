@@ -66,6 +66,14 @@ const styles = StyleSheet.create({
       },
     }),
   },
+  textNone: {
+    ...text,
+    opacity: 0.5,
+    fontSize: basicFontSize - 1,
+    width: width - 37 * 2,
+    textAlign: "center",
+    alignSelf: "center",
+  },
   line: {
     width: 1,
     height: "100%",

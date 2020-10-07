@@ -4,7 +4,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import styles from "../../Styles/MyRouteStyles";
 
 class MyRouteScreen extends React.Component {
+  state = {
+    haveRoutes: true,
+  };
   render() {
+    const { haveRoutes } = this.state;
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.navContainer}>
@@ -25,16 +29,22 @@ class MyRouteScreen extends React.Component {
 
         <ScrollView style={styles.contentContainer}>
           <View style={styles.cardContainer}>
-            <View style={styles.line} />
-            <View style={styles.monthContainer}>
-              <Text style={styles.textMonth}>{"9월"}</Text>
-              <TouchableOpacity style={styles.daysContainer}>
-                <View style={styles.dayContainer}>
-                  <Text style={styles.textDay}>{"21일"}</Text>
-                  <View style={styles.longRect} />
+            {haveRoutes ? (
+              <>
+                <View style={styles.line} />
+                <View style={styles.monthContainer}>
+                  <Text style={styles.textMonth}>{"9월"}</Text>
+                  <TouchableOpacity style={styles.daysContainer}>
+                    <View style={styles.dayContainer}>
+                      <Text style={styles.textDay}>{"21일"}</Text>
+                      <View style={styles.longRect} />
+                    </View>
+                  </TouchableOpacity>
                 </View>
-              </TouchableOpacity>
-            </View>
+              </>
+            ) : (
+              <Text style={styles.textNone}>{"나의 이동기록이 없습니다."}</Text>
+            )}
           </View>
         </ScrollView>
       </SafeAreaView>
