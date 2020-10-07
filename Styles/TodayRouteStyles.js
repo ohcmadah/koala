@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   },
   textDesc: {
     ...text,
-    // fontFamily: "Daegu"
+    fontFamily: "gaegu",
     fontSize: basicFontSize + 2,
     textAlign: "center",
     marginTop: 25,
