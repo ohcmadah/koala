@@ -307,7 +307,10 @@ class TodayRoute extends React.Component {
     this.setState({
       loading: true,
     });
-    const address = await _getLocation(true);
+    let address = await _getLocation(true);
+    if (address == "") {
+      address = "위치를 찾을 수 없습니다.";
+    }
     this.setState({
       haveLocation: true,
       address: address,
