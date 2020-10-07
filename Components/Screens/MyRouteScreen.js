@@ -42,41 +42,75 @@ class MyRouteScreen extends React.Component {
               <>
                 <View style={styles.line} />
                 <View>
-                  <View style={styles.monthContainer}>
-                    <Text style={styles.textMonth}>{"9월"}</Text>
-                    <View style={styles.routeContainer}>
-                      <TouchableOpacity style={styles.daysContainer}>
-                        <View style={styles.dayContainer}>
-                          <Text style={styles.textDay}>{"21일"}</Text>
-                          {openingRoutes ? (
-                            <View style={styles.shortRect} />
-                          ) : (
-                            <View style={styles.longRect} />
-                          )}
-                        </View>
-                      </TouchableOpacity>
-                      {openingRoutes ? (
-                        <View style={styles.detailContainer}>
-                          <View style={styles.widthLine} />
-                          <View style={styles.routesContainer}>
-                            <Text style={styles.textRoute}>
-                              {"서울특별시 관악구 호암로 546"}
-                            </Text>
-                            <Text style={styles.textRoute}>
-                              {"서울특별시 관악구 호암로 547"}
-                            </Text>
-                          </View>
-                          <TouchableOpacity style={styles.btnRouteSite}>
-                            <Text style={styles.textBtnRoute}>
-                              {"서울특별시 확진자 경로 바로가기"}
-                            </Text>
-                          </TouchableOpacity>
-                        </View>
-                      ) : (
-                        <></>
-                      )}
-                    </View>
-                  </View>
+                  {Object.keys(routes).map((key, index) => {
+                    return (
+                      <View key={index} style={styles.monthContainer}>
+                        <Text style={styles.textMonth}>
+                          {key.substring(5, 7) + "월"}
+                        </Text>
+                        {Object.keys(routes[key]).map((k) => {
+                          if (routes[key][k].address.length != 0) {
+                            return (
+                              <View style={styles.routeContainer}>
+                                <TouchableOpacity
+                                  style={styles.daysContainer}
+                                  activeOpacity={1}
+                                  onPress={() => {
+                                    const flag =
+                                      openingRoutes[k] == undefined
+                                        ? true
+                                        : !openingRoutes[k];
+                                    this.setState({
+                                      openingRoutes: {
+                                        ...this.state.openingRoutes,
+                                        [k]: flag,
+                                      },
+                                    });
+                                  }}
+                                >
+                                  <View style={styles.dayContainer}>
+                                    <Text style={styles.textDay}>
+                                      {k.substring(8, 10) + "일"}
+                                    </Text>
+                                    {(
+                                      openingRoutes[k] == undefined
+                                        ? false
+                                        : openingRoutes[k]
+                                    ) ? (
+                                      <View style={styles.shortRect} />
+                                    ) : (
+                                      <View style={styles.longRect} />
+                                    )}
+                                  </View>
+                                </TouchableOpacity>
+                                {openingRoutes[k] ? (
+                                  <View style={styles.detailContainer}>
+                                    <View style={styles.widthLine} />
+                                    <View style={styles.routesContainer}>
+                                      {routes[key][k].address.map((addr) => (
+                                        <Text style={styles.textRoute}>
+                                          {addr}
+                                        </Text>
+                                      ))}
+                                    </View>
+                                    <TouchableOpacity
+                                      style={styles.btnRouteSite}
+                                    >
+                                      <Text style={styles.textBtnRoute}>
+                                        {"서울특별시 확진자 경로 바로가기"}
+                                      </Text>
+                                    </TouchableOpacity>
+                                  </View>
+                                ) : (
+                                  <></>
+                                )}
+                              </View>
+                            );
+                          }
+                        })}
+                      </View>
+                    );
+                  })}
                 </View>
               </>
             ) : (

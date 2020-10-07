@@ -107,6 +107,7 @@ const styles = StyleSheet.create({
     height: 18,
     width: 6,
     backgroundColor: "#A8C0DB",
+    marginHorizontal: 6,
   },
   shortRect: {
     height: 6,
