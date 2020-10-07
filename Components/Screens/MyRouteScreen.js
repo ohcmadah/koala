@@ -121,18 +121,24 @@ class MyRouteScreen extends React.Component {
                                     <View style={styles.detailContainer}>
                                       <View style={styles.widthLine} />
                                       <View style={styles.routesContainer}>
-                                        {routes[key][k].address.map((addr) => {
-                                          this._setSite(addr);
-                                          return (
-                                            <Text style={styles.textRoute}>
-                                              {addr}
-                                            </Text>
-                                          );
-                                        })}
+                                        {routes[key][k].address.map(
+                                          (addr, index) => {
+                                            this._setSite(addr);
+                                            return (
+                                              <Text
+                                                key={index}
+                                                style={styles.textRoute}
+                                              >
+                                                {addr}
+                                              </Text>
+                                            );
+                                          }
+                                        )}
                                       </View>
-                                      {sites.map((site) => {
+                                      {sites.map((site, index) => {
                                         return (
                                           <TouchableOpacity
+                                            key={index}
                                             style={styles.btnRouteSite}
                                             onPress={() => {
                                               const URL = siteURL[site];
@@ -180,6 +186,7 @@ class MyRouteScreen extends React.Component {
 
     if (dbRoutes != null) {
       let routes14 = {};
+      let flag = false;
       const routes = JSON.parse(dbRoutes);
       Object.values(routes).map((month) => {
         Object.values(month).map((route) => {
@@ -194,12 +201,16 @@ class MyRouteScreen extends React.Component {
                 },
               },
             };
-            this.setState({
-              routes: routes14,
-              haveRoutes: true,
-            });
+            if (route.address.length != 0) {
+              flag = true;
+            }
           }
         });
+      });
+
+      this.setState({
+        routes: routes14,
+        haveRoutes: flag,
       });
     }
   };

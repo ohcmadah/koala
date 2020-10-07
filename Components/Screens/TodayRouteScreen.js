@@ -362,7 +362,7 @@ class TodayRoute extends React.Component {
       },
     };
 
-    this._saveLocation(today);
+    this._saveLocation(today, ID.substring(0, 7));
   };
 }
 
