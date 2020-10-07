@@ -50,7 +50,7 @@ export async function _getLocation(detail) {
   } catch (error) {
     Alert.alert(
       "위치를 찾을 수 없습니다.",
-      "앱 설정에서 위치 정보를 허용해주세요."
+      "앱 설정에서 위치 정보를 허용하거나, 다시 시도해주세요."
     );
   }
 }

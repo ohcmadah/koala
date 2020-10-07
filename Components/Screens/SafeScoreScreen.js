@@ -229,7 +229,10 @@ class SafeScoreScreen extends React.Component {
     if (score.first == 4) {
       resultScore = 99;
     } else {
-      resultScore = score.first * 25;
+      let substract = (4 - score.first) * 10;
+      let maskScore = score.second * 15;
+      let handwashScore = score.third * 10;
+      resultScore = maskScore + handwashScore - substract;
     }
 
     const ID = _getYYYYMMDD();

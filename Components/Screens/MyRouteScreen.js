@@ -85,7 +85,7 @@ class MyRouteScreen extends React.Component {
                           {Object.keys(routes[key]).map((k) => {
                             if (routes[key][k].address.length != 0) {
                               return (
-                                <View style={styles.routeContainer}>
+                                <View key={k} style={styles.routeContainer}>
                                   <TouchableOpacity
                                     style={styles.daysContainer}
                                     activeOpacity={1}
