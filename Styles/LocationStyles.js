@@ -69,6 +69,7 @@ const styles = StyleSheet.create({
   },
   description: {
     ...text,
+    fontFamily: "gaegu",
     fontSize: basicFontSize + 2,
     textAlign: "center",
     lineHeight: 30,

@@ -14,6 +14,7 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import styles from "../../Styles/HomeStyles";
 import Area from "../Area";
 import { AppLoading } from "expo";
+import * as Font from "expo-font";
 import * as fmodule from "../../FunctionModule";
 
 import firstCircle from "../../assets/home/first_circle.png";
@@ -55,6 +56,7 @@ class HomeScreen extends React.Component {
   state = {
     location: "",
     isLoaded: false,
+    fontLoaded: false,
   };
 
   _callAPI = async () => {
@@ -74,12 +76,13 @@ class HomeScreen extends React.Component {
     } else {
       this._callAPI();
     }
+    this._loadFont();
   }
 
   render() {
-    const { location, isLoaded } = this.state;
+    const { location, isLoaded, fontLoaded } = this.state;
 
-    return isLoaded ? (
+    return isLoaded && fontLoaded ? (
       <View style={styles.container}>
         <SafeAreaView style={{ flex: 1 }}>
           <View style={styles.topNavContainer}>
@@ -184,6 +187,15 @@ class HomeScreen extends React.Component {
       <AppLoading />
     );
   }
+
+  _loadFont = async () => {
+    await Font.loadAsync({
+      gaegu: require("../../assets/fonts/Gaegu-Bold.ttf"),
+    });
+    this.setState({
+      fontLoaded: true,
+    });
+  };
 
   _locationHandle = () => {
     const { navigation } = this.props;
