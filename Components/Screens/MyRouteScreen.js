@@ -1,6 +1,13 @@
 import React from "react";
 import AsyncStorage from "@react-native-community/async-storage";
-import { Text, View, TouchableOpacity, Image, ScrollView } from "react-native";
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  ScrollView,
+  Linking,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styles from "../../Styles/MyRouteStyles";
 import { _getYYYYMMDD } from "../../FunctionModule";
@@ -25,14 +32,16 @@ const siteURL = {
   경상북도: "http://gb.go.kr/corona_main.htm",
   경상남도: "http://xn--19-q81ii1knc140d892b.kr/main/main.do",
   제주특별자치도: "https://www.jeju.go.kr/corona19.jsp#corona-main",
+  전국:
+    "http://ncov.mohw.go.kr/bdBoardList_Real.do?brdId=1&brdGubun=13&ncvContSeq=&contSeq=&board_id=&gubun=",
 };
+let sites = [];
 
 class MyRouteScreen extends React.Component {
   state = {
     routes: {},
     haveRoutes: false,
     openingRoutes: {},
-    site: [],
   };
 
   componentDidMount() {
@@ -112,19 +121,34 @@ class MyRouteScreen extends React.Component {
                                     <View style={styles.detailContainer}>
                                       <View style={styles.widthLine} />
                                       <View style={styles.routesContainer}>
-                                        {routes[key][k].address.map((addr) => (
-                                          <Text style={styles.textRoute}>
-                                            {addr}
-                                          </Text>
-                                        ))}
+                                        {routes[key][k].address.map((addr) => {
+                                          this._setSite(addr);
+                                          return (
+                                            <Text style={styles.textRoute}>
+                                              {addr}
+                                            </Text>
+                                          );
+                                        })}
                                       </View>
-                                      <TouchableOpacity
-                                        style={styles.btnRouteSite}
-                                      >
-                                        <Text style={styles.textBtnRoute}>
-                                          {"서울특별시 확진자 경로 바로가기"}
-                                        </Text>
-                                      </TouchableOpacity>
+                                      {sites.map((site) => {
+                                        return (
+                                          <TouchableOpacity
+                                            style={styles.btnRouteSite}
+                                            onPress={() => {
+                                              const URL = siteURL[site];
+                                              Linking.openURL(
+                                                URL
+                                              ).catch((err) =>
+                                                console.log(err)
+                                              );
+                                            }}
+                                          >
+                                            <Text style={styles.textBtnRoute}>
+                                              {site + " 확진자 경로 바로가기"}
+                                            </Text>
+                                          </TouchableOpacity>
+                                        );
+                                      })}
                                     </View>
                                   ) : (
                                     <></>
@@ -178,6 +202,48 @@ class MyRouteScreen extends React.Component {
         });
       });
     }
+  };
+
+  _setSite = (addr) => {
+    let result = "";
+    if (addr.includes("서울")) {
+      result = "서울특별시";
+    } else if (addr.includes("부산")) {
+      result = "부산광역시";
+    } else if (addr.includes("대구")) {
+      result = "대구광역시";
+    } else if (addr.includes("인천")) {
+      result = "인천광역시";
+    } else if (addr.includes("광주")) {
+      result = "광주광역시";
+    } else if (addr.includes("대전")) {
+      result = "대전광역시";
+    } else if (addr.includes("울산")) {
+      result = "울산광역시";
+    } else if (addr.includes("세종")) {
+      result = "세종특별자치시";
+    } else if (addr.includes("경기")) {
+      result = "경기도";
+    } else if (addr.includes("강원")) {
+      result = "강원도";
+    } else if (addr.includes("충남") || addr.includes("충청남")) {
+      result = "충청남도";
+    } else if (addr.includes("충북") || addr.includes("충청북")) {
+      result = "충청북도";
+    } else if (addr.includes("경북") || addr.includes("경상북")) {
+      result = "경상북도";
+    } else if (addr.includes("경남") || addr.includes("경상남")) {
+      result = "경상남도";
+    } else if (addr.includes("전북") || addr.includes("전라북")) {
+      result = "전라북도";
+    } else if (addr.includes("전남") || addr.includes("전라남")) {
+      result = "전라남도";
+    } else if (addr.includes("제주") || addr.includes("서귀")) {
+      result = "제주특별자치도";
+    } else {
+      result = "전국";
+    }
+    sites = sites.includes(result) ? [...sites] : [...sites, result];
   };
 }
 
