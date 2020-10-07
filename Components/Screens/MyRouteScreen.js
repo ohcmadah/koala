@@ -3,6 +3,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 import { Text, View, TouchableOpacity, Image, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styles from "../../Styles/MyRouteStyles";
+import { _getYYYYMMDD } from "../../FunctionModule";
 
 class MyRouteScreen extends React.Component {
   state = {
@@ -115,7 +116,9 @@ class MyRouteScreen extends React.Component {
                 </View>
               </>
             ) : (
-              <Text style={styles.textNone}>{"나의 이동기록이 없습니다."}</Text>
+              <Text style={styles.textNone}>
+                {"14일간 나의 이동기록이 없습니다."}
+              </Text>
             )}
           </View>
         </ScrollView>
@@ -125,11 +128,31 @@ class MyRouteScreen extends React.Component {
 
   _getRoutes = async () => {
     const dbRoutes = await AsyncStorage.getItem("addresses");
+    const today = _getYYYYMMDD();
+    const timestamp = Date.parse(today) - 13 * 24 * 3600 * 1000;
+
     if (dbRoutes != null) {
+      let routes14 = {};
       const routes = JSON.parse(dbRoutes);
-      this.setState({
-        routes: routes,
-        haveRoutes: true,
+      Object.values(routes).map((month) => {
+        Object.values(month).map((route) => {
+          const cMonth = route.id.substring(0, 7);
+          if (Date.parse(route.id) >= timestamp) {
+            routes14 = {
+              ...routes14,
+              [cMonth]: {
+                ...routes14[cMonth],
+                [route.id]: {
+                  ...route,
+                },
+              },
+            };
+            this.setState({
+              routes: routes14,
+              haveRoutes: true,
+            });
+          }
+        });
       });
     }
   };
