@@ -5,11 +5,34 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import styles from "../../Styles/MyRouteStyles";
 import { _getYYYYMMDD } from "../../FunctionModule";
 
+const siteURL = {
+  서울특별시: "https://news.seoul.go.kr/welfare/archives/513105",
+  부산광역시: "http://www.busan.go.kr/covid19/Corona19.do",
+  대구광역시: "http://covid19.daegu.go.kr/00936598.html",
+  인천광역시: "https://www.incheon.go.kr/health/HE020409",
+  광주광역시:
+    "https://www.gwangju.go.kr/c19/c19/contentsView.do?pageId=coronagj2",
+  대전광역시: "https://www.daejeon.go.kr/corona19/index.do?menuId=0008",
+  울산광역시: "https://www.ulsan.go.kr/corona.jsp",
+  세종특별자치시: "https://www.sejong.go.kr/bbs/R3391/list.do",
+  경기도: "https://www.gg.go.kr/contents/contents.do?ciIdx=1150&menuId=2909",
+  강원도: "https://www.provin.gangwon.kr/covid-19.html",
+  충청북도: "https://www.provin.gangwon.kr/covid-19.html",
+  충청남도: "http://www.chungnam.go.kr/coronaStatus.do",
+  전라북도:
+    "http://www.jeonbuk.go.kr/board/list.jeonbuk?boardId=BBS_0000107&menuCd=DOM_000000110006000000&contentsSid=1224&cpath=",
+  전라남도: "https://www.jeonnam.go.kr/coronaMainPage.do",
+  경상북도: "http://gb.go.kr/corona_main.htm",
+  경상남도: "http://xn--19-q81ii1knc140d892b.kr/main/main.do",
+  제주특별자치도: "https://www.jeju.go.kr/corona19.jsp#corona-main",
+};
+
 class MyRouteScreen extends React.Component {
   state = {
     routes: {},
     haveRoutes: false,
     openingRoutes: {},
+    site: [],
   };
 
   componentDidMount() {
