@@ -37,42 +37,45 @@ class MyRouteScreen extends React.Component {
 
         <ScrollView style={styles.contentContainer}>
           <View style={styles.cardContainer}>
+            <View></View>
             {haveRoutes ? (
               <>
                 <View style={styles.line} />
-                <View style={styles.monthContainer}>
-                  <Text style={styles.textMonth}>{"9월"}</Text>
-                  <View style={styles.routeContainer}>
-                    <TouchableOpacity style={styles.daysContainer}>
-                      <View style={styles.dayContainer}>
-                        <Text style={styles.textDay}>{"21일"}</Text>
-                        {openingRoutes ? (
-                          <View style={styles.shortRect} />
-                        ) : (
-                          <View style={styles.longRect} />
-                        )}
-                      </View>
-                    </TouchableOpacity>
-                    {openingRoutes ? (
-                      <View style={styles.detailContainer}>
-                        <View style={styles.widthLine} />
-                        <View style={styles.routesContainer}>
-                          <Text style={styles.textRoute}>
-                            {"서울특별시 관악구 호암로 546"}
-                          </Text>
-                          <Text style={styles.textRoute}>
-                            {"서울특별시 관악구 호암로 547"}
-                          </Text>
+                <View>
+                  <View style={styles.monthContainer}>
+                    <Text style={styles.textMonth}>{"9월"}</Text>
+                    <View style={styles.routeContainer}>
+                      <TouchableOpacity style={styles.daysContainer}>
+                        <View style={styles.dayContainer}>
+                          <Text style={styles.textDay}>{"21일"}</Text>
+                          {openingRoutes ? (
+                            <View style={styles.shortRect} />
+                          ) : (
+                            <View style={styles.longRect} />
+                          )}
                         </View>
-                        <TouchableOpacity style={styles.btnRouteSite}>
-                          <Text style={styles.textBtnRoute}>
-                            {"서울특별시 확진자 경로 바로가기"}
-                          </Text>
-                        </TouchableOpacity>
-                      </View>
-                    ) : (
-                      <></>
-                    )}
+                      </TouchableOpacity>
+                      {openingRoutes ? (
+                        <View style={styles.detailContainer}>
+                          <View style={styles.widthLine} />
+                          <View style={styles.routesContainer}>
+                            <Text style={styles.textRoute}>
+                              {"서울특별시 관악구 호암로 546"}
+                            </Text>
+                            <Text style={styles.textRoute}>
+                              {"서울특별시 관악구 호암로 547"}
+                            </Text>
+                          </View>
+                          <TouchableOpacity style={styles.btnRouteSite}>
+                            <Text style={styles.textBtnRoute}>
+                              {"서울특별시 확진자 경로 바로가기"}
+                            </Text>
+                          </TouchableOpacity>
+                        </View>
+                      ) : (
+                        <></>
+                      )}
+                    </View>
                   </View>
                 </View>
               </>
