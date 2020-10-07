@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginRight: 12,
     marginLeft: 16,
-    marginBottom: 10,
   },
 
   contentContainer: {
