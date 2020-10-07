@@ -7,6 +7,7 @@ import LocationScreen from "./Components/Screens/LocationScreen";
 import SafeScoreScreen from "./Components/Screens/SafeScoreScreen";
 import SafeScoreCheckScreen from "./Components/Screens/SafeScoreCheckScreen";
 import TodayRouteScreen from "./Components/Screens/TodayRouteScreen";
+import MyRouteScreen from "./Components/Screens/MyRouteScreen";
 
 const Stack = createStackNavigator();
 
@@ -26,6 +27,7 @@ class App extends React.Component {
               options={{ gestureEnabled: false }}
             />
             <Stack.Screen name="TodayRoute" component={TodayRouteScreen} />
+            <Stack.Screen name="MyRoute" component={MyRouteScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </>

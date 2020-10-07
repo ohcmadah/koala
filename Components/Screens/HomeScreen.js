@@ -202,6 +202,7 @@ class HomeScreen extends React.Component {
     } else if (textMenu == menus.second[1]) {
       navigation.push("SafeScore");
     } else {
+      navigation.push("MyRoute");
     }
   };
 }

@@ -174,7 +174,7 @@ class TodayRoute extends React.Component {
                       style={[
                         styles.textLocations,
                         {
-                          opacity: this.state.deleteAddr[index] ? 0.9 : opacity,
+                          opacity: deleteAddr[index] ? 0.9 : opacity,
                         },
                       ]}
                     >
@@ -213,13 +213,31 @@ class TodayRoute extends React.Component {
 
   _getAddress = async () => {
     const dbAddr = await AsyncStorage.getItem("addresses");
+    const today = _getYYYYMMDD();
+    const timestamp = Date.parse(today) - 13 * 24 * 3600 * 1000;
 
     if (dbAddr != null) {
+      let addr14 = {};
       const parsedAddr = JSON.parse(dbAddr);
-      this.setState({ addresses: parsedAddr });
       Object.values(parsedAddr).map((month) => {
         Object.values(month).map((address) => {
-          if (address.id == _getYYYYMMDD()) {
+          const cMonth = address.id.substring(0, 7);
+          if (Date.parse(address.id) >= timestamp) {
+            addr14 = {
+              ...addr14,
+              [cMonth]: {
+                ...addr14[cMonth],
+                [address.id]: {
+                  ...address,
+                },
+              },
+            };
+            this.setState({
+              addresses: addr14,
+            });
+          }
+
+          if (address.id == today) {
             const todayAddr = [...address.address];
             this.setState({
               todayAddr: todayAddr,
@@ -239,21 +257,22 @@ class TodayRoute extends React.Component {
     const today = {
       [ID]: {
         id: ID,
-        address:
-          addresses[month][ID] != undefined
-            ? [...addresses[month][ID].address, address]
-            : [address],
+        address: (
+          addresses[month] != undefined
+            ? addresses[month][ID] != undefined
+            : false
+        )
+          ? [...addresses[month][ID].address, address]
+          : [address],
       },
     };
 
-    this._saveLocation(today);
+    this._saveLocation(today, month);
   };
 
-  _saveLocation = (todayAddr) => {
+  _saveLocation = (todayAddr, month) => {
     const { addresses } = this.state;
 
-    const ID = _getYYYYMMDD();
-    const month = ID.substring(0, 7);
     let saveAddr;
     if (Object.keys(addresses).length != 0) {
       saveAddr = {
@@ -343,7 +362,7 @@ class TodayRoute extends React.Component {
       },
     };
 
-    this._saveLocation(today);
+    this._saveLocation(today, ID.substring(0, 7));
   };
 }
 
