@@ -3,6 +3,7 @@ import { StyleSheet, Platform, Dimensions } from "react-native";
 const { width, height } = Dimensions.get("window");
 const basicFontSize = 18;
 const greyColor = "#707070";
+const blueColor = "#9DB4CE";
 const text = {
   fontSize: basicFontSize,
   color: greyColor,
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
   },
   textMonth: {
     ...text,
-    color: "#9DB4CE",
+    color: blueColor,
     fontSize: basicFontSize - 3,
   },
   daysContainer: {
@@ -97,6 +98,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: 31,
+    alignItems: "center",
   },
   textDay: {
     ...text,
@@ -105,6 +107,48 @@ const styles = StyleSheet.create({
     height: 18,
     width: 6,
     backgroundColor: "#A8C0DB",
+  },
+  shortRect: {
+    height: 6,
+    width: 18,
+    backgroundColor: "#A8C0DB",
+  },
+
+  detailContainer: {
+    marginTop: 16,
+    marginBottom: 25,
+  },
+  widthLine: {
+    width: width - (37 * 2 + 22),
+    height: 1,
+    backgroundColor: greyColor,
+    opacity: 0.15,
+    marginBottom: 24,
+  },
+  routesContainer: {
+    marginBottom: 11,
+  },
+  textRoute: {
+    ...text,
+    opacity: 0.6,
+    fontSize: basicFontSize - 2,
+    marginBottom: 16,
+  },
+  btnRouteSite: {
+    width: width - (58 + 52),
+    height: 50,
+    backgroundColor: "transparent",
+    justifyContent: "center",
+    alignItems: "center",
+    borderColor: blueColor,
+    borderRadius: 10,
+    borderWidth: 2,
+    marginBottom: 15,
+  },
+  textBtnRoute: {
+    ...text,
+    color: blueColor,
+    fontSize: basicFontSize - 3,
   },
 });
 
