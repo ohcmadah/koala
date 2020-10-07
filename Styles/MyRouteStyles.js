@@ -83,6 +83,7 @@ const styles = StyleSheet.create({
   },
   monthContainer: {
     marginLeft: 20,
+    marginTop: 40,
   },
   textMonth: {
     ...text,

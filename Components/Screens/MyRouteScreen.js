@@ -37,11 +37,10 @@ class MyRouteScreen extends React.Component {
 
         <ScrollView style={styles.contentContainer}>
           <View style={styles.cardContainer}>
-            <View></View>
             {haveRoutes ? (
               <>
                 <View style={styles.line} />
-                <View>
+                <View style={{ marginTop: -40 }}>
                   {Object.keys(routes).map((key, index) => {
                     return (
                       <View key={index} style={styles.monthContainer}>
