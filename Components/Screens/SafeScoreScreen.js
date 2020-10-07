@@ -209,7 +209,7 @@ class SafeScoreScreen extends React.Component {
             });
           }
 
-          if (id == this.state.today) {
+          if (id == today) {
             this.setState({
               todayScore: { ...score },
               haveTodayScore: true,
