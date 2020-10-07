@@ -27,6 +27,7 @@ class TodayRoute extends React.Component {
     addresses: {},
     todayAddr: [],
     deleteAddr: {},
+    loading: false,
   };
 
   componentDidMount() {
@@ -46,6 +47,7 @@ class TodayRoute extends React.Component {
       address,
       todayAddr,
       deleteAddr,
+      loading,
     } = this.state;
     const cardHeight = haveLocation ? height * 0.45 : height * 0.55;
 
@@ -73,8 +75,9 @@ class TodayRoute extends React.Component {
         >
           <View style={styles.contentContainer}>
             <TouchableOpacity
-              style={{ alignSelf: "center" }}
+              style={{ alignSelf: "center", opacity: loading ? 0.5 : 1 }}
               onPress={this._getTodayLocation}
+              disabled={loading ? true : false}
             >
               <Image
                 source={require(IMAGE_URL + "/btn_location.png")}
@@ -301,10 +304,14 @@ class TodayRoute extends React.Component {
   };
 
   _getTodayLocation = async () => {
+    this.setState({
+      loading: true,
+    });
     const address = await _getLocation(true);
     this.setState({
       haveLocation: true,
       address: address,
+      loading: false,
     });
   };
 
