@@ -21,6 +21,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "android": {
+      "versionCode": 0,
+      "package": "com.eucalyptus.koala"
+    },
+    "githubUrl": "https://github.com/cho-hadam/koala"
   }
 }
