@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "koala",
+    "name": "코알라: 코로나 알려주라",
     "slug": "koala",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
-    "icon": "./assets/app-icon.png",
+    "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -23,7 +23,7 @@
       "favicon": "./assets/favicon.png"
     },
     "android": {
-      "versionCode": 0,
+      "versionCode": 3,
       "package": "com.eucalyptus.koala"
     },
     "githubUrl": "https://github.com/cho-hadam/koala"
