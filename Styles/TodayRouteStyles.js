@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     width: width,
     height: height * 0.34,
-    marginBottom: height * 0.17,
+    marginBottom: height * 0.18,
   },
   descContainer: {
     flexDirection: "row",
@@ -92,7 +92,6 @@ const styles = StyleSheet.create({
     height: height * 0.14,
     alignItems: "center",
     justifyContent: "space-between",
-    marginTop: height * 0.04,
     marginBottom: 20,
   },
   textLocation: {

@@ -81,7 +81,7 @@ class TodayRoute extends React.Component {
             >
               <Image
                 source={require(IMAGE_URL + "/btn_location.png")}
-                style={{ width: 92, height: 92, resizeMode: "contain" }}
+                style={{ width: 107, height: 107, resizeMode: "contain" }}
               />
             </TouchableOpacity>
             {haveLocation ? (
