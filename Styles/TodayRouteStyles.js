@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     width: width,
     height: height * 0.34,
-    marginBottom: height * 0.17,
+    marginBottom: height * 0.18,
   },
   descContainer: {
     flexDirection: "row",
@@ -49,10 +49,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   textDesc: {
-    ...text,
-    fontFamily: "gaegu",
-    fontSize: basicFontSize + 2,
-    textAlign: "center",
+    height: height * 0.06,
+    width: width * 0.34,
+    resizeMode: "contain",
     marginTop: 25,
   },
 
@@ -92,7 +91,6 @@ const styles = StyleSheet.create({
     height: height * 0.14,
     alignItems: "center",
     justifyContent: "space-between",
-    marginTop: height * 0.04,
     marginBottom: 20,
   },
   textLocation: {

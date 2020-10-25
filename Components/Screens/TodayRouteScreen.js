@@ -81,7 +81,7 @@ class TodayRoute extends React.Component {
             >
               <Image
                 source={require(IMAGE_URL + "/btn_location.png")}
-                style={{ width: 92, height: 92, resizeMode: "contain" }}
+                style={{ width: 107, height: 107, resizeMode: "contain" }}
               />
             </TouchableOpacity>
             {haveLocation ? (
@@ -119,9 +119,10 @@ class TodayRoute extends React.Component {
                 {haveLocations ? (
                   <></>
                 ) : (
-                  <Text style={styles.textDesc}>
-                    {"아이콘을 눌러\n현위치를 기록해요!"}
-                  </Text>
+                  <Image
+                    style={styles.textDesc}
+                    source={require(IMAGE_URL + "/text.png")}
+                  />
                 )}
               </View>
             )}

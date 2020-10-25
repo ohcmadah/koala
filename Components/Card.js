@@ -4,6 +4,7 @@ import styles from "../Styles/CardStyles";
 
 import greenTri from "../assets/home/green_tri.png";
 import redTri from "../assets/home/red_tri.png";
+import { color } from "react-native-reanimated";
 
 const basicFontSize = 17;
 const colors = ["#FF7A7A", "#707070", "#84DB6A"];
@@ -23,8 +24,11 @@ class Card extends React.Component {
     },
   };
   componentDidMount() {
-    const { diff } = this.props;
+    const { diff, title } = this.props;
     let diffColor = diff > 0 ? colors[0] : colors[2];
+    if (title == "격리해제") {
+      diffColor = diff < 0 ? colors[0] : colors[2];
+    }
     this.setState({
       diffStyle: {
         color: diffColor,
@@ -33,8 +37,13 @@ class Card extends React.Component {
     });
   }
   render() {
-    const { title, number, diff } = this.props;
+    const { title, number } = this.props;
+    let { diff } = this.props;
     const { numberStyle, diffStyle } = this.state;
+
+    if (title == "격리해제") {
+      diff = diff * -1;
+    }
 
     return (
       <View style={styles.cardStyle}>
