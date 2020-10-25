@@ -68,13 +68,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   description: {
-    ...text,
-    fontFamily: "gaegu",
-    fontSize: basicFontSize + 2,
-    textAlign: "center",
-    lineHeight: 30,
     alignSelf: "flex-start",
     marginTop: height * 0.25,
+    resizeMode: "contain",
   },
   koala: {
     width: 158,

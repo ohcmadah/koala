@@ -49,10 +49,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   textDesc: {
-    ...text,
-    fontFamily: "gaegu",
-    fontSize: basicFontSize + 2,
-    textAlign: "center",
+    height: height * 0.06,
+    width: width * 0.34,
+    resizeMode: "contain",
     marginTop: 25,
   },
 

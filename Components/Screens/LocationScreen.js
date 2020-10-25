@@ -7,6 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
+  Dimensions,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styles from "../../Styles/LocationStyles";
@@ -24,6 +25,7 @@ class LocationScreen extends React.Component {
 
   render() {
     const { location, haveLocation } = this.state;
+    const { height, width } = Dimensions.get("window");
 
     return (
       <SafeAreaView style={styles.container}>
@@ -63,9 +65,13 @@ class LocationScreen extends React.Component {
 
             {haveLocation ? (
               <View style={styles.descContainer}>
-                <Text style={styles.description}>
-                  {"설정을 완료했다면,\n설정 완료를 꾸욱!"}
-                </Text>
+                <Image
+                  style={[
+                    styles.description,
+                    { width: width * 0.33, height: height * 0.06 },
+                  ]}
+                  source={require(IMAGE_URL + "/complete_text.png")}
+                />
                 <Image
                   source={require(`${IMAGE_URL}/koala_down.png`)}
                   style={styles.koala}
@@ -73,9 +79,13 @@ class LocationScreen extends React.Component {
               </View>
             ) : (
               <View style={styles.descContainer}>
-                <Text style={styles.description}>
-                  {"현황을 알고 싶은\n장소를 검색해주세요!\nex. 서울특별시"}
-                </Text>
+                <Image
+                  style={[
+                    styles.description,
+                    { width: width * 0.37, height: height * 0.1 },
+                  ]}
+                  source={require(IMAGE_URL + "/search_text.png")}
+                />
                 <Image
                   source={require(`${IMAGE_URL}/koala.png`)}
                   style={styles.koala}
