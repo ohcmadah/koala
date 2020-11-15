@@ -94,6 +94,7 @@ class MyRouteScreen extends React.Component {
                                         openingRoutes[k] == undefined
                                           ? true
                                           : !openingRoutes[k];
+                                      sites = [];
                                       this.setState({
                                         openingRoutes: {
                                           ...this.state.openingRoutes,
