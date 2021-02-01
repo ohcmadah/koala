@@ -11,12 +11,28 @@ import maskIcon from "../../assets/safe-score/mask_icon.png";
 import handCleanerIcon from "../../assets/safe-score/hand_cleaner_icon.png";
 
 const IMAGE_URL = "../../assets/safe-score";
+// gray, red, yellow, blue, green
 const colors = ["#9A9A9A", "#F57272", "#F9D315", "#A3C1E2", "#84DB6A"];
-const imageInfo = {
-  location: [locationIcon, 21, 21],
-  mask: [maskIcon, 26, 16],
-  hand: [handCleanerIcon, 17, 24],
-};
+const imagesInfo = [
+  {
+    imageName: "location",
+    src: locationIcon,
+    width: 21,
+    height: 21,
+  },
+  {
+    imageName: "mask",
+    src: maskIcon,
+    width: 26,
+    height: 16,
+  },
+  {
+    imageName: "hand",
+    src: handCleanerIcon,
+    width: 17,
+    height: 24,
+  },
+];
 
 class SafeScoreScreen extends React.Component {
   state = {
@@ -47,6 +63,7 @@ class SafeScoreScreen extends React.Component {
     return isGetted ? (
       <SafeAreaView style={styles.container}>
         <View style={styles.navContainer}>
+          {/* Back Button */}
           <TouchableOpacity
             style={{ width: 30 }}
             onPress={() => this.props.navigation.goBack()}
@@ -56,46 +73,58 @@ class SafeScoreScreen extends React.Component {
               style={{ width: 10, height: 20 }}
             />
           </TouchableOpacity>
+          {/* Screen Title */}
           <Text style={styles.textNav}>{"나의 안전지수"}</Text>
+          {/* Empty View (Title Align Center) */}
           <View style={{ width: 30 }} />
         </View>
+
+        {/* Today Score Box & Score of 14 Day */}
         <ScrollView style={{ flex: 0.84 }}>
+          {/* Today Score Box */}
           <View style={styles.cardContainer}>
             <View style={styles.cardView}>
               <Text style={styles.textCardTitle}>{"TODAY"}</Text>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
+                {/* Score Text */}
                 <View style={styles.scoreContainer}>
                   <Text style={styles.textScore}>
                     {haveTodayScore ? todayScore.score : " ? "}
                   </Text>
                   <Text style={styles.textScoreDesc}>{"점"}</Text>
                 </View>
+
                 <View style={styles.divider} />
+
+                {/* Icons & Colors */}
                 <View style={styles.iconsContainer}>
+                  {/* Icons */}
                   <View style={styles.iconContainer}>
-                    {Object.values(imageInfo).map((item) => {
+                    {imagesInfo.map((item) => {
                       return (
                         <Image
-                          key={item[1]}
-                          source={item[0]}
+                          key={item.height}
+                          source={item.src}
                           style={{
-                            width: item[1],
-                            height: item[2],
+                            width: item.width,
+                            height: item.height,
                             resizeMode: "contain",
                           }}
                         />
                       );
                     })}
                   </View>
+                  {/* Colors */}
                   <View style={styles.circleContainer}>
-                    {Object.keys(imageInfo).map((str, index) => (
+                    {imagesInfo.map((item) => (
                       <View
-                        key={index}
+                        key={item.height}
                         style={[
                           styles.circle,
                           haveTodayScore
                             ? {
-                                backgroundColor: colors[todayScore[str]],
+                                backgroundColor:
+                                  colors[todayScore[item.imageName]],
                               }
                             : { backgroundColor: "#E1E1E1" },
                         ]}
@@ -104,6 +133,7 @@ class SafeScoreScreen extends React.Component {
                   </View>
                 </View>
               </View>
+              {/* Record Button */}
               <TouchableOpacity
                 style={styles.btnAgain}
                 onPress={this._goSafeCheck}
@@ -115,6 +145,7 @@ class SafeScoreScreen extends React.Component {
             </View>
           </View>
 
+          {/* Score of 14 Day */}
           <View style={styles.bottomCardContainer}>
             {haveScore ? (
               <>
