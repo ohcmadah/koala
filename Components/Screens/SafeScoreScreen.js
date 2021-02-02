@@ -79,7 +79,7 @@ class SafeScoreScreen extends React.Component {
           <View style={{ width: 30 }} />
         </View>
 
-        {/* Today Score Box & Score of 14 Day */}
+        {/* Today Score Box & 14 Days' Score */}
         <ScrollView style={{ flex: 0.84 }}>
           {/* Today Score Box */}
           <View style={styles.cardContainer}>
@@ -145,56 +145,17 @@ class SafeScoreScreen extends React.Component {
             </View>
           </View>
 
-          {/* Score of 14 Day */}
+          {/* 14 Days' Score */}
           <View style={styles.bottomCardContainer}>
+            {/* If you have a score (14 Days) */}
             {haveScore ? (
               <>
+                {/* Left Line in the Box */}
                 <View style={styles.line} />
+                {/* Line Side Contents */}
                 <View style={styles.monthsContainer}>
                   {Object.values(scores).map((month, index) => {
-                    return (
-                      <View key={index} style={styles.monthContainer}>
-                        <Text style={styles.textMonth}>
-                          {Object.keys(scores)[index].substring(5, 7) + "월"}
-                        </Text>
-                        <View style={styles.daysContainer}>
-                          {Object.values(month).map((score) => {
-                            const barColor =
-                              score.score <= 50
-                                ? score.score <= 25
-                                  ? colors[1]
-                                  : colors[2]
-                                : score.score <= 75
-                                ? colors[3]
-                                : colors[4];
-                            return (
-                              <View key={score.id} style={styles.dayContainer}>
-                                <Text style={styles.textDay}>
-                                  {score.id.substring(8, 10) + "일"}
-                                </Text>
-                                <View style={styles.barContainer}>
-                                  <View
-                                    style={[
-                                      styles.colorBar,
-                                      {
-                                        width: `${score.score}%`,
-                                        backgroundColor: barColor,
-                                      },
-                                    ]}
-                                  />
-                                </View>
-                                <Text
-                                  style={[
-                                    styles.textDayScore,
-                                    { color: barColor },
-                                  ]}
-                                >{`${score.score}점`}</Text>
-                              </View>
-                            );
-                          })}
-                        </View>
-                      </View>
-                    );
+                    return <Month monthScores={month} index={index} />;
                   })}
                 </View>
               </>
@@ -294,5 +255,64 @@ class SafeScoreScreen extends React.Component {
     });
   };
 }
+
+const Month = ({ monthScores, index }) => {
+  return (
+    <View key={index} style={styles.monthContainer}>
+      {/* Ex) 01월 */}
+      <Text style={styles.textMonth}>
+        {Object.keys(monthScores)[0].substring(5, 7) + "월"}
+      </Text>
+
+      {/* The Current Month's Scores */}
+      <View style={styles.daysContainer}>
+        {Object.values(monthScores).map((scores) => {
+          return <Day scores={scores} />;
+        })}
+      </View>
+    </View>
+  );
+};
+
+// Date, Graph, Score
+const Day = ({ scores }) => {
+  const total = scores.score; // total score (mask + hand + location)
+  let barColor = colors[0]; // grey
+  if (total > 75) {
+    barColor = colors[4]; // green
+  } else if (total > 50) {
+    barColor = colors[3]; // blue
+  } else if (total > 25) {
+    barColor = colors[2]; // yellow
+  } else {
+    barColor = colors[1]; //red
+  }
+
+  return (
+    <View key={scores.id} style={styles.dayContainer}>
+      {/* Ex) 01일 */}
+      <Text style={styles.textDay}>{scores.id.substring(8, 10) + "일"}</Text>
+
+      {/* Graph */}
+      <View style={styles.barContainer}>
+        {/* Color Bar */}
+        <View
+          style={[
+            styles.colorBar,
+            {
+              width: `${total}%`,
+              backgroundColor: barColor,
+            },
+          ]}
+        />
+      </View>
+
+      {/* Ex) 35점 */}
+      <Text
+        style={[styles.textDayScore, { color: barColor }]}
+      >{`${scores.score}점`}</Text>
+    </View>
+  );
+};
 
 export default SafeScoreScreen;
