@@ -36,12 +36,11 @@ const imagesInfo = [
 
 class SafeScoreScreen extends React.Component {
   state = {
-    today: "",
-    isGetted: false,
-    haveScore: false,
-    haveTodayScore: false,
-    scores: {},
-    todayScore: {},
+    today: "", // Today's date (Ex: 2021-01-01)
+    haveScore: false, // If Have a 14-day score
+    haveTodayScore: false, // If Have a Today's score
+    scores: {}, // 14 Days' Score
+    todayScore: {}, // Today's Score
   };
 
   componentDidMount() {
@@ -52,125 +51,115 @@ class SafeScoreScreen extends React.Component {
   }
 
   render() {
-    const {
-      isGetted,
-      haveScore,
-      haveTodayScore,
-      scores,
-      todayScore,
-    } = this.state;
+    const { haveScore, haveTodayScore, scores, todayScore } = this.state;
 
     return (
-      isGetted && (
-        <SafeAreaView style={styles.container}>
-          <View style={styles.navContainer}>
-            {/* Back Button */}
-            <TouchableOpacity
-              style={{ width: 30 }}
-              onPress={() => this.props.navigation.goBack()}
-            >
-              <Image
-                source={require(`${IMAGE_URL}/btn_back.png`)}
-                style={{ width: 10, height: 20 }}
-              />
-            </TouchableOpacity>
-            {/* Screen Title */}
-            <Text style={styles.textNav}>{"나의 안전지수"}</Text>
-            {/* Empty View (Title Align Center) */}
-            <View style={{ width: 30 }} />
-          </View>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.navContainer}>
+          {/* Back Button */}
+          <TouchableOpacity
+            style={{ width: 30 }}
+            onPress={() => this.props.navigation.goBack()}
+          >
+            <Image
+              source={require(`${IMAGE_URL}/btn_back.png`)}
+              style={{ width: 10, height: 20 }}
+            />
+          </TouchableOpacity>
+          {/* Screen Title */}
+          <Text style={styles.textNav}>{"나의 안전지수"}</Text>
+          {/* Empty View (Title Align Center) */}
+          <View style={{ width: 30 }} />
+        </View>
 
-          {/* Today Score Box & 14 Days' Score */}
-          <ScrollView style={{ flex: 0.84 }}>
-            {/* Today Score Box */}
-            <View style={styles.cardContainer}>
-              <View style={styles.cardView}>
-                <Text style={styles.textCardTitle}>{"TODAY"}</Text>
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  {/* Score Text */}
-                  <View style={styles.scoreContainer}>
-                    <Text style={styles.textScore}>
-                      {haveTodayScore ? todayScore.score : " ? "}
-                    </Text>
-                    <Text style={styles.textScoreDesc}>{"점"}</Text>
-                  </View>
-
-                  {/* Center Line */}
-                  <View style={styles.divider} />
-
-                  {/* Icons & Colors */}
-                  <View style={styles.iconsContainer}>
-                    {/* Icons */}
-                    <View style={styles.iconContainer}>
-                      {imagesInfo.map((item) => {
-                        return (
-                          <Image
-                            key={item.height}
-                            source={item.src}
-                            style={{
-                              width: item.width,
-                              height: item.height,
-                              resizeMode: "contain",
-                            }}
-                          />
-                        );
-                      })}
-                    </View>
-                    {/* Colors */}
-                    <View style={styles.circleContainer}>
-                      {imagesInfo.map((image) => (
-                        <View
-                          key={image.height}
-                          style={[
-                            styles.circle,
-                            haveTodayScore
-                              ? {
-                                  backgroundColor:
-                                    colors[todayScore[image.imageName]],
-                                }
-                              : { backgroundColor: "#E1E1E1" },
-                          ]}
-                        />
-                      ))}
-                    </View>
-                  </View>
+        {/* Today Score Box & 14 Days' Score */}
+        <ScrollView style={{ flex: 0.84 }}>
+          {/* Today Score Box */}
+          <View style={styles.cardContainer}>
+            <View style={styles.cardView}>
+              <Text style={styles.textCardTitle}>{"TODAY"}</Text>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                {/* Score Text */}
+                <View style={styles.scoreContainer}>
+                  <Text style={styles.textScore}>
+                    {haveTodayScore ? todayScore.score : " ? "}
+                  </Text>
+                  <Text style={styles.textScoreDesc}>{"점"}</Text>
                 </View>
 
-                {/* Record Button */}
-                <TouchableOpacity
-                  style={styles.btnAgain}
-                  onPress={this._goSafeCheck}
-                >
-                  <Text style={styles.textAgain}>
-                    {haveTodayScore ? "다시 기록하기" : "기록하기"}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
+                {/* Center Line */}
+                <View style={styles.divider} />
 
-            {/* 14 Days' Score */}
-            <View style={styles.bottomCardContainer}>
-              {/* If you have a score (14 Days) */}
-              {haveScore ? (
-                <>
-                  {/* Left Line in the Box */}
-                  <View style={styles.line} />
-                  {/* Line Side Contents */}
-                  <View style={styles.monthsContainer}>
-                    {Object.values(scores).map((month, index) => {
-                      return <Month monthScores={month} index={index} />;
-                    })}
+                {/* Icons & Colors */}
+                <View style={styles.iconsContainer}>
+                  {/* Icons */}
+                  <View style={styles.iconContainer}>
+                    {imagesInfo.map((item) => (
+                      <Image
+                        key={item.height}
+                        source={item.src}
+                        style={{
+                          width: item.width,
+                          height: item.height,
+                          resizeMode: "contain",
+                        }}
+                      />
+                    ))}
                   </View>
-                </>
-              ) : (
-                <Text style={styles.textNoneScore}>
-                  {"14일간 안전지수 기록이 없습니다."}
+                  {/* Colors */}
+                  <View style={styles.circleContainer}>
+                    {imagesInfo.map((image) => (
+                      <View
+                        key={image.height}
+                        style={[
+                          styles.circle,
+                          haveTodayScore
+                            ? {
+                                backgroundColor:
+                                  colors[todayScore[image.imageName]],
+                              }
+                            : { backgroundColor: "#E1E1E1" },
+                        ]}
+                      />
+                    ))}
+                  </View>
+                </View>
+              </View>
+
+              {/* Record Button */}
+              <TouchableOpacity
+                style={styles.btnAgain}
+                onPress={this._goSafeCheck}
+              >
+                <Text style={styles.textAgain}>
+                  {haveTodayScore ? "다시 기록하기" : "기록하기"}
                 </Text>
-              )}
+              </TouchableOpacity>
             </View>
-          </ScrollView>
-        </SafeAreaView>
-      )
+          </View>
+
+          {/* 14 Days' Score */}
+          <View style={styles.bottomCardContainer}>
+            {/* If you have a score (14 Days) */}
+            {haveScore ? (
+              <>
+                {/* Left Line in the Box */}
+                <View style={styles.line} />
+                {/* Line Side Contents */}
+                <View style={styles.monthsContainer}>
+                  {Object.values(scores).map((month, index) => {
+                    return <Month monthScores={month} index={index} />;
+                  })}
+                </View>
+              </>
+            ) : (
+              <Text style={styles.textNoneScore}>
+                {"14일간 안전지수 기록이 없습니다."}
+              </Text>
+            )}
+          </View>
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 
@@ -212,10 +201,6 @@ class SafeScoreScreen extends React.Component {
         });
       });
     }
-
-    this.setState({
-      isGetted: true,
-    });
   };
 
   _setScores = (score) => {
