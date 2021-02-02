@@ -173,35 +173,38 @@ class SafeScoreScreen extends React.Component {
     let scores14 = {}; // 14일간의 Score
     if (scores != null) {
       const parsedScores = JSON.parse(scores);
-      console.log(parsedScores);
-
-      Object.values(parsedScores).map((month) => {
-        Object.values(month).map((score) => {
-          const id = score.id;
-          const scoreMonth = id.substring(0, 7);
+      // 월별 점수들
+      Object.values(parsedScores).map((monthScores) => {
+        // 일별 점수들
+        Object.values(monthScores).map((dayScore) => {
+          const id = dayScore.id; // 날짜 (2021-01-01)
+          const monthDate = id.substring(0, 7); // 날짜 (2021-01)
           if (Date.parse(id) >= timestamp) {
+            // 13일 전보다 이후 데이터면
             scores14 = {
               ...scores14,
-              [scoreMonth]: {
-                ...scores14[scoreMonth],
+              [monthDate]: {
+                ...scores14[monthDate],
                 [id]: {
-                  ...score,
+                  ...dayScore,
                 },
               },
             };
-            this.setState({
-              scores: scores14,
-              haveScore: true,
-            });
           }
 
           if (id == today) {
+            // 오늘 데이터면
             this.setState({
-              todayScore: { ...score },
+              todayScore: { ...dayScore },
               haveTodayScore: true,
             });
           }
         });
+      });
+
+      this.setState({
+        scores: scores14,
+        haveScore: true,
       });
     }
   };
