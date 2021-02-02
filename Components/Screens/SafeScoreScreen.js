@@ -148,7 +148,7 @@ class SafeScoreScreen extends React.Component {
                 {/* Line Side Contents */}
                 <View style={styles.monthsContainer}>
                   {Object.values(scores).map((month, index) => {
-                    return <Month monthScores={month} index={index} />;
+                    return <Month key={index} monthScores={month} />;
                   })}
                 </View>
               </>
@@ -163,14 +163,17 @@ class SafeScoreScreen extends React.Component {
     );
   }
 
+  // AsyncStorage에 저장된 scores 가져오기
   _getScores = async () => {
     const scores = await AsyncStorage.getItem("scores");
     const { today } = this.state;
+    // 오늘로부터 13일 전 timestamp
     const timestamp = Date.parse(today) - 13 * 24 * 3600 * 1000;
 
-    let scores14 = {};
+    let scores14 = {}; // 14일간의 Score
     if (scores != null) {
       const parsedScores = JSON.parse(scores);
+      console.log(parsedScores);
 
       Object.values(parsedScores).map((month) => {
         Object.values(month).map((score) => {
@@ -243,9 +246,9 @@ class SafeScoreScreen extends React.Component {
   };
 }
 
-const Month = ({ monthScores, index }) => {
+const Month = ({ monthScores }) => {
   return (
-    <View key={index} style={styles.monthContainer}>
+    <View style={styles.monthContainer}>
       {/* Ex) 01월 */}
       <Text style={styles.textMonth}>
         {Object.keys(monthScores)[0].substring(5, 7) + "월"}
@@ -254,7 +257,7 @@ const Month = ({ monthScores, index }) => {
       {/* The Current Month's Scores */}
       <View style={styles.daysContainer}>
         {Object.values(monthScores).map((scores) => {
-          return <Day scores={scores} />;
+          return <Day key={scores.id} scores={scores} />;
         })}
       </View>
     </View>
@@ -276,7 +279,7 @@ const Day = ({ scores }) => {
   }
 
   return (
-    <View key={scores.id} style={styles.dayContainer}>
+    <View style={styles.dayContainer}>
       {/* Ex) 01일 */}
       <Text style={styles.textDay}>{scores.id.substring(8, 10) + "일"}</Text>
 
