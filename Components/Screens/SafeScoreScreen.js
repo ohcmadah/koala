@@ -60,115 +60,117 @@ class SafeScoreScreen extends React.Component {
       todayScore,
     } = this.state;
 
-    return isGetted ? (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.navContainer}>
-          {/* Back Button */}
-          <TouchableOpacity
-            style={{ width: 30 }}
-            onPress={() => this.props.navigation.goBack()}
-          >
-            <Image
-              source={require(`${IMAGE_URL}/btn_back.png`)}
-              style={{ width: 10, height: 20 }}
-            />
-          </TouchableOpacity>
-          {/* Screen Title */}
-          <Text style={styles.textNav}>{"나의 안전지수"}</Text>
-          {/* Empty View (Title Align Center) */}
-          <View style={{ width: 30 }} />
-        </View>
+    return (
+      isGetted && (
+        <SafeAreaView style={styles.container}>
+          <View style={styles.navContainer}>
+            {/* Back Button */}
+            <TouchableOpacity
+              style={{ width: 30 }}
+              onPress={() => this.props.navigation.goBack()}
+            >
+              <Image
+                source={require(`${IMAGE_URL}/btn_back.png`)}
+                style={{ width: 10, height: 20 }}
+              />
+            </TouchableOpacity>
+            {/* Screen Title */}
+            <Text style={styles.textNav}>{"나의 안전지수"}</Text>
+            {/* Empty View (Title Align Center) */}
+            <View style={{ width: 30 }} />
+          </View>
 
-        {/* Today Score Box & 14 Days' Score */}
-        <ScrollView style={{ flex: 0.84 }}>
-          {/* Today Score Box */}
-          <View style={styles.cardContainer}>
-            <View style={styles.cardView}>
-              <Text style={styles.textCardTitle}>{"TODAY"}</Text>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                {/* Score Text */}
-                <View style={styles.scoreContainer}>
-                  <Text style={styles.textScore}>
-                    {haveTodayScore ? todayScore.score : " ? "}
-                  </Text>
-                  <Text style={styles.textScoreDesc}>{"점"}</Text>
+          {/* Today Score Box & 14 Days' Score */}
+          <ScrollView style={{ flex: 0.84 }}>
+            {/* Today Score Box */}
+            <View style={styles.cardContainer}>
+              <View style={styles.cardView}>
+                <Text style={styles.textCardTitle}>{"TODAY"}</Text>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  {/* Score Text */}
+                  <View style={styles.scoreContainer}>
+                    <Text style={styles.textScore}>
+                      {haveTodayScore ? todayScore.score : " ? "}
+                    </Text>
+                    <Text style={styles.textScoreDesc}>{"점"}</Text>
+                  </View>
+
+                  {/* Center Line */}
+                  <View style={styles.divider} />
+
+                  {/* Icons & Colors */}
+                  <View style={styles.iconsContainer}>
+                    {/* Icons */}
+                    <View style={styles.iconContainer}>
+                      {imagesInfo.map((item) => {
+                        return (
+                          <Image
+                            key={item.height}
+                            source={item.src}
+                            style={{
+                              width: item.width,
+                              height: item.height,
+                              resizeMode: "contain",
+                            }}
+                          />
+                        );
+                      })}
+                    </View>
+                    {/* Colors */}
+                    <View style={styles.circleContainer}>
+                      {imagesInfo.map((image) => (
+                        <View
+                          key={image.height}
+                          style={[
+                            styles.circle,
+                            haveTodayScore
+                              ? {
+                                  backgroundColor:
+                                    colors[todayScore[image.imageName]],
+                                }
+                              : { backgroundColor: "#E1E1E1" },
+                          ]}
+                        />
+                      ))}
+                    </View>
+                  </View>
                 </View>
 
-                <View style={styles.divider} />
+                {/* Record Button */}
+                <TouchableOpacity
+                  style={styles.btnAgain}
+                  onPress={this._goSafeCheck}
+                >
+                  <Text style={styles.textAgain}>
+                    {haveTodayScore ? "다시 기록하기" : "기록하기"}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
 
-                {/* Icons & Colors */}
-                <View style={styles.iconsContainer}>
-                  {/* Icons */}
-                  <View style={styles.iconContainer}>
-                    {imagesInfo.map((item) => {
-                      return (
-                        <Image
-                          key={item.height}
-                          source={item.src}
-                          style={{
-                            width: item.width,
-                            height: item.height,
-                            resizeMode: "contain",
-                          }}
-                        />
-                      );
+            {/* 14 Days' Score */}
+            <View style={styles.bottomCardContainer}>
+              {/* If you have a score (14 Days) */}
+              {haveScore ? (
+                <>
+                  {/* Left Line in the Box */}
+                  <View style={styles.line} />
+                  {/* Line Side Contents */}
+                  <View style={styles.monthsContainer}>
+                    {Object.values(scores).map((month, index) => {
+                      return <Month monthScores={month} index={index} />;
                     })}
                   </View>
-                  {/* Colors */}
-                  <View style={styles.circleContainer}>
-                    {imagesInfo.map((item) => (
-                      <View
-                        key={item.height}
-                        style={[
-                          styles.circle,
-                          haveTodayScore
-                            ? {
-                                backgroundColor:
-                                  colors[todayScore[item.imageName]],
-                              }
-                            : { backgroundColor: "#E1E1E1" },
-                        ]}
-                      />
-                    ))}
-                  </View>
-                </View>
-              </View>
-              {/* Record Button */}
-              <TouchableOpacity
-                style={styles.btnAgain}
-                onPress={this._goSafeCheck}
-              >
-                <Text style={styles.textAgain}>
-                  {haveTodayScore ? "다시 기록하기" : "기록하기"}
+                </>
+              ) : (
+                <Text style={styles.textNoneScore}>
+                  {"14일간 안전지수 기록이 없습니다."}
                 </Text>
-              </TouchableOpacity>
+              )}
             </View>
-          </View>
-
-          {/* 14 Days' Score */}
-          <View style={styles.bottomCardContainer}>
-            {/* If you have a score (14 Days) */}
-            {haveScore ? (
-              <>
-                {/* Left Line in the Box */}
-                <View style={styles.line} />
-                {/* Line Side Contents */}
-                <View style={styles.monthsContainer}>
-                  {Object.values(scores).map((month, index) => {
-                    return <Month monthScores={month} index={index} />;
-                  })}
-                </View>
-              </>
-            ) : (
-              <Text style={styles.textNoneScore}>
-                {"14일간 안전지수 기록이 없습니다."}
-              </Text>
-            )}
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    ) : (
-      <View />
+          </ScrollView>
+        </SafeAreaView>
+      )
     );
   }
 
