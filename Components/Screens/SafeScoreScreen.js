@@ -209,6 +209,7 @@ class SafeScoreScreen extends React.Component {
     }
   };
 
+  // 점수 저장
   _setScores = (score) => {
     let resultScore = 0;
     if (score.first == 4) {
