@@ -213,6 +213,7 @@ class SafeScoreScreen extends React.Component {
   _setScores = (score) => {
     let resultScore = 0;
     if (score.first == 4) {
+      // 사회적 거리두기 만점이면
       resultScore = 99;
     } else {
       let substract = (4 - score.first) * 10;
@@ -221,14 +222,14 @@ class SafeScoreScreen extends React.Component {
       resultScore = maskScore + handwashScore - substract;
     }
 
-    const ID = _getYYYYMMDD();
-    const month = ID.substring(0, 7);
+    const today = _getYYYYMMDD();
+    const month = today.substring(0, 7);
     const scores = {
       ...this.state.scores,
       [month]: {
         ...this.state.scores[month],
-        [ID]: {
-          id: ID,
+        [today]: {
+          id: today,
           score: resultScore,
           location: score.first,
           mask: score.second,
@@ -242,6 +243,7 @@ class SafeScoreScreen extends React.Component {
     this._getScores();
   };
 
+  // 기록하기 버튼 누르면
   _goSafeCheck = () => {
     const { navigation } = this.props;
     navigation.push("SafeScoreCheck", {
