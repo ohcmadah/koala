@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  Dimensions,
-  AsyncStorage,
-} from "react-native";
+import { View, Text, TouchableOpacity, Image, Dimensions } from "react-native";
 import Slider from "@react-native-community/slider";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styles from "../../Styles/SafeScoreCheckStyles";
@@ -28,19 +21,23 @@ const questions = {
   },
 };
 
+// Score Check Screen
 class SafeScoreCheckScreen extends React.Component {
   state = {
     target: "",
     slideValue: 0,
     score: {},
   };
+
   render() {
     const { first, second, third } = this.state;
     const isAllChecked = first && second && third;
 
     return (
       <SafeAreaView style={styles.container}>
+        {/* Navigation */}
         <View style={styles.navContainer}>
+          {/* Back Button */}
           <TouchableOpacity
             style={{ width: 30 }}
             onPress={() => this.props.navigation.goBack()}
@@ -50,55 +47,70 @@ class SafeScoreCheckScreen extends React.Component {
               style={{ width: 10, height: 20 }}
             />
           </TouchableOpacity>
+
+          {/* Text (Today) */}
           <Text style={styles.textNav}>{"TODAY"}</Text>
+
+          {/* Empty View (Text Align Center) */}
           <View style={{ width: 30 }} />
         </View>
 
+        {/* Contents (Questions) */}
         <View style={styles.contentContainer}>
-          {Object.values(questions).map((question, index) => {
-            return (
-              <View key={index}>
-                <Text style={styles.textQuestion}>{question.text}</Text>
-                <View style={{ marginBottom: 16 }}>
-                  <CustomSlider
-                    changeValue={this._changeValue}
-                    completeSliding={this._completeSliding}
-                    target={question.target}
-                  />
-                </View>
+          {Object.values(questions).map((question, index) => (
+            <View key={index}>
+              {/* Question Text */}
+              <Text style={styles.textQuestion}>{question.text}</Text>
+              {/* Silder */}
+              <View style={{ marginBottom: 16 }}>
+                <CustomSlider
+                  changeValue={this._changeValue}
+                  completeSliding={this._completeSliding}
+                  target={question.target}
+                />
               </View>
-            );
-          })}
+            </View>
+          ))}
         </View>
 
+        {/* Complete Button */}
         <View style={styles.btnContainer}>
-          {isAllChecked ? (
-            <TouchableOpacity
-              style={styles.btnSubmit}
-              onPress={this._completeCheck}
-            >
-              <Text style={styles.textBtnSubmit}>{"기록 완료"}</Text>
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity style={styles.btnSubmitDisable} disabled={true}>
-              <Text style={styles.textBtnSubmitDisable}>{"기록 완료"}</Text>
-            </TouchableOpacity>
-          )}
+          {
+            // 3가지 질문이 모두 완료 되었을 경우
+            isAllChecked ? (
+              // 기록 완료 (파란색)
+              <TouchableOpacity
+                style={styles.btnSubmit}
+                onPress={this._completeCheck}
+              >
+                <Text style={styles.textBtnSubmit}>{"기록 완료"}</Text>
+              </TouchableOpacity>
+            ) : (
+              // 기록 완료 (회색)
+              <TouchableOpacity style={styles.btnSubmitDisable} disabled={true}>
+                <Text style={styles.textBtnSubmitDisable}>{"기록 완료"}</Text>
+              </TouchableOpacity>
+            )
+          }
         </View>
       </SafeAreaView>
     );
   }
 
+  // Slider의 값 저장
   _changeValue = (value) => {
     this.setState({ slideValue: value });
   };
 
+  // onSlidingComplete (슬라이더를 놓을 때)
   _completeSliding = (value, target) => {
     if (value != 0) {
       this.setState({
         [target]: true,
         score: {
+          // 저장된 score 불러오기
           ...this.state.score,
+          // 저장할 score
           [target]: value,
         },
       });
@@ -109,14 +121,18 @@ class SafeScoreCheckScreen extends React.Component {
     }
   };
 
+  // 기록 완료
   _completeCheck = () => {
     const { score } = this.state;
+    // SafeScoreScreen의 setScores
     const { setScores } = this.props.route.params;
     setScores(score);
+    // 뒤로 가기 (SafeScoreScreen)
     this.props.navigation.goBack();
   };
 }
 
+// Slider
 class CustomSlider extends React.Component {
   state = {
     slideValue: 0,
@@ -124,26 +140,34 @@ class CustomSlider extends React.Component {
   };
 
   render() {
+    // 스마트폰 너비
     const { width } = Dimensions.get("window");
-    const { changeValue } = this.props;
+
+    // Slider 값 저장 Function
+    const { changeValue, completeSliding, target } = this.props;
+
     const { color, slideValue } = this.state;
     const maxValue = 4;
 
     const sliderStyle = {
+      // Slider 전체 (상하 여백 포함)
       slideContainer: {
         justifyContent: "center",
         height: 80,
         borderRadius: 3,
         overflow: "hidden",
       },
+      // 회색 슬라이더
       slideBar: {
         backgroundColor: "#E2E2E2",
         width: width - 90,
         left: 10,
         height: 6,
         borderRadius: 3,
+        // Color 아래로
         position: "absolute",
       },
+      // 컬러 슬라이더
       slideColor: {
         backgroundColor: color == "" ? "#9A9A9A" : color,
         width: (slideValue / maxValue) * (width - 90),
@@ -151,6 +175,7 @@ class CustomSlider extends React.Component {
         height: 6,
         borderRadius: 3,
       },
+      // React Native Slider Style
       slideReal: {
         width: width - 70,
         height: 80,
@@ -171,20 +196,26 @@ class CustomSlider extends React.Component {
           step={1}
           value={slideValue}
           onValueChange={(value) => {
+            // SafeScoreCheckScreen changeValue
             changeValue(value);
+            // CustomSlider changeValue
             this._changeValue(value);
           }}
           onSlidingComplete={(value) =>
-            this.props.completeSliding(value, this.props.target)
+            // SafeScoreCheckScreen completeSliding, target
+            completeSliding(value, target)
           }
+          // React Native Slider
           maximumTrackTintColor="transparent"
           minimumTrackTintColor="transparent"
+          // 손잡이
           thumbTintColor={color == "" ? "#9A9A9A" : color}
         />
       </View>
     );
   }
 
+  // onValueChange (사용자가 드래그하는 동안)
   _changeValue = (value) => {
     const colors = {
       grey: "#9A9A9A",
@@ -194,6 +225,7 @@ class CustomSlider extends React.Component {
       green: "#84DB6A",
     };
 
+    // 값 저장 (CustomSlider state)
     this.setState({ slideValue: value });
     if (value == 0) {
       this.setState({
