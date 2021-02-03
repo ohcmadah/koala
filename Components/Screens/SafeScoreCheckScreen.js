@@ -108,7 +108,9 @@ class SafeScoreCheckScreen extends React.Component {
       this.setState({
         [target]: true,
         score: {
+          // 저장된 score 불러오기
           ...this.state.score,
+          // 저장할 score
           [target]: value,
         },
       });
@@ -142,26 +144,30 @@ class CustomSlider extends React.Component {
     const { width } = Dimensions.get("window");
 
     // Slider 값 저장 Function
-    const { changeValue } = this.props;
+    const { changeValue, completeSliding, target } = this.props;
 
     const { color, slideValue } = this.state;
     const maxValue = 4;
 
     const sliderStyle = {
+      // Slider 전체 (상하 여백 포함)
       slideContainer: {
         justifyContent: "center",
         height: 80,
         borderRadius: 3,
         overflow: "hidden",
       },
+      // 회색 슬라이더
       slideBar: {
         backgroundColor: "#E2E2E2",
         width: width - 90,
         left: 10,
         height: 6,
         borderRadius: 3,
+        // Color 아래로
         position: "absolute",
       },
+      // 컬러 슬라이더
       slideColor: {
         backgroundColor: color == "" ? "#9A9A9A" : color,
         width: (slideValue / maxValue) * (width - 90),
@@ -169,6 +175,7 @@ class CustomSlider extends React.Component {
         height: 6,
         borderRadius: 3,
       },
+      // React Native Slider Style
       slideReal: {
         width: width - 70,
         height: 80,
@@ -189,20 +196,26 @@ class CustomSlider extends React.Component {
           step={1}
           value={slideValue}
           onValueChange={(value) => {
+            // SafeScoreCheckScreen changeValue
             changeValue(value);
+            // CustomSlider changeValue
             this._changeValue(value);
           }}
           onSlidingComplete={(value) =>
-            this.props.completeSliding(value, this.props.target)
+            // SafeScoreCheckScreen completeSliding, target
+            completeSliding(value, target)
           }
+          // React Native Slider
           maximumTrackTintColor="transparent"
           minimumTrackTintColor="transparent"
+          // 손잡이
           thumbTintColor={color == "" ? "#9A9A9A" : color}
         />
       </View>
     );
   }
 
+  // onValueChange (사용자가 드래그하는 동안)
   _changeValue = (value) => {
     const colors = {
       grey: "#9A9A9A",
@@ -212,6 +225,7 @@ class CustomSlider extends React.Component {
       green: "#84DB6A",
     };
 
+    // 값 저장 (CustomSlider state)
     this.setState({ slideValue: value });
     if (value == 0) {
       this.setState({
