@@ -3,7 +3,7 @@ import { Alert, Platform } from "react-native";
 import * as config from "./config";
 
 const GOOGLE_API_KEY = config.GOOGLE_API_KEY;
-const koreanRegion = [
+const regionList = [
   "제주특별자치도",
   "경상남도",
   "경상북도",
@@ -21,24 +21,6 @@ const koreanRegion = [
   "부산광역시",
   "서울특별시",
 ];
-const englishRegion = [
-  "Jeju-do",
-  "Gyeongsangnam-do",
-  "Gyeongsangbuk-do",
-  "Jeollanam-do",
-  "Jeollabuk-do",
-  "Chungcheongnam-do",
-  "Chungcheongbuk-do",
-  "Gangwon-do",
-  "Gyeonggi-do",
-  "Ulsan",
-  "Daejeon",
-  "Gwangju",
-  "Incheon",
-  "Daegu",
-  "Busan",
-  "Seoul",
-];
 
 export async function _getLocation(detail) {
   try {
@@ -55,8 +37,9 @@ export async function _getLocation(detail) {
   }
 }
 
+// 주소 얻어오기 (google geocoding api)
 async function _getReverseGeo(latitude, longitude, detail) {
-  const GEOLOCATION_API_URL = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GOOGLE_API_KEY}`;
+  const GEOLOCATION_API_URL = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GOOGLE_API_KEY}&language=ko`;
 
   let location;
   await fetch(GEOLOCATION_API_URL)
@@ -69,26 +52,11 @@ async function _getReverseGeo(latitude, longitude, detail) {
         location = _findLocation(data);
       }
     });
-
-  if (Platform.OS == "android" && detail) {
-    location = await _translate(location);
-  }
   return location;
 }
 
-async function _translate(text) {
-  const TRANSLATE_API_URL = `https://translation.googleapis.com/language/translate/v2?&q=${text}&target=ko&key=${GOOGLE_API_KEY}`;
-  let korean;
-  await fetch(TRANSLATE_API_URL)
-    .then((response) => response.json())
-    .then((data) => {
-      korean = data.data.translations[0].translatedText;
-    });
-  return korean;
-}
-
 export async function _setLocation(address) {
-  const GEOLOCATION_API_URL = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${GOOGLE_API_KEY}`;
+  const GEOLOCATION_API_URL = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${GOOGLE_API_KEY}&language=ko`;
 
   let resultLocation = "";
   await fetch(GEOLOCATION_API_URL)
@@ -107,13 +75,12 @@ export async function _setLocation(address) {
 
 function _findLocation(data) {
   const address = data.results[0].address_components;
+  console.log(address);
   for (let i = 0; i < address.length; i++) {
     const addr = address[i].long_name;
-    for (let j = 0; j < koreanRegion.length; j++) {
-      const kRegion = koreanRegion[j];
-      const eRegion = englishRegion[j];
-      if (addr == kRegion || addr == eRegion) {
-        resultLocation = kRegion;
+    for (let j = 0; j < regionList.length; j++) {
+      if (addr == regionList[j]) {
+        resultLocation = regionList[j];
         break;
       }
     }
