@@ -22,11 +22,6 @@ import secondCircle from "../../assets/home/second_circle.png";
 import thirdCircle from "../../assets/home/third_circle.png";
 
 // 하단 메뉴
-// const menus = {
-//   first: [firstCircle, "TODAY 이동경로"],
-//   second: [secondCircle, "나의 안전지수"],
-//   third: [thirdCircle, "나의\n이동기록"],
-// };
 const menus = [
   { src: firstCircle, text: "TODAY 이동경로" },
   { src: secondCircle, text: "나의 안전지수" },
