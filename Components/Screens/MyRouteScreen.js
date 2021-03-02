@@ -47,8 +47,6 @@ class MyRouteScreen extends React.Component {
     routes: {},
     // 이동기록이 존재하는지
     haveRoutes: false,
-    // 클릭해 상세 정보를 열고 있는 이동기록
-    openingRoutes: {},
   };
 
   componentDidMount() {
@@ -57,7 +55,7 @@ class MyRouteScreen extends React.Component {
   }
 
   render() {
-    const { routes, haveRoutes, openingRoutes } = this.state;
+    const { routes, haveRoutes } = this.state;
     return (
       <SafeAreaView style={styles.container}>
         {/* Navigation */}
@@ -93,126 +91,9 @@ class MyRouteScreen extends React.Component {
                 <View style={{ marginTop: -40 }}>
                   {Object.keys(routes)
                     .reverse()
-                    .map((yyyymm, index) => {
-                      // Month
-                      return (
-                        <View key={index} style={styles.monthContainer}>
-                          {/* 월 텍스트 */}
-                          <Text style={styles.textMonth}>
-                            {yyyymm.substring(5, 7) + "월"}
-                          </Text>
-
-                          {Object.keys(routes[yyyymm]).map((yyyymmdd) => {
-                            if (routes[yyyymm][yyyymmdd].address.length != 0) {
-                              // Date
-                              return (
-                                <View
-                                  key={yyyymmdd}
-                                  style={styles.routeContainer}
-                                >
-                                  {/* 일별 이동기록 버튼 */}
-                                  <TouchableOpacity
-                                    style={styles.dayButton}
-                                    activeOpacity={1}
-                                    onPress={() => {
-                                      // true면 열린 상태, false는 닫힌 상태
-                                      // open 기록이 없으면 open, open 기록이 있으면 반대로
-                                      const flag =
-                                        openingRoutes[yyyymmdd] == undefined
-                                          ? true
-                                          : !openingRoutes[yyyymmdd];
-
-                                      sites = [];
-                                      this.setState({
-                                        openingRoutes: {
-                                          ...this.state.openingRoutes,
-                                          [yyyymmdd]: flag,
-                                        },
-                                      });
-                                    }}
-                                  >
-                                    {/* 일 & 사각형 */}
-                                    <View style={styles.dayContainer}>
-                                      {/* 일 텍스트 */}
-                                      <Text style={styles.textDay}>
-                                        {yyyymmdd.substring(8, 10) + "일"}
-                                      </Text>
-                                      {
-                                        // 열려 있는지 확인
-                                        (
-                                          openingRoutes[yyyymmdd] == undefined
-                                            ? false
-                                            : openingRoutes[yyyymmdd]
-                                        ) ? (
-                                          // 열려있으면 세로가 짧은 사각형
-                                          <View style={styles.shortRect} />
-                                        ) : (
-                                          // 닫혀있으면 세로가 긴 사각형
-                                          <View style={styles.longRect} />
-                                        )
-                                      }
-                                    </View>
-                                  </TouchableOpacity>
-
-                                  {/* 상세정보 */}
-                                  {openingRoutes[yyyymmdd] ? (
-                                    // 열려 있으면
-                                    <View style={styles.detailContainer}>
-                                      {/* 가로 라인 */}
-                                      <View style={styles.widthLine} />
-                                      {/* 일별 이동경로들 컨테이너 */}
-                                      <View style={styles.routesContainer}>
-                                        {routes[yyyymm][yyyymmdd].address.map(
-                                          (addr, index) => {
-                                            // 이동경로에 따른 사이트 주소 설정
-                                            this._setSite(addr);
-                                            return (
-                                              // 이동경로 텍스트
-                                              <Text
-                                                key={index}
-                                                style={styles.textRoute}
-                                              >
-                                                {addr}
-                                              </Text>
-                                            );
-                                          }
-                                        )}
-                                      </View>
-                                      {/* 사이트 바로가기 버튼들 */}
-                                      {sites.map((site, index) => {
-                                        return (
-                                          // 사이트 바로가기 버튼
-                                          <TouchableOpacity
-                                            key={index}
-                                            style={styles.btnRouteSite}
-                                            // 누르면 사이트 열기
-                                            onPress={() => {
-                                              const URL = siteURL[site];
-                                              Linking.openURL(
-                                                URL
-                                              ).catch((err) =>
-                                                console.log(err)
-                                              );
-                                            }}
-                                          >
-                                            {/* 버튼 안 텍스트 (지역명 + 확진자 경로 바로가기) */}
-                                            <Text style={styles.textBtnRoute}>
-                                              {site + " 확진자 경로 바로가기"}
-                                            </Text>
-                                          </TouchableOpacity>
-                                        );
-                                      })}
-                                    </View>
-                                  ) : (
-                                    <></>
-                                  )}
-                                </View>
-                              );
-                            }
-                          })}
-                        </View>
-                      );
-                    })}
+                    .map((yyyymm, index) => (
+                      <Month key={index} routes={routes} yyyymm={yyyymm} />
+                    ))}
                 </View>
               </>
             ) : (
@@ -269,6 +150,125 @@ class MyRouteScreen extends React.Component {
         haveRoutes: flag,
       });
     }
+  };
+}
+
+class Month extends React.Component {
+  state = {
+    // 클릭해 상세 정보를 열고 있는 이동기록
+    openingRoutes: {},
+  };
+  render() {
+    const { routes, yyyymm } = this.props;
+    const { openingRoutes } = this.state;
+
+    return (
+      <View style={styles.monthContainer}>
+        {/* 월 텍스트 */}
+        <Text style={styles.textMonth}>{yyyymm.substring(5, 7) + "월"}</Text>
+
+        {Object.keys(routes[yyyymm]).map((yyyymmdd) => {
+          if (routes[yyyymm][yyyymmdd].address.length != 0) {
+            // Date
+            return (
+              <View key={yyyymmdd} style={styles.routeContainer}>
+                {/* 일별 이동기록 버튼 */}
+                <TouchableOpacity
+                  style={styles.dayButton}
+                  activeOpacity={1}
+                  onPress={() => this._setOpen(yyyymmdd)}
+                >
+                  {/* 일 & 사각형 */}
+                  <View style={styles.dayContainer}>
+                    {/* 일 텍스트 */}
+                    <Text style={styles.textDay}>
+                      {yyyymmdd.substring(8, 10) + "일"}
+                    </Text>
+                    {
+                      // 열려 있는지 확인
+                      (
+                        openingRoutes[yyyymmdd] == undefined
+                          ? false
+                          : openingRoutes[yyyymmdd]
+                      ) ? (
+                        // 열려있으면 세로가 짧은 사각형
+                        <View style={styles.shortRect} />
+                      ) : (
+                        // 닫혀있으면 세로가 긴 사각형
+                        <View style={styles.longRect} />
+                      )
+                    }
+                  </View>
+                </TouchableOpacity>
+
+                {/* 상세정보 */}
+                {openingRoutes[yyyymmdd] ? (
+                  // 열려 있으면
+                  <View style={styles.detailContainer}>
+                    {/* 가로 라인 */}
+                    <View style={styles.widthLine} />
+                    {/* 일별 이동경로들 컨테이너 */}
+                    <View style={styles.routesContainer}>
+                      {routes[yyyymm][yyyymmdd].address.map((addr, index) => {
+                        // 이동경로에 따른 사이트 주소 설정
+                        this._setSite(addr);
+                        return (
+                          // 이동경로 텍스트
+                          <Text key={index} style={styles.textRoute}>
+                            {addr}
+                          </Text>
+                        );
+                      })}
+                    </View>
+                    {/* 사이트 바로가기 버튼들 */}
+                    {sites.map((site, index) => {
+                      return (
+                        // 사이트 바로가기 버튼
+                        <TouchableOpacity
+                          key={index}
+                          style={styles.btnRouteSite}
+                          // 누르면 사이트 열기
+                          onPress={() => {
+                            const URL = siteURL[site];
+                            Linking.openURL(URL).catch((err) =>
+                              console.log(err)
+                            );
+                          }}
+                        >
+                          {/* 버튼 안 텍스트 (지역명 + 확진자 경로 바로가기) */}
+                          <Text style={styles.textBtnRoute}>
+                            {site + " 확진자 경로 바로가기"}
+                          </Text>
+                        </TouchableOpacity>
+                      );
+                    })}
+                  </View>
+                ) : (
+                  <></>
+                )}
+              </View>
+            );
+          }
+        })}
+      </View>
+    );
+  }
+
+  // 열렸는지 설정
+  _setOpen = (yyyymmdd) => {
+    const { openingRoutes } = this.state;
+    // true면 열린 상태, false는 닫힌 상태
+    // open 기록이 없으면 open, open 기록이 있으면 반대로
+    const flag =
+      openingRoutes[yyyymmdd] == undefined ? true : !openingRoutes[yyyymmdd];
+
+    sites = [];
+    this.setState({
+      openingRoutes: {
+        ...this.state.openingRoutes,
+        [yyyymmdd]: flag,
+      },
+    });
   };
 
   // 이동경로에 따른 사이트 주소 설정
