@@ -12,6 +12,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import styles from "../../Styles/MyRouteStyles";
 import { _getYYYYMMDD } from "../../FunctionModule";
 
+// 각 지역 확진자 이동경로 제공 사이트 URL
 const siteURL = {
   서울특별시: "https://news.seoul.go.kr/welfare/archives/513105",
   부산광역시: "http://www.busan.go.kr/covid19/Corona19.do",
@@ -35,16 +36,23 @@ const siteURL = {
   전국:
     "http://ncov.mohw.go.kr/bdBoardList_Real.do?brdId=1&brdGubun=13&ncvContSeq=&contSeq=&board_id=&gubun=",
 };
+
+// 하루 사이트 저장
 let sites = [];
 
+// 나의 이동기록 화면
 class MyRouteScreen extends React.Component {
   state = {
+    // 14일간 이동기록
     routes: {},
+    // 이동기록이 존재하는지
     haveRoutes: false,
+    // 클릭해 상세 정보를 열고 있는 이동기록
     openingRoutes: {},
   };
 
   componentDidMount() {
+    // 저장된 이동경로 가져오기
     this._getRoutes();
   }
 
@@ -52,80 +60,114 @@ class MyRouteScreen extends React.Component {
     const { routes, haveRoutes, openingRoutes } = this.state;
     return (
       <SafeAreaView style={styles.container}>
+        {/* Navigation */}
         <View style={styles.navContainer}>
+          {/* 뒤로가기 버튼 */}
           <TouchableOpacity
             style={styles.btnBack}
             onPress={() => {
               this.props.navigation.goBack();
             }}
           >
+            {/* 뒤로가기 아이콘 */}
             <Image
               style={styles.btnBackImg}
               source={require("../../assets/today-route/btn_back.png")}
             />
           </TouchableOpacity>
+          {/* 나의 이동기록 텍스트 */}
           <Text style={styles.textNav}>{"나의 이동기록"}</Text>
+          {/* 뒤로가기 버튼만큼 공간 확보해서 텍스트 중앙정렬 */}
           <View style={styles.btnBack} />
         </View>
 
+        {/* 컨텐츠 부분 컨테이너 */}
         <ScrollView style={styles.contentContainer}>
+          {/* 카드 컨테이너 */}
           <View style={styles.cardContainer}>
+            {/* 기록이 있을 경우 */}
             {haveRoutes ? (
               <>
+                {/* 왼쪽 라인 */}
                 <View style={styles.line} />
                 <View style={{ marginTop: -40 }}>
                   {Object.keys(routes)
                     .reverse()
-                    .map((key, index) => {
+                    .map((yyyymm, index) => {
+                      // Month
                       return (
                         <View key={index} style={styles.monthContainer}>
+                          {/* 월 텍스트 */}
                           <Text style={styles.textMonth}>
-                            {key.substring(5, 7) + "월"}
+                            {yyyymm.substring(5, 7) + "월"}
                           </Text>
-                          {Object.keys(routes[key]).map((k) => {
-                            if (routes[key][k].address.length != 0) {
+
+                          {Object.keys(routes[yyyymm]).map((yyyymmdd) => {
+                            if (routes[yyyymm][yyyymmdd].address.length != 0) {
+                              // Date
                               return (
-                                <View key={k} style={styles.routeContainer}>
+                                <View
+                                  key={yyyymmdd}
+                                  style={styles.routeContainer}
+                                >
+                                  {/* 일별 이동기록 버튼 */}
                                   <TouchableOpacity
-                                    style={styles.daysContainer}
+                                    style={styles.dayButton}
                                     activeOpacity={1}
                                     onPress={() => {
+                                      // true면 열린 상태, false는 닫힌 상태
+                                      // open 기록이 없으면 open, open 기록이 있으면 반대로
                                       const flag =
-                                        openingRoutes[k] == undefined
+                                        openingRoutes[yyyymmdd] == undefined
                                           ? true
-                                          : !openingRoutes[k];
+                                          : !openingRoutes[yyyymmdd];
+
                                       sites = [];
                                       this.setState({
                                         openingRoutes: {
                                           ...this.state.openingRoutes,
-                                          [k]: flag,
+                                          [yyyymmdd]: flag,
                                         },
                                       });
                                     }}
                                   >
+                                    {/* 일 & 사각형 */}
                                     <View style={styles.dayContainer}>
+                                      {/* 일 텍스트 */}
                                       <Text style={styles.textDay}>
-                                        {k.substring(8, 10) + "일"}
+                                        {yyyymmdd.substring(8, 10) + "일"}
                                       </Text>
-                                      {(
-                                        openingRoutes[k] == undefined
-                                          ? false
-                                          : openingRoutes[k]
-                                      ) ? (
-                                        <View style={styles.shortRect} />
-                                      ) : (
-                                        <View style={styles.longRect} />
-                                      )}
+                                      {
+                                        // 열려 있는지 확인
+                                        (
+                                          openingRoutes[yyyymmdd] == undefined
+                                            ? false
+                                            : openingRoutes[yyyymmdd]
+                                        ) ? (
+                                          // 열려있으면 세로가 짧은 사각형
+                                          <View style={styles.shortRect} />
+                                        ) : (
+                                          // 닫혀있으면 세로가 긴 사각형
+                                          <View style={styles.longRect} />
+                                        )
+                                      }
                                     </View>
                                   </TouchableOpacity>
-                                  {openingRoutes[k] ? (
+
+                                  {/* 상세정보 */}
+                                  {openingRoutes[yyyymmdd] ? (
+                                    // 열려 있으면
                                     <View style={styles.detailContainer}>
+                                      {/* 가로 라인 */}
                                       <View style={styles.widthLine} />
+                                      {/* 일별 이동경로들 컨테이너 */}
                                       <View style={styles.routesContainer}>
-                                        {routes[key][k].address.map(
+                                        {routes[yyyymm][yyyymmdd].address.map(
                                           (addr, index) => {
+                                            // 이동경로에 따른 사이트 주소 설정
                                             this._setSite(addr);
                                             return (
+                                              // 이동경로 텍스트
                                               <Text
                                                 key={index}
                                                 style={styles.textRoute}
@@ -136,11 +178,14 @@ class MyRouteScreen extends React.Component {
                                           }
                                         )}
                                       </View>
+                                      {/* 사이트 바로가기 버튼들 */}
                                       {sites.map((site, index) => {
                                         return (
+                                          // 사이트 바로가기 버튼
                                           <TouchableOpacity
                                             key={index}
                                             style={styles.btnRouteSite}
+                                            // 누르면 사이트 열기
                                             onPress={() => {
                                               const URL = siteURL[site];
                                               Linking.openURL(
@@ -150,6 +195,7 @@ class MyRouteScreen extends React.Component {
                                               );
                                             }}
                                           >
+                                            {/* 버튼 안 텍스트 (지역명 + 확진자 경로 바로가기) */}
                                             <Text style={styles.textBtnRoute}>
                                               {site + " 확진자 경로 바로가기"}
                                             </Text>
@@ -170,6 +216,7 @@ class MyRouteScreen extends React.Component {
                 </View>
               </>
             ) : (
+              // 이동기록이 없을 경우
               <Text style={styles.textNone}>
                 {"14일간 나의 이동기록이 없습니다."}
               </Text>
@@ -180,18 +227,25 @@ class MyRouteScreen extends React.Component {
     );
   }
 
+  // 저장된 이동경로 가져오기
   _getRoutes = async () => {
     const dbRoutes = await AsyncStorage.getItem("addresses");
     const today = _getYYYYMMDD();
+    // 오늘로부터 13일 전 timestamp
     const timestamp = Date.parse(today) - 13 * 24 * 3600 * 1000;
 
+    // 저장된 기록이 있을 경우
     if (dbRoutes != null) {
       let routes14 = {};
       let flag = false;
       const routes = JSON.parse(dbRoutes);
+      // 월별 이동기록
       Object.values(routes).map((month) => {
+        // 일별 기록
         Object.values(month).map((route) => {
+          // yyyy-mm
           const cMonth = route.id.substring(0, 7);
+          // 14일동안의 기록일 경우
           if (Date.parse(route.id) >= timestamp) {
             routes14 = {
               ...routes14,
@@ -202,6 +256,7 @@ class MyRouteScreen extends React.Component {
                 },
               },
             };
+            // 기록된 주소가 있을 경우
             if (route.address.length != 0) {
               flag = true;
             }
@@ -216,6 +271,7 @@ class MyRouteScreen extends React.Component {
     }
   };
 
+  // 이동경로에 따른 사이트 주소 설정
   _setSite = (addr) => {
     let result = "";
     if (addr.includes("서울")) {
