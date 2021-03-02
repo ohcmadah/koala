@@ -89,6 +89,7 @@ class MyRouteScreen extends React.Component {
                 {/* 왼쪽 라인 */}
                 <View style={styles.line} />
                 <View style={{ marginTop: -40 }}>
+                  {/* 월별 이동기록 */}
                   {Object.keys(routes)
                     .reverse()
                     .map((yyyymm, index) => (
@@ -172,79 +173,20 @@ class Month extends React.Component {
             // Date
             return (
               <View key={yyyymmdd} style={styles.routeContainer}>
-                {/* 일별 이동기록 버튼 */}
-                <TouchableOpacity
-                  style={styles.dayButton}
-                  activeOpacity={1}
-                  onPress={() => this._setOpen(yyyymmdd)}
-                >
-                  {/* 일 & 사각형 */}
-                  <View style={styles.dayContainer}>
-                    {/* 일 텍스트 */}
-                    <Text style={styles.textDay}>
-                      {yyyymmdd.substring(8, 10) + "일"}
-                    </Text>
-                    {
-                      // 열려 있는지 확인
-                      (
-                        openingRoutes[yyyymmdd] == undefined
-                          ? false
-                          : openingRoutes[yyyymmdd]
-                      ) ? (
-                        // 열려있으면 세로가 짧은 사각형
-                        <View style={styles.shortRect} />
-                      ) : (
-                        // 닫혀있으면 세로가 긴 사각형
-                        <View style={styles.longRect} />
-                      )
-                    }
-                  </View>
-                </TouchableOpacity>
+                <RouteButton
+                  setOpen={this._setOpen}
+                  yyyymmdd={yyyymmdd}
+                  flag={openingRoutes[yyyymmdd]}
+                />
 
-                {/* 상세정보 */}
-                {openingRoutes[yyyymmdd] ? (
-                  // 열려 있으면
-                  <View style={styles.detailContainer}>
-                    {/* 가로 라인 */}
-                    <View style={styles.widthLine} />
-                    {/* 일별 이동경로들 컨테이너 */}
-                    <View style={styles.routesContainer}>
-                      {routes[yyyymm][yyyymmdd].address.map((addr, index) => {
-                        // 이동경로에 따른 사이트 주소 설정
-                        this._setSite(addr);
-                        return (
-                          // 이동경로 텍스트
-                          <Text key={index} style={styles.textRoute}>
-                            {addr}
-                          </Text>
-                        );
-                      })}
-                    </View>
-                    {/* 사이트 바로가기 버튼들 */}
-                    {sites.map((site, index) => {
-                      return (
-                        // 사이트 바로가기 버튼
-                        <TouchableOpacity
-                          key={index}
-                          style={styles.btnRouteSite}
-                          // 누르면 사이트 열기
-                          onPress={() => {
-                            const URL = siteURL[site];
-                            Linking.openURL(URL).catch((err) =>
-                              console.log(err)
-                            );
-                          }}
-                        >
-                          {/* 버튼 안 텍스트 (지역명 + 확진자 경로 바로가기) */}
-                          <Text style={styles.textBtnRoute}>
-                            {site + " 확진자 경로 바로가기"}
-                          </Text>
-                        </TouchableOpacity>
-                      );
-                    })}
-                  </View>
-                ) : (
-                  <></>
+                {/* 상세정보 (열려있을 경우에만 표시) */}
+                {openingRoutes[yyyymmdd] && (
+                  <Detail
+                    routes={routes}
+                    yyyymm={yyyymm}
+                    yyyymmdd={yyyymmdd}
+                    setSite={this._setSite}
+                  />
                 )}
               </View>
             );
@@ -262,7 +204,9 @@ class Month extends React.Component {
     const flag =
       openingRoutes[yyyymmdd] == undefined ? true : !openingRoutes[yyyymmdd];
 
+    // 사이트 초기화
     sites = [];
+
     this.setState({
       openingRoutes: {
         ...this.state.openingRoutes,
@@ -314,5 +258,72 @@ class Month extends React.Component {
     sites = sites.includes(result) ? [...sites] : [...sites, result];
   };
 }
+
+// 일별 이동기록 버튼
+const RouteButton = ({ setOpen, yyyymmdd, flag }) => {
+  return (
+    <TouchableOpacity
+      style={styles.dayButton}
+      activeOpacity={1}
+      onPress={() => setOpen(yyyymmdd)}
+    >
+      {/* 일 & 사각형 */}
+      <View style={styles.dayContainer}>
+        {/* 일 텍스트 */}
+        <Text style={styles.textDay}>{yyyymmdd.substring(8, 10) + "일"}</Text>
+        {flag ? (
+          // 열려있으면 세로가 짧은 사각형
+          <View style={styles.shortRect} />
+        ) : (
+          // 닫혀있으면 세로가 긴 사각형
+          <View style={styles.longRect} />
+        )}
+      </View>
+    </TouchableOpacity>
+  );
+};
+
+const Detail = ({ routes, yyyymm, yyyymmdd, setSite }) => {
+  return (
+    // 열려 있으면
+    <View style={styles.detailContainer}>
+      {/* 가로 라인 */}
+      <View style={styles.widthLine} />
+      {/* 일별 이동경로들 컨테이너 */}
+      <View style={styles.routesContainer}>
+        {routes[yyyymm][yyyymmdd].address.map((addr, index) => {
+          // 이동경로에 따른 사이트 주소 설정
+          setSite(addr);
+          return (
+            // 이동경로 텍스트
+            <Text key={index} style={styles.textRoute}>
+              {addr}
+            </Text>
+          );
+        })}
+      </View>
+      {/* 사이트 바로가기 버튼들 */}
+      {sites.map((site, index) => {
+        return (
+          // 사이트 바로가기 버튼
+          <TouchableOpacity
+            key={index}
+            style={styles.btnRouteSite}
+            // 누르면 사이트 열기
+            onPress={() => {
+              const URL = siteURL[site];
+              Linking.openURL(URL).catch((err) => console.log(err));
+            }}
+          >
+            {/* 버튼 안 텍스트 (지역명 + 확진자 경로 바로가기) */}
+            <Text style={styles.textBtnRoute}>
+              {site + " 확진자 경로 바로가기"}
+            </Text>
+          </TouchableOpacity>
+        );
+      })}
+    </View>
+  );
+};
 
 export default MyRouteScreen;
