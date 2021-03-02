@@ -71,7 +71,6 @@ class HomeScreen extends React.Component {
     // 위치 정보
     location: "",
     isLoaded: false,
-    fontLoaded: false,
   };
 
   _callAPI = async () => {
@@ -91,13 +90,12 @@ class HomeScreen extends React.Component {
     } else {
       this._callAPI();
     }
-    this._loadFont();
   }
 
   render() {
-    const { location, isLoaded, fontLoaded } = this.state;
+    const { location, isLoaded } = this.state;
 
-    return isLoaded && fontLoaded ? (
+    return isLoaded ? (
       <View style={styles.container}>
         <SafeAreaView style={{ flex: 1 }}>
           {/* Top Navigation */}
@@ -224,15 +222,6 @@ class HomeScreen extends React.Component {
       <AppLoading />
     );
   }
-
-  _loadFont = async () => {
-    await Font.loadAsync({
-      gaegu: require("../../assets/fonts/Gaegu-Bold.ttf"),
-    });
-    this.setState({
-      fontLoaded: true,
-    });
-  };
 
   _locationHandle = () => {
     const { navigation } = this.props;
