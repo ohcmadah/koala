@@ -114,6 +114,10 @@ class Area extends React.Component {
       .catch((err) => {
         console.log(err);
       });
+
+    this.setState({
+      isLoaded: true,
+    });
   };
 
   // 전날과 오늘 날짜 구하기
@@ -147,9 +151,6 @@ class Area extends React.Component {
     const { startDate, endDate } = this._setDate();
     // 확진자 정보 가져오기
     this._getData(startDate, endDate);
-    this.setState({
-      isLoaded: true,
-    });
   }
 
   render() {
