@@ -63,13 +63,17 @@ const tabStyle = {
 // 첫 화면
 class HomeScreen extends React.Component {
   state = {
-    // 위치 정보
+    // 위치 정보 (지역명)
     location: "",
+    // Location 설정 완료 여부
     isLoaded: false,
   };
 
+  // 위치 얻어오기
   _callAPI = async () => {
+    // 현 위치 지역명 가져오기
     const location = await fmodule._getLocation(false);
+    // 가져온 위치 설정 및 완료로 변경
     this.setState({
       location: location,
       isLoaded: true,
@@ -78,11 +82,13 @@ class HomeScreen extends React.Component {
 
   componentDidMount() {
     if (this.props.route.params != undefined) {
+      // 원하는 지역으로 설정한 내역이 있다면
       this.setState({
         location: this.props.route.params.settingLocation,
         isLoaded: true,
       });
     } else {
+      // 원하는 지역으로 설정하지 않았다면 현 위치로 지역 지정
       this._callAPI();
     }
   }
@@ -154,10 +160,7 @@ class HomeScreen extends React.Component {
 
         {/* Bottom Navigation */}
         <View style={styles.bottomNavContainer}>
-          {Platform.isPad ? (
-            // 패드일 경우
-            <></>
-          ) : (
+          {Platform.isPad || (
             // 패드가 아니면
             // today 이동경로 메뉴 누를 때 투명도로 인한 배경 비침 방지
             <View style={styles.btnCircle}>
@@ -178,9 +181,7 @@ class HomeScreen extends React.Component {
                   this._bottomMenuHandle(menu.text);
                 }}
               >
-                {Platform.isPad ? (
-                  <></>
-                ) : (
+                {Platform.isPad || (
                   <Image
                     // 원 이미지
                     source={menu.src}
@@ -218,16 +219,19 @@ class HomeScreen extends React.Component {
     );
   }
 
+  // 지역 설정 버튼 (지역명) 눌렀을 때 실행
   _locationHandle = () => {
     const { navigation } = this.props;
     navigation.push("Location");
   };
 
+  // 중앙재난안전대책본부 사이트 바로가기
   _goToCoronaSite = () => {
     const URL = "http://ncov.mohw.go.kr/";
     Linking.openURL(URL).catch((err) => console.log(err));
   };
 
+  // 하단 메뉴 화면 전환
   _bottomMenuHandle = (textMenu) => {
     const { navigation } = this.props;
     if (textMenu == menus[0].text) {
