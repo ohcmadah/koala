@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     color: blueColor,
     fontSize: basicFontSize - 3,
   },
-  daysContainer: {
+  dayButton: {
     marginTop: 26,
     marginBottom: -31,
   },

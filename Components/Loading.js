@@ -4,8 +4,9 @@ import cardStyles from "../Styles/CardStyles";
 
 const mainColor = "#9DB4CE";
 const { width } = Dimensions.get("window");
-const cardWidth = width - 36 * 2;
+const cardWidth = width - 40 * 2;
 
+// 확진자 현황 가져올 때 로딩시
 export default function Loading() {
   return (
     <View style={styles.container}>

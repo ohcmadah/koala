@@ -190,6 +190,11 @@ class SafeScoreScreen extends React.Component {
                 },
               },
             };
+
+            this.setState({
+              scores: scores14,
+              haveScore: true,
+            });
           }
 
           if (id == today) {
@@ -200,11 +205,6 @@ class SafeScoreScreen extends React.Component {
             });
           }
         });
-      });
-
-      this.setState({
-        scores: scores14,
-        haveScore: true,
       });
     }
   };
