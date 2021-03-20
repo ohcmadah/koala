@@ -2,7 +2,7 @@
   "expo": {
     "name": "코알라",
     "slug": "koala",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -13,9 +13,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
@@ -23,7 +21,7 @@
       "favicon": "./assets/favicon.png"
     },
     "android": {
-      "versionCode": 5,
+      "versionCode": 6,
       "package": "com.eucalyptus.koala"
     },
     "githubUrl": "https://github.com/cho-hadam/koala"
