@@ -29,8 +29,8 @@ const menus = [
 ];
 // base url
 const IMAGE_URL = "../../assets/home";
-// 실제 핸드폰 크기
-const { width, height } = Dimensions.get("window");
+// 디바이스의 화면 세로 길이
+const { height } = Dimensions.get("window");
 
 // React Navigation v5
 const Tab = createMaterialTopTabNavigator();
@@ -129,6 +129,7 @@ class HomeScreen extends React.Component {
 
           {/* 국내현황 ~ 사이트 바로가기 */}
           <View style={styles.contentContainer}>
+            {/* 화면의 37% 차지 */}
             <View style={{ height: height * 0.37 }}>
               <Text style={styles.textContentTitle}>국내현황</Text>
               {/* React Navigation */}
