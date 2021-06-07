@@ -1,6 +1,8 @@
 import { StyleSheet, Platform, Dimensions } from "react-native";
 
+// 디바이스 화면 너비 구하기
 const { width } = Dimensions.get("window");
+// 
 const cardWidth = Platform.isPad
   ? (width - 36 * 2 - 200) / 3
   : (width - 36 * 2 - 30) / 3;
