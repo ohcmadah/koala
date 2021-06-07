@@ -1,4 +1,5 @@
 import { StyleSheet, Dimensions, Platform } from "react-native";
+import { isBrowser } from "react-device-detect";
 
 const mainColor = "#9DB4CE";
 const basicFontSize = 17;
@@ -12,7 +13,7 @@ const styles = StyleSheet.create({
   },
   topNavContainer: {
     width: width,
-    height: Platform.isPad ? height * 0.18 : height * 0.11,
+    height: Platform.isPad || isBrowser ? height * 0.18 : height * 0.11,
   },
   topNavImg: {
     width: width,
@@ -104,6 +105,8 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderTopLeftRadius: 100,
     borderTopRightRadius: 100,
+    // borderColor: "#ddd",
+    // borderWidth: 2,
     ...Platform.select({
       ios: {
         shadowColor: "rgb(0, 0, 0)",
@@ -115,7 +118,7 @@ const styles = StyleSheet.create({
         },
       },
       android: {
-        elevation: 2,
+        elevation: 20,
       },
     }),
   },
