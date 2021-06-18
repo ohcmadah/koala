@@ -11,7 +11,8 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { isBrowser } from "react-device-detect";
+// import { isBrowser } from "react-device-detect";
+import { isTablet } from "react-native-device-info";
 import styles from "../../Styles/HomeStyles";
 import Area from "../Area";
 import { AppLoading } from "expo";
@@ -162,7 +163,7 @@ class HomeScreen extends React.Component {
 
         {/* Bottom Navigation */}
         <View style={styles.bottomNavContainer}>
-          {Platform.isPad || isBrowser ? (
+          {Platform.isPad ? (
             <View
               style={[styles.padMenu, { height: height * 0.16 + 94 * 2 }]}
             />
@@ -181,17 +182,13 @@ class HomeScreen extends React.Component {
             return (
               <TouchableOpacity
                 key={index}
-                style={
-                  Platform.isPad || isBrowser
-                    ? styles.padMenu
-                    : styles.btnCircle
-                }
+                style={Platform.isPad ? styles.padMenu : styles.btnCircle}
                 // 누르면 화면 전환
                 onPress={() => {
                   this._bottomMenuHandle(menu.text);
                 }}
               >
-                {Platform.isPad || isBrowser || (
+                {Platform.isPad || (
                   <Image
                     // 원 이미지
                     source={menu.src}
@@ -203,7 +200,7 @@ class HomeScreen extends React.Component {
                 {/* 삼각형 아이콘 & 메뉴 텍스트 */}
                 <View
                   style={
-                    Platform.isPad || isBrowser
+                    Platform.isPad
                       ? [
                           styles.padTextMenu,
                           { marginBottom: ((height * 0.3) / 3) * (2 - index) },
