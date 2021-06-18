@@ -11,12 +11,9 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-// import { isBrowser } from "react-device-detect";
-import { isTablet } from "react-native-device-info";
 import styles from "../../Styles/HomeStyles";
 import Area from "../Area";
 import { AppLoading } from "expo";
-import * as Font from "expo-font";
 import * as fmodule from "../../FunctionModule";
 
 import firstCircle from "../../assets/home/first_circle.png";
@@ -163,32 +160,33 @@ class HomeScreen extends React.Component {
 
         {/* Bottom Navigation */}
         <View style={styles.bottomNavContainer}>
-          {Platform.isPad ? (
-            <View
-              style={[styles.padMenu, { height: height * 0.16 + 94 * 2 }]}
-            />
-          ) : (
-            // 패드가 아니면
-            // today 이동경로 메뉴 누를 때 투명도로 인한 배경 비침 방지
-            <View style={styles.btnCircle}>
-              <Image
-                source={firstCircle}
-                style={{ height: height * 0.16 + 94 * 2 }}
-                resizeMode={"contain"}
-              />
-            </View>
-          )}
+          {!Platform.isPad ||
+            (!fmodule.isTablet() && (
+              // 패드가 아니면
+              // today 이동경로 메뉴 누를 때 투명도로 인한 배경 비침 방지
+              <View style={styles.btnCircle}>
+                <Image
+                  source={firstCircle}
+                  style={{ height: height * 0.16 + 94 * 2 }}
+                  resizeMode={"contain"}
+                />
+              </View>
+            ))}
           {menus.map((menu, index) => {
             return (
               <TouchableOpacity
                 key={index}
-                style={Platform.isPad ? styles.padMenu : styles.btnCircle}
+                style={
+                  Platform.isPad || fmodule.isTablet()
+                    ? styles.padMenu
+                    : styles.btnCircle
+                }
                 // 누르면 화면 전환
                 onPress={() => {
                   this._bottomMenuHandle(menu.text);
                 }}
               >
-                {Platform.isPad || (
+                {Platform.isPad || fmodule.isTablet() || (
                   <Image
                     // 원 이미지
                     source={menu.src}
@@ -200,7 +198,7 @@ class HomeScreen extends React.Component {
                 {/* 삼각형 아이콘 & 메뉴 텍스트 */}
                 <View
                   style={
-                    Platform.isPad
+                    Platform.isPad || fmodule.isTablet()
                       ? [
                           styles.padTextMenu,
                           { marginBottom: ((height * 0.3) / 3) * (2 - index) },

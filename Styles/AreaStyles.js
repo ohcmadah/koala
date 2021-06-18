@@ -1,4 +1,5 @@
 import { StyleSheet, Platform } from "react-native";
+import { isTablet } from "../FunctionModule";
 
 const mainColor = "#9DB4CE";
 
@@ -7,7 +8,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: mainColor,
     flexDirection: "row",
-    justifyContent: Platform.isPad ? "space-around" : "space-between",
+    justifyContent:
+      Platform.isPad || isTablet() ? "space-around" : "space-between",
     paddingVertical: 20,
   },
 });

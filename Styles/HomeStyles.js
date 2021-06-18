@@ -1,4 +1,5 @@
 import { StyleSheet, Dimensions, Platform } from "react-native";
+import { isTablet } from "../FunctionModule";
 
 const mainColor = "#9DB4CE";
 const basicFontSize = 17;
@@ -12,7 +13,7 @@ const styles = StyleSheet.create({
   },
   topNavContainer: {
     width: width,
-    height: Platform.isPad ? height * 0.18 : height * 0.11,
+    height: Platform.isPad || isTablet() ? height * 0.18 : height * 0.11,
   },
   topNavImg: {
     width: width,
