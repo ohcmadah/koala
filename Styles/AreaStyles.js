@@ -1,5 +1,5 @@
 import { StyleSheet, Platform } from "react-native";
-import { isBrowser } from "react-device-detect";
+import { isTablet } from "../FunctionModule";
 
 const mainColor = "#9DB4CE";
 
@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     backgroundColor: mainColor,
     flexDirection: "row",
     justifyContent:
-      Platform.isPad || isBrowser ? "space-around" : "space-between",
+      Platform.isPad || isTablet() ? "space-around" : "space-between",
     paddingVertical: 20,
   },
 });

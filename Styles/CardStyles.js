@@ -1,11 +1,11 @@
 import { StyleSheet, Platform, Dimensions } from "react-native";
-import { isBrowser } from "react-device-detect";
+import { isTablet } from "../FunctionModule";
 
 // 디바이스 화면 너비 구하기
 const { width } = Dimensions.get("window");
 //
 const cardWidth =
-  Platform.isPad || isBrowser
+  Platform.isPad || isTablet()
     ? (width - 36 * 2 - 200) / 3
     : (width - 36 * 2 - 30) / 3;
 
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     justifyContent:
-      Platform.isPad || isBrowser ? "space-around" : "space-between",
+      Platform.isPad || isTablet() ? "space-around" : "space-between",
     alignItems: "center",
     marginHorizontal: 4,
 

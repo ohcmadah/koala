@@ -1,6 +1,7 @@
 import * as Location from "expo-location";
 import { Alert } from "react-native";
 import * as config from "./config";
+import { DeviceType, getDeviceTypeAsync } from "expo-device";
 
 const GOOGLE_API_KEY = config.GOOGLE_API_KEY;
 // 코로나19 정보 제공 지역
@@ -103,4 +104,10 @@ export const _getYYYYMMDD = () => {
   const timezoneOffset = new Date().getTimezoneOffset() * 60000;
   const timezoneDate = new Date(Date.now() - timezoneOffset);
   return timezoneDate.toISOString().substring(0, 10);
+};
+
+export const isTablet = () => {
+  getDeviceTypeAsync().then((type) => {
+    return type === DeviceType.TABLET;
+  });
 };
