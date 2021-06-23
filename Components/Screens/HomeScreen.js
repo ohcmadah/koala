@@ -160,18 +160,17 @@ class HomeScreen extends React.Component {
 
         {/* Bottom Navigation */}
         <View style={styles.bottomNavContainer}>
-          {!Platform.isPad ||
-            (!fmodule.isTablet() && (
-              // 패드가 아니면
-              // today 이동경로 메뉴 누를 때 투명도로 인한 배경 비침 방지
-              <View style={styles.btnCircle}>
-                <Image
-                  source={firstCircle}
-                  style={{ height: height * 0.16 + 94 * 2 }}
-                  resizeMode={"contain"}
-                />
-              </View>
-            ))}
+          {!Platform.isPad && (
+            // 패드가 아니면
+            // today 이동경로 메뉴 누를 때 투명도로 인한 배경 비침 방지
+            <View style={styles.btnCircle}>
+              <Image
+                source={firstCircle}
+                style={{ height: height * 0.16 + 94 * 2 }}
+                resizeMode={"contain"}
+              />
+            </View>
+          )}
           {menus.map((menu, index) => {
             return (
               <TouchableOpacity
