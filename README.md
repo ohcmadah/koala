@@ -40,14 +40,9 @@
 
 <br />
 
-<table>
-    <tbody>
-        <tr>
-            <td width="45%"><img src="https://user-images.githubusercontent.com/52340070/214539966-e19edefa-e113-4a88-8064-3517189b4cf4.gif" /></td>
-            <td><img src="https://user-images.githubusercontent.com/52340070/214542673-834ac77b-aeda-4b84-a1f2-86b7a71a6ff9.jpg" /></td>
-        </tr>
-    </tbody>
-</table>
+![실행 GIF](https://user-images.githubusercontent.com/52340070/215681221-19f66e7d-c2a5-460e-97ab-f7f5eb740353.gif)
+
+<img src="https://user-images.githubusercontent.com/52340070/214542673-834ac77b-aeda-4b84-a1f2-86b7a71a6ff9.jpg" />
 
 <br />
 
